@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Payment</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <style>
+    
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            display: flex;
+            justify-content: space-between; /* Adjusted to space-between for spacing */
+            align-items:flex-start;
+            flex: 1;
+            padding: 20px;
+            margin: 0 40px;
+        }
+        .left-container{
+            width: 55%;
+            min-height: 55vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .right-container{
+            width: 40%;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .payment-methods, .order-summary {
+            flex: 1;
+            padding: 25px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+        .payment-method {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 90%;
+        }
+        .payment-method label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .form-check-input {
+            margin-top: 5px;
+        }
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .btns{
+            display: flex;
+            flex-direction: row;
+            text-align: right;
+            justify-content: flex-end;
+            margin: 10px 20px;
+        }
+        .btns button {
+            margin-left: 15px;
+        }
+    
+        .footer {
+            margin-top: auto;
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Shop</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Help</a></li>
+                    </ul>
+                    <a href="/cart" class="btn btn-primary ml-1" style="width: 7%;"><i class="fas fa-shopping-cart" style="margin-right: 5px;"></i> Cart</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="content">
+            <div class="left-container">
+                <h3>Payment Method</h3>
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
+                            <label class="form-check-label" for="creditCard">
+                                Credit Card
+                            </label>
+                        </div>
+                        <div class="form-group mt-3" id="creditCardDetails">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number">
+                            <label for="expiryDate" class="mt-2">Expiry Date</label>
+                            <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                            <label for="cvv" class="mt-2">CVV</label>
+                            <input type="text" class="form-control" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+
+                    <div class="payment-method mt-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery">
+                            <label class="form-check-label" for="cashOnDelivery">
+                                Cash on Delivery
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-container">
+                <h2>Order Summary</h2>
+                <div class="order-summary">
+                    <div class="product-list">
+                        <div class="summary-line">
+                            <span>Product Name 1</span>
+                            <span>$50.00</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Product Name 2</span>
+                            <span>$70.00</span>
+                        </div>
+                        <!-- Add more products as needed -->
+                    </div>
+                    <hr>
+                    <div class="summary-line">
+                        <span>Sub Total:</span>
+                        <span>$120.00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Taxes:</span>
+                        <span>$10.00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Shipping:</span>
+                        <span>$5.00</span>
+                    </div>
+                    <hr>
+                    <div class="summary-line">
+                        <span>Total:</span>
+                        <span>$135.00</span>
+                    </div>
+                </div>
+                <div class="btns">
+                    <div class="confirm-button">
+                        <button class="btn btn-primary">Confirm Order</button>
+                    </div>
+                    <div class="cancel-button">
+                        <button class="btn btn-danger">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>Main Menu</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Home</a></li>
+                            <li><a href="#" class="text-white">About</a></li>
+                            <li><a href="#" class="text-white">Shop</a></li>
+                            <li><a href="#" class="text-white">Help</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Company</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Careers</a></li>
+                            <li><a href="#" class="text-white">News</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Discover</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">How to Shop</a></li>
+                            <li><a href="#" class="text-white">Find a Store</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Follow Us</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Facebook</a></li>
+                            <li><a href="#" class="text-white">Twitter</a></li>
+                            <li><a href="#" class="text-white">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>&copy; Your Company Name</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Disable credit card fields when Cash on Delivery is selected
+        $('input[type="radio"]').change(function () {
+            if ($(this).attr('id') === 'cashOnDelivery') {
+                $('#creditCardDetails input').prop('disabled', true);
+            } else {
+                $('#creditCardDetails input').prop('disabled', false);
+            }
+        });
+    </script>
+</body>
+</html>

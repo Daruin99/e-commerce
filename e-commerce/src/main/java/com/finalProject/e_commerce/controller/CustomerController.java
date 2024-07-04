@@ -8,6 +8,6 @@ public class CustomerController {
 
     @GetMapping("/customer/home")
     public String customerHome() {
-        return "customer/home";
+        return "customer/index";
     }
 }
