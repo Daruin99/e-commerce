@@ -2,8 +2,8 @@ package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.domain.Customer;
-import com.finalProject.e_commerce.repo.AdminRepo;
-import com.finalProject.e_commerce.repo.CustomerRepo;
+import com.finalProject.e_commerce.repository.AdminRepo;
+import com.finalProject.e_commerce.repository.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
