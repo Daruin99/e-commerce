@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Shop</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="input-group" style="width: 23%; margin-left: 30px;">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="border-radius: 15px 0 0 15px;">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" type="submit" style="border-radius: 0 15px 15px 0;"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Help</a>
+                        </li>
+                    </ul>
+                
+                    <a href="/cart" class="btn btn-primary ml-1" style="width: 7%;"><i class="fas fa-shopping-cart" style="margin-right: 5px;"></i> Cart</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="content container mt-5">
+            <h2 class="text-center my-4">Shop by Category</h2>
+
+            <!-- Categories List -->
+            <div class="row mb-4">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Category 1</h5>
+                            <p class="card-text">Description of Category 1.</p>
+                            <a href="/category1" class="btn btn-primary">View Products</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Category 2</h5>
+                            <p class="card-text">Description of Category 2.</p>
+                            <a href="/category2" class="btn btn-primary">View Products</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Category 3</h5>
+                            <p class="card-text">Description of Category 3.</p>
+                            <a href="/category3" class="btn btn-primary">View Products</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Random Products Section -->
+            <section class="mb-5">
+                <h2 class="text-center">Random Products</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="..." class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Name</h5>
+                                <p class="card-text">$200</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="..." class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Name</h5>
+                                <p class="card-text">$200</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="..." class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Name</h5>
+                                <p class="card-text">$200</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommended Products Section -->
+            <section class="mb-5">
+                <h2 class="text-center">Recommended Products</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="..." class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Name</h5>
+                                <p class="card-text">$200</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="..." class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Name</h5>
+                                <p class="card-text">$200</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="..." class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Name</h5>
+                                <p class="card-text">$200</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="bg-dark text-white mt-5 p-4 text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>Main Menu</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Home</a></li>
+                            <li><a href="#" class="text-white">About</a></li>
+                            <li><a href="#" class="text-white">Shop</a></li>
+                            <li><a href="#" class="text-white">Help</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Company</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Careers</a></li>
+                            <li><a href="#" class="text-white">News</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Discover</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">How to Shop</a></li>
+                            <li><a href="#" class="text-white">Find a Store</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Follow Us</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Facebook</a></li>
+                            <li><a href="#" class="text-white">Twitter</a></li>
+                            <li><a href="#" class="text-white">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>&copy; Your Company Name</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

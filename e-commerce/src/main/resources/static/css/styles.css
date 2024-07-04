@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar{
+    background-color: #A0AAB2;
+    color: #342A21;
+    border-radius: 0px 0px 10px 10px;
+}
+.navbar li a{
+    color: white;
+}
+
+.navbar a img{
+    border-radius: 8px;
+}
+
+.navbar li a:hover{
+    color: #424C48;
+}
+
+.btn-primary{
+    background-color: #71816D;
+    border: none;
+}
+
+.btn-outline-success{
+    background-color: #7E9181;
+    border: none;
+    color: white;
+}
+
+.btn-outline-success:hover{
+    background-color: #60B08A;
+    border: none;
+    color: white;
+}
+
+
+.btn-primary:hover{
+    background-color: #80826D;
+    border: none;
+}
+
+.btn-danger :hover{
+    background-color: #DA667B;
+    border: none;
+}

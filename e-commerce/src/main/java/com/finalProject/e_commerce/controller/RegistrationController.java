@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class RegistrationController {
 
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     public RegistrationController(CustomerService customerService) {
         this.customerService = customerService;
