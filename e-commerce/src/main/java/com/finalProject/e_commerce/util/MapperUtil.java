@@ -1,8 +1,9 @@
 package com.finalProject.e_commerce.util;
 
+import com.finalProject.e_commerce.domain.Admin;
+import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.domain.Product;
-import com.finalProject.e_commerce.dto.ProductRequestDTO;
-import com.finalProject.e_commerce.dto.ProductResponseDTO;
+import com.finalProject.e_commerce.dto.*;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -13,4 +14,12 @@ public interface MapperUtil {
 
     // to map the Product Entity to ProductResponseDTO to send it back in the response
     ProductResponseDTO mapEntityToResponseDTO(Product product);
+
+    Admin mapRequestDTOToEntity(AdminRequestDTO requestDTO);
+
+    AdminResponseDTO mapEntityToResponseDTO(Admin admin);
+
+    Category mapRequestDTOToEntity(CategoryRequestDTO requestDTO);
+
+    CategoryResponseDTO mapEntityToResponseDTO(Category category);
 }

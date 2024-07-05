@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Admin - Update Admin Attributes</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/adminStyles.css}" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            flex: 1;
+        }
+        .form-container {
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 50px;
+            height: fit-content;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group{
+            margin-bottom: 30px;
+        }
+        .form-btn{
+            width: 40%;
+            float: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{adminIndex.html}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{viewAdmins.html}">Admins</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{viewProducts.html}">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{viewCategories.html}">Categories</a>
+                        </li>
+                    </ul>
+                    <h3 class="title">Admin Dashboard</h3>
+                </div>
+            </nav>
+        </header>
+
+        <div class="content">
+            <div class="container form-container">
+                <h2 class="text-center mb-4">Update Admin Attributes</h2>
+                
+                <!-- Update Name Form -->
+                <form th:action="@{|/admin/updateAdminName/${admin.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="name">Admin Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="${admin.name}" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Name</button>
+                    </div>
+                </form>
+                
+                <!-- Update Email Form -->
+                <form th:action="@{|/admin/updateAdminEmail/${admin.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" value="${admin.email}" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Email</button>
+                    </div>
+                </form>
+                
+                <!-- Update Phone Number Form -->
+                <form th:action="@{|/admin/updateAdminPhoneNumber/${admin.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number:</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="${admin.phoneNumber}" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Phone Number</button>
+                    </div>
+                    
+                </form>
+                
+            </div>
+        </div>
+
+        <footer class="bg-dark text-white mt-5 p-4 text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>Main Menu</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Home</a></li>
+                            <li><a href="#" class="text-white">About</a></li>
+                            <li><a href="#" class="text-white">Shop</a></li>
+                            <li><a href="#" class="text-white">Help</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Company</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Careers</a></li>
+                            <li><a href="#" class="text-white">News</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Discover</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">How to Shop</a></li>
+                            <li><a href="#" class="text-white">Find a Store</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Follow Us</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Facebook</a></li>
+                            <li><a href="#" class="text-white">Twitter</a></li>
+                            <li><a href="#" class="text-white">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>&copy; Your Company Name</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
