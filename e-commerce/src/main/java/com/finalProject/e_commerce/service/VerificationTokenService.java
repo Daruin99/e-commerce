@@ -1,7 +1,7 @@
 package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.VerificationToken;
-import com.finalProject.e_commerce.repo.VerificationTokenRepo;
+import com.finalProject.e_commerce.repository.VerificationTokenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,6 @@ package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.VerificationToken;
-import com.finalProject.e_commerce.repo.VerificationTokenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;

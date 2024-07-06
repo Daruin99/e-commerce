@@ -2,13 +2,13 @@ package com.finalProject.e_commerce.dto;
 
 import lombok.Getter;
 
+import java.util.Set;
+
 @Getter
 public class SuccessfulAuthenticationResponseDTO {
-    private final String authority;
+    private final Set<String> authorities;
 
-    public SuccessfulAuthenticationResponseDTO(String authority) {
-        this.authority = authority;
+    public SuccessfulAuthenticationResponseDTO(Set<String> authorities) {
+        this.authorities = authorities;
     }
-
-
 }

@@ -1,5 +1,7 @@
 package com.finalProject.e_commerce.controller;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.dto.AuthenticationRequestDTO;
 import com.finalProject.e_commerce.dto.FailedAuthenticationResponseDTO;
@@ -18,6 +20,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 public class AuthenticationController {
@@ -95,10 +100,10 @@ public class AuthenticationController {
         jwtCookie.setHttpOnly(true);
         response.addCookie(jwtCookie);
 
-        // N.B : this will break when i integrate with youssef if he made the admin entity have 2 roles.
-        String authority = userDetails.getAuthorities().toString();
+        Set<String> authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
 
-
-        return ResponseEntity.ok(new SuccessfulAuthenticationResponseDTO(authority));
+        return ResponseEntity.ok(new SuccessfulAuthenticationResponseDTO(authorities));
     }
 }

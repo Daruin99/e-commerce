@@ -1,8 +1,8 @@
 package com.finalProject.e_commerce.filter;
 
 import com.finalProject.e_commerce.util.JwtUtil;
-import com.finalProject.e_commerce.repo.CustomerRepo;
-import com.finalProject.e_commerce.repo.AdminRepo;
+import com.finalProject.e_commerce.repository.CustomerRepo;
+import com.finalProject.e_commerce.repository.AdminRepo;
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Admin;
 import jakarta.servlet.FilterChain;
@@ -16,12 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Component

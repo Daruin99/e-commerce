@@ -192,15 +192,16 @@ async function handleLogin(event) {
 
         if (response.ok)  {
            const result = await response.json();
-           const authority = result.authority.trim().toUpperCase();  // Trim whitespace and convert to uppercase for comparison
+        const authorities = result.authorities.map(authority => authority.trim().toUpperCase());
+        console.log(authorities)
 
 
-        if (authority === '[ADMIN]') {
+       if (authorities.includes('ADMIN')) {
             window.location.href = '/admin/home';
-        } else if (authority === '[CUSTOMER]') {
+        } else if (authorities.includes('CUSTOMER')) {
             window.location.href = '/customer/home';
         } else {
-              console.error("Unknown authority:", authority);  // Handle unknown authority
+              console.error("Unknown authority");  // Handle unknown authority
         }
      } else {
 
