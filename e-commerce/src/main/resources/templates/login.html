@@ -3,7 +3,9 @@
 <head>
     <title>Login</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
@@ -60,62 +62,197 @@
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <header>
-            <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/register}">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Help</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+<div class="wrapper">
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-        <div class="content">
-            <h1 class="text-center">Login</h1>
-            <form th:action="@{/login}" method="post">
-                <div class="form-items">
-                    <div class="form-group">
+    <div class="content">
+        <h1 class="text-center">Login</h1>
+        <form th:action="@{/login}" method="post" th:onsubmit="handleLogin(event)">
+            <div class="form-items">
+                <div class="form-group">
                     <label for="username">Email address</label>
-                    <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp"
+                           placeholder="Enter email">
                 </div>
-            </form>
-            <div class="forgot-password">
-                <a href="#">Forgot Password?</a>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
             </div>
+        </form>
+        <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
         </div>
-
-        <footer class="bg-dark text-white p-4 text-center mt-auto">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <p>&copy; Your Company Name</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <footer class="bg-dark text-white p-4 text-center mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>&copy; Your Company Name</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+
+        if (message === 'verificationSent') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Verification Email Sent',
+                text: 'A verification email has been sent, please verify before logging in',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        } else if (message === 'verificationCompleted') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Verification Completed',
+                text: 'You can now log in',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        } else if (message === 'expired') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Token Expired',
+                text: 'The old verification mail has expired, a new verification mail has been sent.',
+                timer: 5000,
+                showConfirmButton: false
+            });
+        } else if (message === 'notVerified') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Account Not Verified',
+                text: 'Your account isn\'t verified yet, please check your mail inbox.',
+                timer: 5000,
+                showConfirmButton: false
+            });
+        } else if (message === 'Invalid token') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Token',
+                text: 'This Token doesn\'t exist!',
+                timer: 5000,
+                showConfirmButton: false
+            });
+        }
+    });
+</script>
+
+<script>
+
+async function handleLogin(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        console.log(data)
+
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok)  {
+           const result = await response.json();
+           const authority = result.authority.trim().toUpperCase();  // Trim whitespace and convert to uppercase for comparison
+
+
+        if (authority === '[ADMIN]') {
+            window.location.href = '/admin/home';
+        } else if (authority === '[CUSTOMER]') {
+            window.location.href = '/customer/home';
+        } else {
+              console.error("Unknown authority:", authority);  // Handle unknown authority
+        }
+     } else {
+
+         const result = await response.json();
+        const errorMessage = result.message;
+        const remainingAttempts = result.remainingAttempts;
+
+
+        if (errorMessage.includes("Account not verified")) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Account Not Verified',
+                text: 'Your account isn\'t verified yet, please check your mail inbox.',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        } else if (errorMessage.includes("This email doesn't exist")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'This email doesn\'t exist in the system!',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        } else if (errorMessage.includes("Incorrect password")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Incorrect password!',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        } else if (errorMessage.includes("Your account has been locked")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: errorMessage,
+                timer: 4000,
+                showConfirmButton: false
+            });
+        } else if (errorMessage.includes("failed login attempt")) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: '"Incorrect password. You have ' + remainingAttempts + ' attempts left',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        }
+        }
+    }
+</script>
+
 </body>
 </html>

@@ -24,7 +24,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
 
         Admin admin = adminRepo.findByEmail(email).orElse(null);
         if (admin != null) {
@@ -32,7 +32,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         }
 
         // Check for Customer if Admin is not found
-        Customer customer = customerRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Customer customer = customerRepo.findByEmail(email).orElse(null);
         return customer;
     }
 }

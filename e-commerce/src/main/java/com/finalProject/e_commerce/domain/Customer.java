@@ -22,7 +22,7 @@ public class Customer implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Authority role = Authority.CUSTOMER;
 
-    private String status;
+    private boolean isActive = false;
     private int failedAttempts;
     private String phoneNumber;
 
@@ -55,7 +55,7 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return (failedAttempts < 3);
     }
 
     @Override
@@ -65,6 +65,6 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }
