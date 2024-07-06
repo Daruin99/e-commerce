@@ -18,17 +18,13 @@ import java.util.Collections;
 @AllArgsConstructor
 @Builder
 @Table(name = "admin", uniqueConstraints = {
-        @UniqueConstraint(name = "email_unique_key", columnNames = "email")
+        @UniqueConstraint(name = "email_unique_key", columnNames = "email"),
+        @UniqueConstraint(name = "phone_unique_key", columnNames = "phone_number")
 })
 public class Admin implements UserDetails {
 
     @Id
-    @SequenceGenerator(name = "admin_sequence", sequenceName = "admin_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_sequence")
-    @Column(
-            name = "id",
-            columnDefinition = "BIGINT"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(
@@ -55,7 +51,6 @@ public class Admin implements UserDetails {
     @Column(
             name = "password",
             nullable = false,
-            insertable = false,
             columnDefinition = "VARCHAR(60)"
     )
     private String password;

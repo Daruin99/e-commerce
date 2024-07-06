@@ -1,7 +1,7 @@
 package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Customer;
-import com.finalProject.e_commerce.repository.CustomerRepo;
+import com.finalProject.e_commerce.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
