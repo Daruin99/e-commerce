@@ -1,13 +1,13 @@
 package com.finalProject.e_commerce.domain;
 
-import com.finalProject.e_commerce.Enum.Authority;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,14 +19,17 @@ public class Admin implements UserDetails {
     private String email;
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Authority role = Authority.ADMIN;
-
-    // Getters and setters
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "admin_authorities",
+            joinColumns = @JoinColumn(name = "admin_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(role);
+        return authorities;
     }
 
     @Override

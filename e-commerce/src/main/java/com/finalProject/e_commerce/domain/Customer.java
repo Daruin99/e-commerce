@@ -1,6 +1,5 @@
 package com.finalProject.e_commerce.domain;
 
-import com.finalProject.e_commerce.Enum.Authority;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -19,10 +20,14 @@ public class Customer implements UserDetails {
     private String email;
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Authority role = Authority.CUSTOMER;
-
-    private String status;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "customer_authorities",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities = new HashSet<>();
+    private boolean isActive = false;
     private int failedAttempts;
     private String phoneNumber;
 
@@ -32,10 +37,9 @@ public class Customer implements UserDetails {
 
      */
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(role);
+        return authorities;
     }
 
     @Override
@@ -55,7 +59,7 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return (failedAttempts < 3);
     }
 
     @Override
@@ -65,6 +69,6 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }
