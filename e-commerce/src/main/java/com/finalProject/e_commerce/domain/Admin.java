@@ -23,6 +23,7 @@ import java.util.Set;
         @UniqueConstraint(name = "phone_unique_key", columnNames = "phone_number")
 })
 public class Admin implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
