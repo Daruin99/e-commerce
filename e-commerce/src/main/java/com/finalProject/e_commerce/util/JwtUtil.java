@@ -1,6 +1,3 @@
-/*
-
-
 package com.finalProject.e_commerce.util;
 
 import io.jsonwebtoken.Claims;
@@ -23,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
-
 
     public static final long JWT_TOKEN_VALIDITY = 30 * 24 * 60 * 60;
 
@@ -97,4 +93,3 @@ public class JwtUtil {
         return (userDetails != null && username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
-*/
