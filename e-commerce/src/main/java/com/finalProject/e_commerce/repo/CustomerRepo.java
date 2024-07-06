@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.repository;
+package com.finalProject.e_commerce.repo;
 
 import com.finalProject.e_commerce.domain.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;

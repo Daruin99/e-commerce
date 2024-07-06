@@ -1,83 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
 <head>
-    <title>Manage Categories</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/adminStyles.css}" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-        }
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .content {
-            flex: 1;
-        }
-        .jumbotron{
-            background-image: url('/images/background.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 50vh;
-        }
-        .jumbotron h1{
-            margin-top: 18%;
-            color: white;
-            background-color: rgba(241, 237, 238, 0.774)
-        }
-        .pagination {
-            justify-content: center;
-        }
-        .category-item {
-           margin-left: 40px;
-        }
-        .form-container {
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .form-btn{
-            width: 40%;
-            float: right;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Categories</title>
+
 </head>
 <body>
-    <div class="wrapper">
-        <header>
-            <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{adminIndex.html}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{viewAdmins.html}">Admins</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{viewProducts.html}">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{viewCategories.html}">Categories</a>
-                        </li>
-                    </ul>
-                    <h3 class="title">Admin Dashboard</h3>
-                </div>
-            </nav>
-        </header>
-
+    <section layout:fragment="content">
         <div class="content container mt-5">
             <div class="jumbotron text-center">
                 <h1 class="display-4">Manage Categories</h1>
@@ -85,23 +16,23 @@
             </div>
 
             <h2 class="text-center my-4">Categories List</h2>
-                <div class="row">
-                    <div th:each="category : ${categories}" class="col-md-4">
-                        <div class="card category-item">
-                            <div class="card-body">
-                                <h4 th:text="${category.name}"></h4>
-                                <p>Category ID: <span th:text="${category.id}"></span></p>
-                                <form th:action="@{'/category/update/' + ${category.id}}" method="post">
-                                    <div class="form-group">
-                                        <label for="name">Category Name</label>
-                                        <input type="text" th:value="${category.name}" name="name" class="form-control mb-2">
-                                        <button type="submit" class="btn btn-warning form-btn">Update</button>
-                                    </div>
-                                </form>
-                            </div>
+            <div class="row">
+                <div th:each="product : ${products}" class="col-md-4">
+                    <div class="card item-card">
+                        <div class="card-body">
+                            <h4 th:text="${category.name}"></h4>
+                            <p>Category ID: <span th:text="${category.id}"></span></p>
+                            <form th:action="@{'/category/update/' + ${category.id}}" method="post">
+                                <div class="form-group">
+                                    <label for="name">Category Name</label>
+                                    <input type="text" th:value="${category.name}" name="name" class="form-control mb-2">
+                                    <button type="submit" class="btn btn-warning form-btn">Update</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
                 <!-- Pagination -->
                 <div class="row">
@@ -128,53 +59,6 @@
                 </form>
             </div>
         </div>
-
-        <footer class="bg-dark text-white mt-5 p-4 text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <h5>Main Menu</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">Home</a></li>
-                            <li><a href="#" class="text-white">About</a></li>
-                            <li><a href="#" class="text-white">Shop</a></li>
-                            <li><a href="#" class="text-white">Help</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <h5>Company</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">Careers</a></li>
-                            <li><a href="#" class="text-white">News</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <h5>Discover</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">How to Shop</a></li>
-                            <li><a href="#" class="text-white">Find a Store</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <h5>Follow Us</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">Facebook</a></li>
-                            <li><a href="#" class="text-white">Twitter</a></li>
-                            <li><a href="#" class="text-white">Instagram</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p>&copy; Your Company Name</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </section>
 </body>
 </html>
