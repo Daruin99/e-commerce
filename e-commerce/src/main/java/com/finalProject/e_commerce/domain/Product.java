@@ -9,8 +9,7 @@ import lombok.Data;
 public class Product {
 
     @Id
-    @SequenceGenerator(name = "product_sequence", sequenceName = "product_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "id",
             columnDefinition = "BIGINT"
@@ -55,9 +54,10 @@ public class Product {
     @Column(
             name = "number_of_sold_items",
             nullable = false,
-            columnDefinition = "INT"
+            columnDefinition = "INT DEFAULT 0"
     )
-	private int numberOfSoldItems;
+
+	private int numberOfSoldItems = 0;
 
     @ManyToOne()
     @JoinColumn(

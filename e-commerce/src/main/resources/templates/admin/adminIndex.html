@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="content container mt-5">
+            <div class="jumbotron text-center">
+                <h1 class="display-4">Admin Dashboard</h1>
+                <p class="lead">Manage your website's content and settings</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Admins</h5>
+                            <p class="card-text">Add, Update, and Remove Admin Accounts</p>
+                            <a th:href="@{/admin/admins}" class="btn btn-primary">Admins</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Products</h5>
+                            <p class="card-text">Add, Update, and Remove Products</p>
+                            <a th:href="@{/admin/products}" class="btn btn-primary">Products</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Categories</h5>
+                            <p class="card-text">Add, Update, and Remove Categories</p>
+                            <a th:href="@{/admin/categories}" class="btn btn-primary">Categories</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -9,8 +9,7 @@ import lombok.Data;
 public class Category {
 
     @Id
-    @SequenceGenerator(name = "category_sequence", sequenceName = "category_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "id",
             columnDefinition = "BIGINT"
