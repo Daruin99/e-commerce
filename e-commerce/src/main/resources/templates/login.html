@@ -103,7 +103,7 @@
             </div>
         </form>
         <div class="forgot-password">
-            <a href="#">Forgot Password?</a>
+            <a th:href="@{/forgot-password}">Forgot Password?</a>
         </div>
     </div>
 
@@ -169,6 +169,18 @@
                 showConfirmButton: false
             });
         }
+        else if (message === 'unauthenticated') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Not Authenticated',
+                text: 'You are not authenticated. Please log in.',
+                timer: 5000,
+                showConfirmButton: false
+            });
+
+            // Delete JWT cookie
+            document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
     });
 </script>
 
@@ -200,8 +212,6 @@ async function handleLogin(event) {
             window.location.href = '/admin/home';
         } else if (authorities.includes('CUSTOMER')) {
             window.location.href = '/customer/home';
-        } else {
-              console.error("Unknown authority");  // Handle unknown authority
         }
      } else {
 
@@ -238,15 +248,15 @@ async function handleLogin(event) {
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',
-                text: errorMessage,
-                timer: 4000,
+                text:'Your account has been locked.' + ' Please reset your password by clicking on the forgot password link.',
+                timer: 5000,
                 showConfirmButton: false
             });
         } else if (errorMessage.includes("failed login attempt")) {
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',
-                text: '"Incorrect password. You have ' + remainingAttempts + ' attempts left',
+                text: 'Incorrect password! You have ' + remainingAttempts + ' attempts left',
                 timer: 4000,
                 showConfirmButton: false
             });
