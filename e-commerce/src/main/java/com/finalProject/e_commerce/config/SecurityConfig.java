@@ -1,6 +1,7 @@
 package com.finalProject.e_commerce.config;
 
 import com.finalProject.e_commerce.filter.JwtFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,8 +53,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(entryPoint -> entryPoint
+                        .authenticationEntryPoint((request, response, authException) -> response
+                                .sendRedirect("/login?message=unauthenticated")))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login","/verify","/register" ,"/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/login", "/verify", "/register",
+                                "/css/**", "/js/**", "/images/**",
+                                "/favicon.ico", "/forgot-password", "/reset-password")
+                        .permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/customer/**").hasAuthority("CUSTOMER")
                         .anyRequest().authenticated())

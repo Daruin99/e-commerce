@@ -97,8 +97,9 @@ public class AuthenticationController {
 
         final String jwt = jwtUtil.generateToken(userDetails);
         Cookie jwtCookie = new Cookie("jwt", jwt);
-        jwtCookie.setHttpOnly(true);
+        jwtCookie.setMaxAge(30 * 24 * 60 * 60);
         response.addCookie(jwtCookie);
+
 
         Set<String> authorities = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

@@ -37,4 +37,19 @@ public class CustomerService {
     public Customer updateCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
+
+    public Customer findByEmail(String email) {
+        return customerRepository.findByEmail(email).orElse(null);
+    }
+
+    public boolean existsByEmail(String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        Customer customer = findByEmail(email);
+        customer.setPassword(passwordEncoder.encode(newPassword));
+        customer.setFailedAttempts(0);
+        updateCustomer(customer);
+    }
 }

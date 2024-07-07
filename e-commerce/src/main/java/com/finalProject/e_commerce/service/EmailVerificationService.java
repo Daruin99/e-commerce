@@ -33,7 +33,6 @@ public class EmailVerificationService {
 
 
 
-
     public void sendVerificationEmail(Customer customer) {
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
@@ -42,13 +41,31 @@ public class EmailVerificationService {
         verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(2)); // Token expires in 2 mins
         verificationTokenService.saveToken(verificationToken);
 
-        String recipientAddress = customer.getEmail();
         String subject = "Email Verification";
         String confirmationUrl = "http://localhost:8080/verify?token=" + token;
         String message = "To verify your email address, please click on the following link:\n"
                 + confirmationUrl
-                + "\n this verifcation expires in 2 mins, Click on it even if it's expired and you will be sent a new one.";
+                + "\nThis verification expires in 2 mins. Click on it even if it's expired, and you will be sent a new one.";
 
+        sendEmail(customer.getEmail(), subject, message);
+    }
+
+    public void sendPasswordResetEmail(Customer customer) {
+        String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setToken(token);
+        verificationToken.setCustomer(customer);
+        verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(2)); // Token expires in 2 mins
+        verificationTokenService.saveToken(verificationToken);
+
+        String subject = "Password Reset Request";
+        String resetUrl = "http://localhost:8080/reset-password?token=" + token;
+        String message = "Click the link below to reset your password:\n" + resetUrl;
+
+        sendEmail(customer.getEmail(), subject, message);
+    }
+
+    private void sendEmail(String recipientAddress, String subject, String message) {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setFrom("tay.no.reply@gmail.com");
         email.setTo(recipientAddress);
@@ -75,4 +92,5 @@ public class EmailVerificationService {
         verificationTokenService.deleteToken(verificationToken);
         return "verificationCompleted";
     }
+
 }
