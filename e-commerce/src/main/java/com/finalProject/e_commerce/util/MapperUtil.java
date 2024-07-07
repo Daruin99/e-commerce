@@ -4,6 +4,10 @@ import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.dto.*;
+import com.finalProject.e_commerce.dto.adminDTOs.AdminRequestDTO;
+import com.finalProject.e_commerce.dto.adminDTOs.AdminResponseDTO;
+import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
+import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
