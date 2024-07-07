@@ -4,7 +4,7 @@ import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.dto.CategoryResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
-import com.finalProject.e_commerce.repo.CategoryRepo;
+import com.finalProject.e_commerce.repository.CategoryRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

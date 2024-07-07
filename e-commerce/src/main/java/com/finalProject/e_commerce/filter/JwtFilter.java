@@ -1,8 +1,8 @@
 package com.finalProject.e_commerce.filter;
 
 import com.finalProject.e_commerce.util.JwtUtil;
-import com.finalProject.e_commerce.repo.CustomerRepo;
-import com.finalProject.e_commerce.repo.AdminRepo;
+import com.finalProject.e_commerce.repository.CustomerRepo;
+import com.finalProject.e_commerce.repository.AdminRepo;
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Admin;
 import jakarta.servlet.FilterChain;

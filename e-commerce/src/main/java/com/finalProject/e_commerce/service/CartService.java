@@ -4,14 +4,11 @@ import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Product;
-import com.finalProject.e_commerce.repo.CartRepo;
+import com.finalProject.e_commerce.repository.CartRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -27,7 +24,7 @@ public class CartService {
 
     public void addItemToCart(Long productId) {
         Cart cart = createNewCartOrGet();
-        Product product = productService.findProductById(productId).orElse(null);
+        Product product = productService.getProductById(productId);
         if(product == null) {
             return;
         }
@@ -52,7 +49,7 @@ public class CartService {
 
     public void removeItemFromCart(Long productId) {
         Cart cart = createNewCartOrGet();
-        Product product = productService.findProductById(productId).orElse(null);
+        Product product = productService.getProductById(productId);
         if(product == null) {
             return;
         }
@@ -67,7 +64,7 @@ public class CartService {
 
         public void updateItemQuantity(Long productId, Integer quantity) {
             Cart cart = createNewCartOrGet();
-            Product product = productService.findProductById(productId).orElse(null);
+            Product product = productService.getProductById(productId);
             if(product == null) {
                 return;
             }

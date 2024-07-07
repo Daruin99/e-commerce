@@ -4,7 +4,7 @@ import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.domain.Authority;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminRequestDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminResponseDTO;
-import com.finalProject.e_commerce.repo.AdminRepo;
+import com.finalProject.e_commerce.repository.AdminRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
