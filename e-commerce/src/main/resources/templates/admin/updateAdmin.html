@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
+<head>
+    <title>Update Admin</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="content">
+            <div class="container form-container">
+                <h2 class="text-center mb-4">Update Admin Attributes</h2>
+
+                <form th:action="@{|/admin/updateAdmin/${adminId}|}" th:object="${adminResponseDTO}" method="post">
+                    <div class="form-group">
+                        <label for="name">Admin Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" th:field="*{name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number:</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning form-btn">Update Admin</button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
+<head>
+    <title>Admins</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="content container mt-5">
+            <div class="jumbotron text-center">
+                <h1 class="display-4">Admin Management</h1>
+                <p class="lead">Manage all administrators of the site.</p>
+            </div>
+
+            <h2 class="text-center my-4">Admin List</h2>
+            <div class="row">
+                <div th:each="adminResponse : ${adminsResponse}" class="col-md-4">
+                    <div class="card item-card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${adminResponse?.name}">Admin Name</h5>
+                            <p class="card-text">Phone: <span th:text="${adminResponse?.phoneNumber}">1234567890</span></p>
+                            <p class="card-text">Email: <span th:text="${adminResponse?.email}">admin@example.com</span></p>
+                            <div class="item-actions">
+                                <a th:href="@{|/admin/updateAdmin/${adminResponse.id}|}" class="btn btn-warning">Update</a>
+                                <a th:href="@{|/admin/deleteAdmin/${adminResponse.id}|}" class="btn btn-danger">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <!--<div class="row">
+                <div class="col-md-12 text-center mt-4">
+                    <ul class="pagination">
+                        <li th:class="${pageNumber == 1} ? 'page-item disabled' : 'page-item'">
+                            <a class="page-link" th:href="@{'/admin/admins?pageNumber=' + (pageNumber - 1)}">Previous</a>
+                        </li>
+                        &lt;!&ndash; Generate page links based on totalPages &ndash;&gt;
+                        <li th:each="pageNum : ${#numbers.sequence(1, 2)}" th:class="${pageNum == pageNumber} ? 'page-item active' : 'page-item'">
+                            <a class="page-link" th:href="@{'/admin/admins?pageNumber=' + pageNum}" th:text="${pageNum}"></a>
+                        </li>
+                        <li th:class="${pageNumber == 2} ? 'page-item disabled' : 'page-item'">
+                            <a class="page-link" th:href="@{'/admin/admins?pageNumber=' + ${pageNumber + 1}}">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>-->
+
+            <div class="text-center mt-4">
+                <a th:href="@{/admin/addAdmin}" class="btn btn-success">Add New Admin</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

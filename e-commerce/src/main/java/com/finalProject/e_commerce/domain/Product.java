@@ -9,8 +9,7 @@ import lombok.Data;
 public class Product {
 
     @Id
-    @SequenceGenerator(name = "product_sequence", sequenceName = "product_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "id",
             columnDefinition = "BIGINT"
@@ -22,14 +21,14 @@ public class Product {
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
-	private String Name;
+	private String name;
 
     @Column(
             name = "price",
             nullable = false,
             columnDefinition = "DOUBLE"
     )
-	private double Price;
+	private double price;
 
     @Column(
             name = "stock",
@@ -50,14 +49,14 @@ public class Product {
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
-	private String Description;
+	private String description;
 
     @Column(
             name = "number_of_sold_items",
             nullable = false,
-            columnDefinition = "INT"
+            columnDefinition = "INT DEFAULT 0"
     )
-	private int NumberOfSoldItems;
+	private int numberOfSoldItems = 0;
 
     @ManyToOne()
     @JoinColumn(

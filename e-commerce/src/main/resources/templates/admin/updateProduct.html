@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
+<head>
+    <title>Update Product</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="content">
+            <div class="container form-container">
+                <h2 class="text-center mb-4">Update Product Attributes</h2>
+
+                <!-- Update Image Form -->
+                <form th:action="@{|/admin/updateProductImage/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="image">Product Image:</label>
+                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Image</button>
+                    </div>
+                </form>
+                <hr>
+
+                <!-- Update Name Form -->
+                <form th:action="@{|/admin/updateProductName/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="name">Product Name:</label>
+                        <input type="text" class="form-control" id="name" th:value="${product.name}" name="name" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Name</button>
+                    </div>
+                </form>
+                <hr>
+
+                <!-- Update Price Form -->
+                <form th:action="@{|/admin/updateProductPrice/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input type="number" class="form-control" id="price" th:value="${product.price}" name="price" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Price</button>
+                    </div>
+                </form>
+                <hr>
+
+                <!-- Update Stock Form -->
+                <form th:action="@{|/admin/updateProductStock/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="stock">Stock:</label>
+                        <input type="number" class="form-control" id="stock" th:value="${product.stock}" name="stock" required>
+                        <button type="submit" class="btn btn-warning form-btn form-btn">Update Stock</button>
+                    </div>
+                </form>
+                <hr>
+
+                <!-- Update Sold Items Form -->
+                <form th:action="@{|/admin/updateProductSoldItems/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="sold">Number of Sold Items:</label>
+                        <input type="number" class="form-control" id="sold" th:value="${product.soldItems}" name="soldItems" required>
+                        <button type="submit" class="btn btn-warning form-btn">Update Sold Items</button>
+                    </div>
+                </form>
+                <hr>
+
+                <!-- Update Description Form -->
+                <form th:action="@{|/admin/updateProductDescription/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" th:text="${product.description}"></textarea>
+                        <button type="submit" class="btn btn-warning form-btn">Update Description</button>
+                    </div>
+                </form>
+                <hr>
+
+                <!-- Update Category Form -->
+                <form th:action="@{|/admin/updateProductCategory/${product.id}|}" method="post">
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select class="form-control" id="category" name="category" required>
+                            <!-- Replace with actual categories fetched from backend -->
+                            <option value="">Select Category</option>
+                            <option value="1">Category 1</option>
+                            <option value="2">Category 2</option>
+                            <option value="3">Category 3</option>
+                        </select>
+                        <button type="submit" class="btn btn-warning form-btn">Update Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

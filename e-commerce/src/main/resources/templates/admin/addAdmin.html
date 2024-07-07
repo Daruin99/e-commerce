@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
+<head>
+    <title>Add Admin</title>
+</head>
+<body>
+<section layout:fragment="content">
+        <div class="content">
+            <div class="container form-container">
+                <h2 class="text-center mb-4">Add New Admin</h2>
+                <form th:action="@{/admin/addAdmin}" method="post">
+                    <div class="form-group">
+                        <label for="name">Admin Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number:</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-success form-btn">Add Admin</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

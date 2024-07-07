@@ -13,8 +13,6 @@ public class Authority implements GrantedAuthority {
 
     private String authority;
 
-
-
     @Override
     public String getAuthority() {
         return authority;

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout}">
+<head>
+    <title>Categories</title>
+
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="content container mt-5">
+            <div class="jumbotron text-center">
+                <h1 class="display-4">Manage Categories</h1>
+                <p class="lead">View and manage all Categories on your site.</p>
+            </div>
+
+            <h2 class="text-center my-4">Categories List</h2>
+            <div class="row">
+                <div th:each="product : ${products}" class="col-md-4">
+                    <div class="card item-card">
+                        <div class="card-body">
+                            <h4 th:text="${category.name}"></h4>
+                            <p>Category ID: <span th:text="${category.id}"></span></p>
+                            <form th:action="@{'/category/update/' + ${category.id}}" method="post">
+                                <div class="form-group">
+                                    <label for="name">Category Name</label>
+                                    <input type="text" th:value="${category.name}" name="name" class="form-control mb-2">
+                                    <button type="submit" class="btn btn-warning form-btn">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Pagination -->
+                <div class="row">
+                    <div class="col-md-12 text-center mt-4">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            <!-- Add New Category Form -->
+            <div class="container form-container">
+                <h3>Add New Category</h3>
+                <form th:action="@{/category/add}" method="post">
+                    <div class="form-group">
+                        <label for="name">Category Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <button type="submit" class="btn btn-success form-btn">Add Category</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
