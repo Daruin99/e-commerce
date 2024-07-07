@@ -22,14 +22,14 @@ public class Product {
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
-	private String Name;
+	private String name;
 
     @Column(
             name = "price",
             nullable = false,
             columnDefinition = "DOUBLE"
     )
-	private double Price;
+	private double price;
 
     @Column(
             name = "stock",
@@ -50,14 +50,14 @@ public class Product {
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
-	private String Description;
+	private String description;
 
     @Column(
             name = "number_of_sold_items",
             nullable = false,
             columnDefinition = "INT"
     )
-	private int NumberOfSoldItems;
+	private int numberOfSoldItems;
 
     @ManyToOne()
     @JoinColumn(

@@ -22,5 +22,5 @@ public class Category {
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
-    private String Name;
+    private String name;
 }
