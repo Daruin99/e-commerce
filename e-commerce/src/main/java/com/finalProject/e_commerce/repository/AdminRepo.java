@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.repo;
+package com.finalProject.e_commerce.repository;
 
 import com.finalProject.e_commerce.domain.Admin;
 import org.springframework.data.domain.Page;
