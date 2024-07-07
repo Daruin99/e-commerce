@@ -56,24 +56,31 @@
                         <th scope="col">Remove</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody th:each="item :${cart.cartItems}">
                     <!-- Example of a cart item -->
                     <tr>
-                        <td>Product Name</td>
-                        <td>$123.00</td>
+                        <td th:text="${item.product.name}"></td>
+                        <td th:text="${item.product.price}"></td>
                         <td>
-                            <input type="number" class="form-control" value="1">
+                            <form th:action="@{/updateItem(productId=${item.product.id})}" method="post">
+                                <input type="number" name="quantity" class="form-control" th:value="${item.quantity}" onchange="this.form.submit()">
+                            </form>
+<!--                            <input type="number" class="form-control" th:value="${item.quantity}">-->
                         </td>
-                        <td>$123.00</td>
+                        <td th:text="${item.totalPrice}"></td>
                         <td>
-                            <button class="btn btn-danger">Remove</button>
+                            <form th:action="@{/removeItem(productId=${item.product.id})}" method="post">
+<!--                                <input type="hidden" name="_method" value="delete">-->
+<!--                                <input type="hidden" name="productId" th:value="${item.product.id}">-->
+                                <button type="submit" class="btn btn-danger remove">Remove</button>
+                            </form>
                         </td>
                     </tr>
                     <!-- Repeat for other cart items -->
                 </tbody>
             </table>
             <div class="text-right">
-                <h4>Total: $123.00</h4>
+                <h4 th:text="'Total: ' + ${cart.totalPrice}"></h4>
                 <a href="/confirm-address" class="btn btn-primary">Proceed to Address Confirmation</a>
             </div>
         </div>

@@ -56,6 +56,7 @@ public class Product {
             nullable = false,
             columnDefinition = "INT DEFAULT 0"
     )
+
 	private int numberOfSoldItems = 0;
 
     @ManyToOne()
