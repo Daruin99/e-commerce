@@ -6,28 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Product</title>
-    <style>
-        .form-container {
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            margin: 50px auto;
-            padding: 50px;
-            height: fit-content;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-group{
-            margin-bottom: 30px;
-        }
-        .form-btn{
-            width: 40%;
-            float: right;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
     <section layout:fragment="content">
@@ -35,10 +13,10 @@
             <div class="container form-container">
                 <h2 class="text-center mb-4">Add New Product</h2>
 
-                <form th:action="@{/admin/addProduct}" method="post" enctype="multipart/form-data">
+                <form th:action="@{/admin/addProduct}" method="post">
                     <div class="form-group">
                         <label for="image">Product Image:</label>
-                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+                        <input type="file" class="form-control-file" id="image" name="imageUrl" accept="image/*" required>
                     </div>
                     <div class="form-group">
                         <label for="name">Product Name:</label>
@@ -46,15 +24,11 @@
                     </div>
                     <div class="form-group">
                         <label for="price">Price:</label>
-                        <input type="number" class="form-control" id="price" name="price" required>
+                        <input type="number" class="form-control" id="price" name="price"  required>
                     </div>
                     <div class="form-group">
                         <label for="stock">Stock:</label>
                         <input type="number" class="form-control" id="stock" name="stock" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="soldItems">Number of Sold Items:</label>
-                        <input type="number" class="form-control" id="soldItems" name="soldItems" required>
                     </div>
                     <div class="form-group">
                         <label for="description">Description:</label>
@@ -62,11 +36,12 @@
                     </div>
                     <div class="form-group">
                         <label for="category">Category:</label>
-                        <select class="form-control" id="category" name="category" required>
+                        <select class="form-control" id="category" name="categoryId" required>
                             <option value="">Select Category</option>
-                            <option value="1">Category 1</option>
-                            <option value="2">Category 2</option>
-                            <option value="3">Category 3</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.id}"
+                                    th:text="${category.name}">
+                            </option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-success form-btn">Add Product</button>

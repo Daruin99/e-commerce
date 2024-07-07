@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.dto;
+package com.finalProject.e_commerce.dto.productDTOs;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

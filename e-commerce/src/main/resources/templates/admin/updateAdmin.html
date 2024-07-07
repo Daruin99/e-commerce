@@ -11,33 +11,23 @@
         <div class="content">
             <div class="container form-container">
                 <h2 class="text-center mb-4">Update Admin Attributes</h2>
-                
-                <!-- Update Name Form -->
-                <form th:action="@{|/admin/updateAdminName/${admin.id}|}" method="post">
+
+                <form th:action="@{|/admin/updateAdmin/${adminId}|}" th:object="${adminResponseDTO}" method="post">
                     <div class="form-group">
                         <label for="name">Admin Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" value="${admin.name}" required>
-                        <button type="submit" class="btn btn-warning form-btn">Update Name</button>
+                        <input type="text" class="form-control" id="name" name="name" th:field="*{name}" required>
                     </div>
-                </form>
-                
-                <!-- Update Email Form -->
-                <form th:action="@{|/admin/updateAdminEmail/${admin.id}|}" method="post">
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" value="${admin.email}" required>
-                        <button type="submit" class="btn btn-warning form-btn">Update Email</button>
+                        <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
                     </div>
-                </form>
-                
-                <!-- Update Phone Number Form -->
-                <form th:action="@{|/admin/updateAdminPhoneNumber/${admin.id}|}" method="post">
                     <div class="form-group">
                         <label for="phoneNumber">Phone Number:</label>
-                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="${admin.phoneNumber}" required>
-                        <button type="submit" class="btn btn-warning form-btn">Update Phone Number</button>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" required>
                     </div>
+                    <button type="submit" class="btn btn-warning form-btn">Update Admin</button>
                 </form>
+
             </div>
         </div>
     </section>

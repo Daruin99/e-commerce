@@ -1,9 +1,9 @@
 package com.finalProject.e_commerce.service;
 
-import com.finalProject.e_commerce.Enum.Authority;
 import com.finalProject.e_commerce.domain.Admin;
-import com.finalProject.e_commerce.dto.AdminRequestDTO;
-import com.finalProject.e_commerce.dto.AdminResponseDTO;
+import com.finalProject.e_commerce.domain.Authority;
+import com.finalProject.e_commerce.dto.adminDTOs.AdminRequestDTO;
+import com.finalProject.e_commerce.dto.adminDTOs.AdminResponseDTO;
 import com.finalProject.e_commerce.repo.AdminRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +26,9 @@ public class AdminService {
     private final AdminRepo repository;
     private final MapperUtil mapper;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthorityService authorityService;
 
-    public List<AdminResponseDTO> getAdmins(int pageNumber, String field){
+    public List<AdminResponseDTO> getAllAdmins(int pageNumber, String field){
         if (repository.findAll().isEmpty())
             return new ArrayList<>();
 
@@ -48,11 +51,9 @@ public class AdminService {
         return responseList;
     }
 
-    public AdminResponseDTO getAdminById(Long id){
-        Admin admin = repository.findById(id).orElse(null);
-        return mapper.mapEntityToResponseDTO(admin);
+    public Admin getAdminById(Long id){
+        return repository.findById(id).orElse(null);
     }
-
     public void addAdmin(AdminRequestDTO adminRequestDTO) {
         if (repository.existsByEmailOrPhoneNumber(adminRequestDTO.getEmail(), adminRequestDTO.getPhoneNumber()))
             return;
@@ -61,8 +62,20 @@ public class AdminService {
 
         Admin newAdmin = mapper.mapRequestDTOToEntity(adminRequestDTO);
         newAdmin.setPassword(encodedPassword);
-        newAdmin.setRole(Authority.valueOf("ADMIN"));
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authorityService.findById(2L));
+        newAdmin.setAuthorities(authorities);
 
         repository.save(newAdmin);
+    }
+
+    public void updateAdmin(Long adminId, AdminRequestDTO requestDTO){
+        Admin admin = getAdminById(adminId);
+
+        admin.setName(requestDTO.getName());
+        admin.setEmail(requestDTO.getEmail());
+        admin.setPhoneNumber(requestDTO.getPhoneNumber());
+
+        repository.save(admin);
     }
 }

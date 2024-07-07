@@ -1,6 +1,5 @@
 package com.finalProject.e_commerce.domain;
 
-import com.finalProject.e_commerce.Enum.Authority;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
