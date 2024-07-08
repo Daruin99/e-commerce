@@ -84,19 +84,21 @@
                 <div class="form-items">
                     <div class="form-group">
                         <label for="inputName">Name</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Enter your name" >
+                        <input type="text" class="form-control" id="inputName" placeholder="Enter your name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" id="email" th:field="*{email}">
+                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" id="email" th:field="*{email}" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" placeholder="Password" id="password" th:field="*{password}">
+                        <input type="password" class="form-control" placeholder="Password" id="password" th:field="*{password}" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </form>
+            <p th:if="${error}" th:text="${error}" style="color: red; font-style: italic;"></p>
+
         </div>
 
         <!-- Footer -->

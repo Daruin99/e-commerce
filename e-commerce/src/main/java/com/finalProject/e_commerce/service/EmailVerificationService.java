@@ -51,6 +51,14 @@ public class EmailVerificationService {
     }
 
     public void sendPasswordResetEmail(Customer customer) {
+        //N.b check if customer has a token already and delete it
+
+        VerificationToken existingToken = verificationTokenService.findByCustomer(customer);
+        if (existingToken != null) {
+            // Delete the existing token
+            verificationTokenService.deleteToken(existingToken);
+        }
+
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
@@ -60,7 +68,10 @@ public class EmailVerificationService {
 
         String subject = "Password Reset Request";
         String resetUrl = "http://localhost:8080/reset-password?token=" + token;
-        String message = "Click the link below to reset your password:\n" + resetUrl;
+        String message = "Click the link below to reset your password:\n"
+                + resetUrl
+                + "\nThis verification expires in 2 mins. Click on it even if it's expired, and you will be redirected to enter your mail again.";
+        
 
         sendEmail(customer.getEmail(), subject, message);
     }
@@ -74,7 +85,7 @@ public class EmailVerificationService {
         mailSender.send(email);
     }
 
-    public String verifyToken(String token) {
+    public String verifyEmailToken(String token) {
         VerificationToken verificationToken = verificationTokenService.findByTokenName(token);
         if (verificationToken == null) {
             // N.B it will send this if someone enterd any random token that doesn't exist
@@ -92,5 +103,24 @@ public class EmailVerificationService {
         verificationTokenService.deleteToken(verificationToken);
         return "verificationCompleted";
     }
+
+    public String verifyPasswordToken(String token) {
+        VerificationToken verificationToken = verificationTokenService.findByTokenName(token);
+        if (verificationToken == null) {
+            // N.B it will send this if someone enterd any random token that doesn't exist
+            // or if the user clicked on the link after verfifying
+            return "Invalid token";
+        } else if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+
+            verificationTokenService.deleteToken(verificationToken);
+            return "expired token";
+        }
+        Customer customer = verificationToken.getCustomer();
+        customer.setActive(true);
+        customerService.updateCustomer(customer);
+        verificationTokenService.deleteToken(verificationToken);
+        return "verificationCompleted";
+    }
+
 
 }

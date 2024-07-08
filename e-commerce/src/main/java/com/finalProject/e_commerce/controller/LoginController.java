@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "message", required = false) String message, Model model) {
+    public String login(@RequestParam(value = "message", required = false) String message) {
         if (message == null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null && authentication.isAuthenticated()) {
@@ -26,7 +26,6 @@ public class LoginController {
             }
         }
 
-        model.addAttribute("message", message);
         return "login";
     }
 

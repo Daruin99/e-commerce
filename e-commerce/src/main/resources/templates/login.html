@@ -128,6 +128,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const message = urlParams.get('message');
 
+
+
+
         if (message === 'verificationSent') {
             Swal.fire({
                 icon: 'info',
@@ -136,7 +139,16 @@
                 timer: 4000,
                 showConfirmButton: false
             });
-        } else if (message === 'verificationCompleted') {
+        } else if (message === 'succesfulReset') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Password Reset Completed',
+                text: 'You can now log in',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+        else if (message === 'verificationCompleted') {
             Swal.fire({
                 icon: 'success',
                 title: 'Verification Completed',
@@ -175,6 +187,18 @@
                 title: 'Not Authenticated',
                 text: 'You are not authenticated. Please log in.',
                 timer: 5000,
+                showConfirmButton: false
+            });
+
+            // Delete JWT cookie
+            document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+        else if (message === 'logged-out') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Logout',
+                text: 'You are now logged-out.',
+                timer: 4000,
                 showConfirmButton: false
             });
 
