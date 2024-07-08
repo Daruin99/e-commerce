@@ -1,69 +1,82 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{adminLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{adminLayout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Products</title>
 </head>
 <body>
-    <section layout:fragment="content">
-        <div class="content container mt-5">
-            <div class="jumbotron text-center">
-                <h1 class="display-4">Manage Products</h1>
-                <p class="lead">View and manage all products on your site.</p>
-            </div>
+<section layout:fragment="content">
+    <div class="content container mt-5">
+        <div class="jumbotron text-center"
+             style=" background-image: url('https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+                  background-size: cover; background-position: center;">
+            <h1 class="display-4">Manage Products</h1>
+            <p class="lead">View and manage all products on your site.</p>
+        </div>
 
-            <h2 class="text-center my-4">Products List</h2>
-            <div class="row mb-3">
-                <div class="col-md-6 offset-md-3">
-                    <form class="form-inline" th:action="@{/admin/products}" method="get">
-                        <label class="my-1 mr-2" for="categoryFilter">Filter by Category:</label>
-                        <select class="custom-select my-1 mr-sm-2" id="categoryFilter" name="categoryId">
-                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">Category Name</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary my-1">Apply Filter</button>
-                    </form>
-                </div>
+        <h2 class="text-center my-4">Products List</h2>
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <form class="form-inline" method="get" th:action="@{/admin/products}">
+                    <label class="my-1 mr-2" for="categoryFilter">Filter by Category:</label>
+                    <select class="custom-select my-1 mr-sm-2" id="categoryFilter" name="categoryId">
+                        <option value="">All Categories</option>
+                        <option th:each="category : ${categories}"
+                                th:selected="${category.id == categoryId}"
+                                th:text="${category.name}"
+                                th:value="${category.id}">Category Name
+                        </option>
+                    </select>
+                    <button class="btn btn-primary my-1" type="submit">Apply Filter</button>
+                </form>
             </div>
+        </div>
 
-            <div class="row">
-                <div th:each="product : ${productsResponse}" class="col-md-4">
-                    <div class="card item-card">
-                        <img th:src="@{|/images/products/${product.imageUrl}|}" class="card-img-top" alt="Product Image">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${product.name}">Product Name</h5>
-                            <p class="card-text" th:text="'$' + ${product.price}">Price</p>
-                            <p class="card-text" th:text="'Stock: ' + ${product.stock}">Stock</p>
-                            <p class="card-text" th:text="'Sold: ' + ${product.numberOfSoldItems}">Sold</p>
-                            <p class="card-text" th:text="${product.description}">Product Description</p>
-                            <div class="item-actions">
-                                <a th:href="@{|/admin/updateProduct/${product.id}|}" class="btn btn-warning">Update</a>
-                                <a th:href="@{|/admin/deleteProduct/${product.id}|}" class="btn btn-danger">Remove</a>
-                            </div>
+        <div class="row">
+            <div class="col-md-4" th:each="product : ${productsResponse}">
+                <div class="card item-card">
+                    <img alt="Product Image" class="card-img-top" th:src="${product.imageUrl}">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                        <p class="card-text" th:text="'Price: $' + ${product.price}">Price</p>
+                        <p class="card-text" th:text="'Stock: ' + ${product.stock}">Stock</p>
+                        <p class="card-text" th:text="'Sold: ' + ${product.numberOfSoldItems}">Sold</p>
+                        <p class="card-text" th:text="${product.description}">Product Description</p>
+                        <div class="item-actions">
+                            <a class="btn btn-warning" th:href="@{|/admin/updateProduct/${product.id}|}">Update</a>
+                            <a class="btn btn-danger" th:href="@{|/admin/deleteProduct/${product.id}|}">Remove</a>
                         </div>
                     </div>
                 </div>
-                <!-- Add more products similarly -->
-            </div>
-
-            <!-- Pagination -->
-           <!-- <div class="row">
-                <div class="col-md-12 text-center mt-4">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </div>
-            </div>-->
-
-            <div class="text-center mt-4">
-                <a th:href="@{/admin/addProduct}" class="btn btn-success">Add New Product</a>
             </div>
         </div>
-    </section>
+
+        <div class="row">
+            <div class="col-md-12 text-center mt-4">
+                <ul class="pagination">
+                    <li th:class="${pageNumber == 0} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" th:href="@{'/admin/products?pageNumber=' + ${pageNumber - 1}}">Previous</a>
+                    </li>
+                    <li th:class="${pageNum == pageNumber} ? 'page-item active' : 'page-item'"
+                        th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:if="${pageNum <= pageNumber + 1 && pageNum >= pageNumber - 1}">
+                        <a class="page-link" th:href="@{'/admin/products?pageNumber=' + ${pageNum}}">
+                            <span th:text="${pageNum + 1}"></span>
+                        </a>
+                    </li>
+                    <li th:class="${pageNumber == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" th:href="@{'/admin/products?pageNumber=' + ${pageNumber + 1}}">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a class="btn btn-success" th:href="@{/admin/addProduct}">Add New Product</a>
+        </div>
+    </div>
+</section>
 </body>
 </html>
