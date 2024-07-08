@@ -64,6 +64,11 @@ public class ProductService {
     public Product getProductById(Long id){
         return productRepository.findById(id).orElse(null);
     }
+
+    public ProductResponseDTO getProductResponseDTOById(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        return mapper.mapEntityToResponseDTO(product);
+    }
     public void addProduct(ProductRequestDTO productRequestDTO) {
         Category category = categoryRepository.findById(productRequestDTO.getCategoryId()).get();
 

@@ -1,6 +1,7 @@
 package com.finalProject.e_commerce.util;
 
 import com.finalProject.e_commerce.domain.Admin;
+import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.dto.*;
@@ -26,4 +27,6 @@ public interface MapperUtil {
     Category mapRequestDTOToEntity(CategoryRequestDTO requestDTO);
 
     CategoryResponseDTO mapEntityToResponseDTO(Category category);
+
+    CartResponseDTO mapEntityToResponseDTO(Cart cart);
 }

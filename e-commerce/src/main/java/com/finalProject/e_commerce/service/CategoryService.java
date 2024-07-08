@@ -59,4 +59,8 @@ public class CategoryService {
 
         return responseList;
     }
+
+    public CategoryResponseDTO getCategoryById(Long categoryId) {
+        return mapper.mapEntityToResponseDTO(categoryRepository.findById(categoryId).orElse(null));
+    }
 }
