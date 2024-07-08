@@ -1,36 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html lang="en" layout:decorate="~{adminLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{adminLayout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add Admin</title>
 </head>
 <body>
 <section layout:fragment="content">
-        <div class="content">
-            <div class="container form-container">
-                <h2 class="text-center mb-4">Add New Admin</h2>
-                <form th:action="@{/admin/addAdmin}" method="post">
-                    <div class="form-group">
-                        <label for="name">Admin Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneNumber">Phone Number:</label>
-                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-success form-btn">Add Admin</button>
-                </form>
-            </div>
+    <div class="content">
+        <div class="container form-container">
+            <h2 class="text-center mb-4">Add New Admin</h2>
+            <form method="post" th:action="@{/admin/addAdmin}" th:object="${adminDTO}">
+                <div class="form-group">
+                    <label for="name">Admin Name:</label>
+                    <input class="form-control" id="name" name="name"
+                           placeholder="Admin Name" required
+                           th:field="*{name}"
+                           title="Name can't be empty!" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input class="form-control" id="email" name="email"
+                           placeholder="Email" required
+                           th:field="*{email}" type="email">
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input class="form-control" id="phoneNumber" name="phoneNumber"
+                           pattern="^(010|011|012|015)\d{8}$" placeholder="Phone Number"
+                           required
+                           th:field="*{phoneNumber}"
+                           title="Phone number must be a valid Egyptian phone number starting with 010, 011, 012, or 015 followed by 8 digits." type="text">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input class="form-control" id="password" name="password"
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" placeholder="Password"
+                           required
+                           th:field="*{password}"
+                           title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character." type="password">
+                </div>
+                <button class="btn btn-success form-btn" type="submit">Add Admin</button>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 </html>

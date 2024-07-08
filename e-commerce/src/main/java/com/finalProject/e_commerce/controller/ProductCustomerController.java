@@ -1,11 +1,11 @@
 package com.finalProject.e_commerce.controller;
 
-import com.finalProject.e_commerce.dto.CategoryResponseDTO;
+import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
-import com.finalProject.e_commerce.service.CategoryService;
+import com.finalProject.e_commerce.service.adminDashboardServices.CategoryService;
+import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
-import com.finalProject.e_commerce.domain.Product;
-import com.finalProject.e_commerce.service.ProductService;
+import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +27,20 @@ public class ProductCustomerController {
             @RequestParam(required = false, name = "categoryId") Long categoryId,
             @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
         List<CategoryResponseDTO> categoriesResponse = categoryService.getAllCategories();
-        List<ProductResponseDTO> productsResponse = productService.getAllProducts(pageNumber,field, categoryId);
+        Page<ProductResponseDTO> productsDTO;
+
+        if (categoryId == null || categoryId == 0) {
+            productsDTO = productService.getAllProducts(pageNumber, field, null);
+        } else {
+            productsDTO = productService.getAllProducts(pageNumber, field, categoryId);
+        }
+        int totalPages = productsDTO.getTotalPages();
         model.addAttribute("categories", categoriesResponse);
-        model.addAttribute("productsResponse", productsResponse);
+        model.addAttribute("productsResponse", productsDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
-        return "customer/shop";
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("totalPages", totalPages);
+        return "admin/viewProducts";
     }
 }

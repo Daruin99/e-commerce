@@ -1,4 +1,5 @@
-package com.finalProject.e_commerce.controller;
+package com.finalProject.e_commerce.controller.adminDashboardController;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,8 +11,4 @@ public class AdminDashboardController {
         return "admin/adminIndex";
     }
 
-    @GetMapping("/admin/categories")
-    public String viewCategories() {
-        return "admin/viewCategories";
-    }
 }

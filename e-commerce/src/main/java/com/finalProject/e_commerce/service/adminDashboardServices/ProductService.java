@@ -1,19 +1,15 @@
-package com.finalProject.e_commerce.service;
+package com.finalProject.e_commerce.service.adminDashboardServices;
 
-import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.domain.Product;
-import com.finalProject.e_commerce.dto.adminDTOs.AdminRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
+import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
 import com.finalProject.e_commerce.repository.CategoryRepo;
 import com.finalProject.e_commerce.repository.ProductRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,9 +23,7 @@ public class ProductService {
     private final CategoryRepo categoryRepository;
     private final MapperUtil mapper;
 
-    public List<ProductResponseDTO> getAllProducts(int pageNumber, String field, Long categoryId){
-        if (productRepository.findAll().isEmpty())
-            return new ArrayList<>();
+    public Page<ProductResponseDTO> getAllProducts(int pageNumber, String field, Long categoryId) {
 
         int pageSize = 3;
 
@@ -37,11 +31,12 @@ public class ProductService {
             pageNumber = 0;
 
         List<ProductResponseDTO> responseList = new ArrayList<>();
+        Page<Product> productPage;
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
         if (categoryId != null) {
             Category category = categoryRepository.findById(categoryId).get();
-            Page<Product> productPage = productRepository.findByCategory(category, pageable);
+            productPage = productRepository.findByCategory(category, pageable);
 
             List<Product> products = productPage.getContent();
 
@@ -49,7 +44,7 @@ public class ProductService {
                 responseList.add(mapper.mapEntityToResponseDTO(product));
             }
         } else {
-            Page<Product> productPage = productRepository.findAll(pageable);
+            productPage = productRepository.findAll(pageable);
 
             List<Product> products = productPage.getContent();
 
@@ -58,12 +53,13 @@ public class ProductService {
             }
         }
 
-        return responseList;
+        return new PageImpl<>(responseList, pageable, productPage.getTotalElements());
     }
 
-    public Product getProductById(Long id){
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
+
     public void addProduct(ProductRequestDTO productRequestDTO) {
         Category category = categoryRepository.findById(productRequestDTO.getCategoryId()).get();
 
@@ -76,14 +72,21 @@ public class ProductService {
         productRepository.save(newProduct);
     }
 
-    /*public void updateAdmin(Long adminId, AdminRequestDTO requestDTO){
-        Admin admin = getAdminById(adminId);
+    public void updateAdmin(Long adminId, ProductUpdateDTO productDTO) {
+        Product updatedProduct = getProductById(adminId);
+        Category category = categoryRepository.findById(productDTO.getCategoryId()).get();
+        updatedProduct.setName(productDTO.getName());
+        updatedProduct.setPrice(productDTO.getPrice());
+        updatedProduct.setStock(productDTO.getStock());
+        updatedProduct.setImageUrl(productDTO.getImageUrl());
+        updatedProduct.setCategory(category);
+        updatedProduct.setDescription(productDTO.getDescription());
 
-        admin.setName(requestDTO.getName());
-        admin.setEmail(requestDTO.getEmail());
-        admin.setPhoneNumber(requestDTO.getPhoneNumber());
+        productRepository.save(updatedProduct);
+    }
 
-        productRepository.save(admin);
-    }*/
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
+    }
 
 }

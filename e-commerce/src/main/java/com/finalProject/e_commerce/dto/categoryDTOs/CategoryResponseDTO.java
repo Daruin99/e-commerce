@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.dto;
+package com.finalProject.e_commerce.dto.categoryDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,53 +1,69 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{adminLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{adminLayout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add New Product</title>
 </head>
 <body>
-    <section layout:fragment="content">
-        <div class="content">
-            <div class="container form-container">
-                <h2 class="text-center mb-4">Add New Product</h2>
+<section layout:fragment="content">
+    <div class="content">
+        <div class="container form-container">
+            <h2 class="text-center mb-4">Add New Product</h2>
 
-                <form th:action="@{/admin/addProduct}" method="post">
-                    <div class="form-group">
-                        <label for="image">Product Image:</label>
-                        <input type="file" class="form-control-file" id="image" name="imageUrl" accept="image/*" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Product Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="number" class="form-control" id="price" name="price"  required>
-                    </div>
-                    <div class="form-group">
-                        <label for="stock">Stock:</label>
-                        <input type="number" class="form-control" id="stock" name="stock" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category:</label>
-                        <select class="form-control" id="category" name="categoryId" required>
-                            <option value="">Select Category</option>
-                            <option th:each="category : ${categories}"
-                                    th:value="${category.id}"
-                                    th:text="${category.name}">
-                            </option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-success form-btn">Add Product</button>
-                </form>
-            </div>
+            <form method="post" th:action="@{/admin/addProduct}" th:object="${productDTO}">
+                <div class="form-group">
+                    <label for="imageUrl">Product Image URL:</label>
+                    <input class="form-control" id="imageUrl" name="imageUrl"
+                           placeholder="Enter Image URL" required
+                           th:filed="*{imageUrl}" type="text">
+                    <small class="form-text text-muted">Enter a URL (Accepts: .jpg, .jpeg, .png)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Product Name:</label>
+                    <input class="form-control" id="name" name="name"
+                           placeholder="Product Name" required
+                           th:field="*{name}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input class="form-control" id="price" min="1"
+                           name="price" placeholder="Product Price"
+                           required step="0.01"
+                           th:field="*{price}" type="number">
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock:</label>
+                    <input class="form-control" id="stock" min="0"
+                           name="stock" placeholder="Product Stock"
+                           required
+                           th:field="*{stock}" type="number">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" id="description"
+                              name="description" placeholder="Product Description" rows="4"
+                              th:field="*{description}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select class="form-control" id="category"
+                            name="categoryId"
+                            required th:field="*{categoryId}">
+                        <option value="">Select Category</option>
+                        <option th:each="category : ${categoriesDTO}"
+                                th:text="${category.name}"
+                                th:value="${category.id}">
+                        </option>
+                    </select>
+                </div>
+                <button class="btn btn-success form-btn" type="submit">Add Product</button>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 </html>
