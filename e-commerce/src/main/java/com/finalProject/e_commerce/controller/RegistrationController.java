@@ -32,7 +32,11 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("customer") Customer customer) {
+    public String registerUser(@ModelAttribute("customer") Customer customer, Model model) {
+        if (customerService.existsByEmail(customer.getEmail())) {
+            model.addAttribute("error", "This user already exists");
+            return "register";
+        }
         customerService.saveCustomer(customer);
         emailVerificationService.sendVerificationEmail(customer);
         return "redirect:/login?message=verificationSent";
@@ -40,7 +44,7 @@ public class RegistrationController {
 
     @GetMapping("/verify")
     public String verifyEmail(@RequestParam("token") String token) {
-        String result = emailVerificationService.verifyToken(token);
+        String result = emailVerificationService.verifyEmailToken(token);
         if ("expired token".equals(result)) {
             return "redirect:/login?message=expired";
         }
