@@ -1,14 +1,11 @@
 package com.finalProject.e_commerce.controller;
 
-import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
-import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +16,9 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/cart")
-    public String getCart(Model model) {
+    public String getCart(HttpServletRequest request, Model model) {
         CartResponseDTO cart = cartService.getCart();
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("cart", cart);
         return "customer/cart";
     }

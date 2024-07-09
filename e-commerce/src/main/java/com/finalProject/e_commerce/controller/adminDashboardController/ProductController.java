@@ -9,6 +9,7 @@ import com.finalProject.e_commerce.service.CategoryCustomerService;
 import com.finalProject.e_commerce.service.adminDashboardServices.CategoryService;
 import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import com.finalProject.e_commerce.util.MapperUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,17 +32,13 @@ public class ProductController {
     @GetMapping("/admin/products")
     public String getAllProducts(
             Model model,
+            HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(required = false, name = "categoryId") Long categoryId,
             @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field) {
         List<CategoryResponseDTO> categoriesResponse = categoryService.getAllCategories();
         Page<ProductResponseDTO> productsDTO;
-
-//        if (categoryId == null || categoryId == 0) {
-//            productsDTO = productService.getAllProducts(pageNumber, field, null);
-//        } else {
-//            productsDTO = productService.getAllProducts(pageNumber, field, categoryId);
-//        }
+        
         if(categoryId != null) {
             CategoryResponseDTO categoryResponse = categoryCustomerService.getCategoryById(categoryId);
             model.addAttribute("category", categoryResponse);
@@ -52,6 +49,8 @@ public class ProductController {
             productsDTO = productService.getAllProducts(pageNumber, field, null);
         }
         int totalPages = productsDTO.getTotalPages();
+
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("categories", categoriesResponse);
         model.addAttribute("productsResponse", productsDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);

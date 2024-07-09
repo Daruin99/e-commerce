@@ -6,6 +6,7 @@ import com.finalProject.e_commerce.dto.adminDTOs.AdminResponseDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminUpdateDTO;
 import com.finalProject.e_commerce.service.adminDashboardServices.AdminService;
 import com.finalProject.e_commerce.util.MapperUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,12 @@ public class AdminController {
     @GetMapping("/admin/admins")
     public String getAllAdmins(
             Model model,
+            HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
         Page<AdminResponseDTO> adminsDTO = adminService.getAllAdmins(pageNumber, field);
         int totalPages = adminsDTO.getTotalPages();
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("adminsDTO", adminsDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("filed", field);

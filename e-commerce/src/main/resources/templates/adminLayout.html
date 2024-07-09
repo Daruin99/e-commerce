@@ -11,31 +11,31 @@
 <body>
 <div class="wrapper">
     <header>
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" th:href="@{/admin/home}"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" th:href="@{/admin/home}" style="width: 15%;"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px; width: fit-content;"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/home}">Home</a>
+                        <a class="nav-link" th:href="@{/admin/home}" th:classappend="${currentUri  == '/admin/home'} ? 'active'">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/admins}">Admins</a>
+                        <a class="nav-link" th:href="@{/admin/admins}" th:classappend="${currentUri  == '/admin/admins'} ? 'active'">Admins</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/products}">Products</a>
+                        <a class="nav-link" th:href="@{/admin/products}" th:classappend="${currentUri  == '/admin/products'} ? 'active'">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/categories}">Categories</a>
+                        <a class="nav-link" th:href="@{/admin/categories}" th:classappend="${currentUri  == '/admin/categories'} ? 'active'">Categories</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
                 </ul>
-                <h3 class="title">Admin Dashboard</h3>
             </div>
+            <h3 class="title" style="width: 15%;">Admin Dashboard</h3>
         </nav>
     </header>
 <main layout:fragment="content"></main>
@@ -52,8 +52,11 @@
 
 </div>
 
+<section layout:fragment="scripts">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</section>
+
 </body>
 </html>
