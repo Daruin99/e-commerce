@@ -51,65 +51,27 @@
             <div class="row">
                 <div class="col-md-6">
                     <img th:src="${productResponse.imageUrl}" class="img-fluid" alt="Product Image">
+                    <div th:each="cartItem : ${cartItemsResponse}">
+                                    <span th:if="${cartItem.product.id == productResponse.id}"
+                                          th:text="${cartItem.quantity}"
+                                          class="badge badge-pill badge-primary position-absolute"
+                                          style="top: 10px; right: 10px;">
+                                    </span>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <h1 th:text="${productResponse.name}"></h1>
-<!--                    <p class="text-muted">4 Reviews</p>-->
                     <h2 th:text="${productResponse.price}"></h2>
-                    <form>
-<!--                        <div class="form-group">-->
-<!--                            <label for="modelSelect">Select Model</label>-->
-<!--                            <select class="form-control" id="modelSelect">-->
-<!--                                <option>Model 1</option>-->
-<!--                                <option>Model 2</option>-->
-<!--                                <option>Model 3</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-                        <button type="submit" class="btn btn-primary">Add To Cart</button>
+                    <form th:action="@{/addItem(productId=${productResponse.id})}" method="post" class="mt-auto" onsubmit="storeScrollPosition()">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
                     </form>
                     <br>
                     <div class="card mb-4">
                         <p th:text="${productResponse.description}" class="mt-4"></p>
                     </div>
-                </div>
-            </div>
 
-            <h2 class="mt-5">Similar Products</h2>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Product Name</h5>
-                            <p class="card-text">$300</p>
-                        </div>
-                    </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Product Name</h5>
-                            <p class="card-text">$300</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <h2 class="mt-5">Reviews</h2>
-            <div class="media">
-                <img src="..." class="mr-3" alt="...">
-                <div class="media-body">
-                    <h5 class="mt-0">John Doe</h5>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
-                </div>
-            </div>
-            <div class="media mt-3">
-                <img src="..." class="mr-3" alt="...">
-                <div class="media-body">
-                    <h5 class="mt-0">John Doe</h5>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
-                </div>
             </div>
         </div>
 
@@ -160,5 +122,18 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                localStorage.removeItem('scrollPosition');  // Clean up the stored scroll position
+            }
+        });
+
+        function storeScrollPosition() {
+            localStorage.setItem('scrollPosition', window.scrollY);
+        }
+    </script>
 </body>
 </html>

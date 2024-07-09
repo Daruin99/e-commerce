@@ -55,6 +55,11 @@
         </header>
 
         <div class="content container mt-5">
+            <h2 class="text-center my-4">Shop all products</h2>
+            <div class="text-center mb-4">
+                <a href="/products" class="btn btn-primary">Shop</a>
+            </div>
+
             <h2 class="text-center my-4">Shop by Category</h2>
 
             <!-- Categories List -->
@@ -69,48 +74,11 @@
                 </div>
             </div>
 
-            <!-- Random Products Section -->
-            <section class="mb-5">
-                <h2 class="text-center">Random Products</h2>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <img src="..." class="card-img-top" alt="Product Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">$200</p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <img src="..." class="card-img-top" alt="Product Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">$200</p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <img src="..." class="card-img-top" alt="Product Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">$200</p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Recommended Products Section -->
             <section class="mb-5">
                 <h2 class="text-center">Recommended Products</h2>
                 <div class="row">
-                    <div th:each="product :${productsResponse}" class="col-md-4">
+                    <div th:each="product :${mostSoldProductsResponse}" class="col-md-4">
                         <div class="card mb-4 h-100">
                             <img th:src="${product.imageUrl}" class="card-img-top img-fluid" alt="Product Image" style="height: 200px; object-fit: cover;">
                             <div class="card-body d-flex flex-column">
