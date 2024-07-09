@@ -3,6 +3,7 @@ package com.finalProject.e_commerce.controller.adminDashboardController;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryRequestDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.service.adminDashboardServices.CategoryService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,12 +21,14 @@ public class CategoryController {
     @GetMapping("/admin/categories")
     public String getAllCategories(
             Model model,
+            HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
         Page<CategoryResponseDTO> categoriesDTO = categoryService.getAllCategoriesPageable(pageNumber, field);
 
         int totalPages = categoriesDTO.getTotalPages();
         CategoryRequestDTO categoryRequestDTO = new CategoryRequestDTO();
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("categoriesDTO", categoriesDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);

@@ -22,14 +22,51 @@ footer {
     flex-shrink: 0;
 }
 .navbar{
-    background-color: #A0AAB2;
-    color: #342A21;
-    border-radius: 0px 0px 10px 10px;
-}
-.navbar li a{
-    color: white;
+    border-radius: 0px 0px 15px 15px;
 }
 
+.navbar-nav .nav-link {
+    margin: 0 5px;
+}
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.navbar-nav .nav-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 50%;
+    background-color: #ccc;
+}
+.navbar-collapse {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-nav {
+    margin: auto;
+}
+
+.input-group .border-radius-left {
+    border-radius: 15px 0 0 15px;
+}
+
+.input-group .border-radius-right {
+    border-radius: 0 15px 15px 0;
+}
+
+.navbar-brand {
+    margin-right: 20px;
+}
+
+.form-inline {
+    margin-left: auto;
+}
 .navbar a img{
     border-radius: 8px;
 }
@@ -70,13 +107,6 @@ footer {
 .item-actions {
     margin-top: 10px;
     float: right;
-}
-.forgot-password {
-    margin-top: 10px;
-    text-align: center;
-}
-.forgot-password a {
-    color: #3D5467;
 }
 
 .pagination {
