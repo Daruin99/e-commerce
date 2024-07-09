@@ -1,120 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" layout:decorate="~{registerLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-        }
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .content h1{
-            margin-bottom: 20px;
-        }
-
-        form {
-            width: 30%;
-            height: 50vh;
-            padding: 20px;
-            justify-content: center;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-items{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
-        }
-        .form-group{
-            width: 70%;
-        }
-        form button {
-            margin-top: 20px;
-            width: 30%;
-            justify-content: center;
-        }
-
-        
-
-    </style>
 </head>
 <body>
-    <div class="wrapper">
-        <header>
-            <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="#"><img th:src="@{/images/Logo.png}" alt="Logo" style="height: 50px;"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.html">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Help</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-
+    <section layout:fragment="content">
         <div class="content">
-            <h1 class="text-center">Register</h1>
-            <form th:action="@{/register}" th:object="${customer}" method="post">
-                <div class="form-items">
+            <div class="container form-container">
+                <h2 class="text-center mb-4">Register</h2>
+                <form method="post" th:action="@{/register}" th:object="${customerDTO}">
                     <div class="form-group">
-                        <label for="inputName">Name</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Enter your name" required>
+                        <label for="name">Name:</label>
+                        <input class="form-control" id="name" name="name"
+                               placeholder="Enter Your Name" required
+                               th:field="*{name}"
+                               title="Name can't be empty!" type="text">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" id="email" th:field="*{email}" required>
+                        <label for="email">Email:</label>
+                        <input class="form-control" id="email" name="email"
+                               placeholder="Enter Your Email" required
+                               th:field="*{email}" type="email">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" placeholder="Password" id="password" th:field="*{password}" required>
+                        <label for="phoneNumber">Phone Number:</label>
+                        <input class="form-control" id="phoneNumber" name="phoneNumber"
+                               pattern="^(010|011|012|015)\d{8}$" placeholder="Enter Your Phone Number"
+                               required
+                               th:field="*{phoneNumber}"
+                               title="Phone number must be a valid Egyptian phone number starting with 010, 011, 012, or 015 followed by 8 digits." type="text">
                     </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
-                </div>
-            </form>
-            <p th:if="${error}" th:text="${error}" style="color: red; font-style: italic;"></p>
-
-        </div>
-
-        <!-- Footer -->
-        <footer class="bg-dark text-white p-4 text-center mt-auto">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <p>&copy; Your Company Name</p>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input class="form-control" id="password" name="password"
+                               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" placeholder=" Enter Your Password"
+                               required
+                               th:field="*{password}"
+                               title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character." type="password">
                     </div>
-                </div>
+                    <div class="form-btn-container">
+                        <button type="submit" class="btn btn-primary form-btn">Register</button>
+                    </div>
+                </form>
+                <p th:if="${error}" th:text="${error}" style="color: red; font-style: italic;"></p>
             </div>
-        </footer>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        </div>
+    </section>
 </body>
 </html>
+

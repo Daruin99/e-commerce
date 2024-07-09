@@ -2,6 +2,7 @@ package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.VerificationToken;
+import com.finalProject.e_commerce.dto.customerDTOs.CustomerRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,13 +17,9 @@ import java.util.UUID;
 public class EmailVerificationService {
 
 
-    private CustomerService customerService;
-
-
-    private VerificationTokenService verificationTokenService;
-
-
-    private JavaMailSender mailSender;
+    private final CustomerService customerService;
+    private final VerificationTokenService verificationTokenService;
+    private final JavaMailSender mailSender;
 
     @Autowired
     public EmailVerificationService(VerificationTokenService verificationTokenService, JavaMailSender mailSender, @Lazy CustomerService customerService) {
@@ -31,9 +28,8 @@ public class EmailVerificationService {
         this.customerService = customerService;
     }
 
-
-
-    public void sendVerificationEmail(Customer customer) {
+    public void sendVerificationEmail(String email) {
+        Customer customer = customerService.findByEmail(email);
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
@@ -94,7 +90,7 @@ public class EmailVerificationService {
         } else if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
 
             verificationTokenService.deleteToken(verificationToken);
-            sendVerificationEmail(verificationToken.getCustomer());
+            sendVerificationEmail(verificationToken.getCustomer().getEmail());
             return "expired token";
         }
         Customer customer = verificationToken.getCustomer();

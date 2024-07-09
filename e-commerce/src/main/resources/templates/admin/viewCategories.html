@@ -33,7 +33,9 @@
                                        th:field="*{name}"
                                        title="Name can't be empty!" type="text">
                             </div>
-                            <button class="btn btn-warning form-btn" type="submit">Update</button>
+                            <div class="form-btn-container">
+                                <button class="btn btn-warning form-btn" type="submit">Update</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -61,7 +63,7 @@
             </div>
         </div>
 
-        <div class="container form-container">
+        <div class="container form-container" style="margin-bottom: 0">
             <h3>Add New Category</h3>
             <form method="post" th:action="@{/admin/addCategory}" th:object="${categoryDTO}">
                 <div class="form-group">
@@ -71,7 +73,9 @@
                            th:field="*{name}"
                            title="Name can't be empty!" type="text">
                 </div>
-                <button class="btn btn-success form-btn" type="submit">Add Category</button>
+                <div class="form-btn-container">
+                    <button class="btn btn-success form-btn" type="submit">Add Category</button>
+                </div>
             </form>
         </div>
     </div>

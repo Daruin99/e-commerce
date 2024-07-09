@@ -2,30 +2,25 @@ package com.finalProject.e_commerce.controller;
 
 
 import com.finalProject.e_commerce.domain.Customer;
-import com.finalProject.e_commerce.dto.FailedAuthenticationResponseDTO;
+import com.finalProject.e_commerce.dto.EmailResetRequestDTO;
 import com.finalProject.e_commerce.dto.PasswordResetRequestDTO;
 import com.finalProject.e_commerce.dto.PasswordResetResponseDTO;
 import com.finalProject.e_commerce.service.CustomerService;
- import com.finalProject.e_commerce.dto.EmailResetRequestDTO;
 import com.finalProject.e_commerce.service.EmailVerificationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class PasswordResetController {
 
-    private CustomerService customerService;
-    private EmailVerificationService emailVerificationService;
-
-    public PasswordResetController(CustomerService customerService, EmailVerificationService emailVerificationService) {
-        this.customerService = customerService;
-        this.emailVerificationService = emailVerificationService;
-    }
-
+    private final CustomerService customerService;
+    private final EmailVerificationService emailVerificationService;
 
     @GetMapping("/forgot-password")
     public String forgotPassword() {
@@ -49,6 +44,7 @@ public class PasswordResetController {
 
     @GetMapping("/reset-password")
     public String resetPassword(@RequestParam("token") String token, Model model) {
+        model.addAttribute("request", new PasswordResetRequestDTO());
         String tokenStatus = emailVerificationService.verifyPasswordToken(token);
         if ("verificationCompleted".equals(tokenStatus)) {
             return "reset-password";
@@ -61,8 +57,11 @@ public class PasswordResetController {
     }
 
     @PostMapping("/reset-password")
-    public String handleResetPassword( PasswordResetRequestDTO request,
-                                      Model model) {
+    public String handleResetPassword(@Valid @ModelAttribute("request") PasswordResetRequestDTO request, Model model, BindingResult result) {
+        if (result.hasErrors()){
+            model.addAttribute("token", request.getToken());
+            return "reset-password";
+        }
         String email = request.getEmail();
 
         if (!customerService.existsByEmail(email)) {

@@ -1,14 +1,13 @@
 package com.finalProject.e_commerce.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class FailedAuthenticationResponseDTO {
+
     private String message;
     private int remainingAttempts;
 
-    public FailedAuthenticationResponseDTO(String message, int remainingAttempts) {
-        this.message = message;
-        this.remainingAttempts = remainingAttempts;
-    }
 }
