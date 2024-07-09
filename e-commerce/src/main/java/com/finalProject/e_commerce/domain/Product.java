@@ -8,57 +8,6 @@ import lombok.Data;
 @Table(name = "product")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(
-            name = "id",
-            columnDefinition = "BIGINT"
-    )
-    private Long id;
-
-    @Column(
-            name = "product_name",
-            nullable = false,
-            columnDefinition = "VARCHAR(255)"
-    )
-	private String name;
-
-    @Column(
-            name = "price",
-            nullable = false,
-            columnDefinition = "DOUBLE"
-    )
-	private double price;
-
-    @Column(
-            name = "stock",
-            nullable = false,
-            columnDefinition = "INT"
-    )
-	private int stock;
-
-    @Column(
-            name = "image_url",
-            nullable = false,
-            columnDefinition = "VARCHAR(255)"
-    )
-	private String imageUrl;
-
-    @Column(
-            name = "description",
-            nullable = false,
-            columnDefinition = "VARCHAR(255)"
-    )
-	private String description;
-
-    @Column(
-            name = "number_of_sold_items",
-            nullable = false,
-            columnDefinition = "INT DEFAULT 0"
-    )
-
-	private int numberOfSoldItems = 0;
-
     @ManyToOne()
     @JoinColumn(
             name = "category_id",
@@ -66,5 +15,49 @@ public class Product {
             nullable = false,
             foreignKey = @ForeignKey(name = "category_id_fk")
     )
-	Category category;
+    Category category;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(
+            name = "id",
+            columnDefinition = "BIGINT"
+    )
+    private Long id;
+    @Column(
+            name = "product_name",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
+    private String name;
+    @Column(
+            name = "price",
+            nullable = false,
+            columnDefinition = "DOUBLE"
+    )
+    private double price;
+    @Column(
+            name = "stock",
+            nullable = false,
+            columnDefinition = "INT"
+    )
+    private int stock;
+    @Column(
+            name = "image_url",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
+    private String imageUrl;
+    @Column(
+            name = "description",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
+    private String description;
+    @Column(
+            name = "number_of_sold_items",
+            nullable = false,
+            columnDefinition = "INT DEFAULT 0"
+    )
+
+    private int numberOfSoldItems = 0;
 }

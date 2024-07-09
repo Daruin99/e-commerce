@@ -1,5 +1,6 @@
 package com.finalProject.e_commerce.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.finalProject.e_commerce.domain.Customer;
@@ -25,24 +26,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthenticationController {
 
+    private final AuthenticationManager authenticationManager;
 
-    private AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    private JwtUtil jwtUtil;
+    private final UserDetailsServiceImp userDetailsService;
 
-    private UserDetailsServiceImp userDetailsService;
-
-    private CustomerService customerService;
-
-    @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserDetailsServiceImp userDetailsService, CustomerService customerService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
-        this.customerService = customerService;
-    }
+    private final CustomerService customerService;
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authRequest, HttpServletResponse response) throws Exception {

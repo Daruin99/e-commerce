@@ -3,6 +3,7 @@ package com.finalProject.e_commerce.util;
 import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.domain.Category;
+import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminRequestDTO;
@@ -10,6 +11,7 @@ import com.finalProject.e_commerce.dto.adminDTOs.AdminResponseDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminUpdateDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryRequestDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
+import com.finalProject.e_commerce.dto.customerDTOs.CustomerRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
@@ -37,4 +39,5 @@ public interface MapperUtil {
     CartResponseDTO mapEntityToResponseDTO(Cart cart);
     AdminUpdateDTO mapEntityToUpdateDTO(Admin admin);
 
+    Customer mapRequestDTOToEntity(CustomerRequestDTO customerDTO);
 }
