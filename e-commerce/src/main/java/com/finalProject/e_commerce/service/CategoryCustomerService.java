@@ -1,9 +1,7 @@
 package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Category;
-import com.finalProject.e_commerce.domain.Product;
-import com.finalProject.e_commerce.dto.CategoryResponseDTO;
-import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
+import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.repository.CategoryRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class CategoryCustomerService {
 
     private final CategoryRepo categoryRepository;
     private final MapperUtil mapper;
