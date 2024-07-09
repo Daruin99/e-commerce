@@ -5,6 +5,7 @@ import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
+import com.finalProject.e_commerce.service.CategoryCustomerService;
 import com.finalProject.e_commerce.service.adminDashboardServices.CategoryService;
 import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import com.finalProject.e_commerce.util.MapperUtil;
@@ -24,6 +25,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final CategoryCustomerService categoryCustomerService;
     private final MapperUtil mapper;
 
     @GetMapping("/admin/products")
@@ -35,10 +37,19 @@ public class ProductController {
         List<CategoryResponseDTO> categoriesResponse = categoryService.getAllCategories();
         Page<ProductResponseDTO> productsDTO;
 
-        if (categoryId == null || categoryId == 0) {
-            productsDTO = productService.getAllProducts(pageNumber, field, null);
-        } else {
+//        if (categoryId == null || categoryId == 0) {
+//            productsDTO = productService.getAllProducts(pageNumber, field, null);
+//        } else {
+//            productsDTO = productService.getAllProducts(pageNumber, field, categoryId);
+//        }
+        if(categoryId != null) {
+            CategoryResponseDTO categoryResponse = categoryCustomerService.getCategoryById(categoryId);
+            model.addAttribute("category", categoryResponse);
             productsDTO = productService.getAllProducts(pageNumber, field, categoryId);
+        }
+        else{
+            model.addAttribute("category", null);
+            productsDTO = productService.getAllProducts(pageNumber, field, null);
         }
         int totalPages = productsDTO.getTotalPages();
         model.addAttribute("categories", categoriesResponse);
