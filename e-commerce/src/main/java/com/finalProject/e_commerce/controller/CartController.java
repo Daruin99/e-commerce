@@ -1,6 +1,8 @@
 package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.domain.CartItem;
+import com.finalProject.e_commerce.dto.CartResponseDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.service.CartService;
@@ -18,15 +20,16 @@ public class CartController {
 
     @GetMapping("/cart")
     public String getCart(Model model) {
-        Cart cart = cartService.getCart();
+        CartResponseDTO cart = cartService.getCart();
         model.addAttribute("cart", cart);
         return "customer/cart";
     }
 
     @PostMapping("/addItem")
-    public String addItemToCart(@RequestParam Long productId) {
+    public String addItemToCart(@RequestParam Long productId, HttpServletRequest request) {
         cartService.addItemToCart(productId);
-        return "redirect:/shop";
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
     }
 
     @PostMapping("/removeItem")

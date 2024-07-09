@@ -4,7 +4,11 @@ import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Product;
+import com.finalProject.e_commerce.dto.CartResponseDTO;
 import com.finalProject.e_commerce.repository.CartRepo;
+import com.finalProject.e_commerce.util.MapperUtil;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,15 +16,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+//@NoArgsConstructor
 public class CartService {
 
-    @Autowired
-    private CartRepo cartRepo;
-    @Autowired
-    private ProductService productService;
+    private final CartRepo cartRepo;
+    private final ProductService productService;
+    private final MapperUtil mapper;
 
-    public Cart getCart() {
-        return createNewCartOrGet();
+    public CartResponseDTO getCart() {
+        return mapper.mapEntityToResponseDTO(createNewCartOrGet());
     }
 
     public void addItemToCart(Long productId) {
@@ -37,6 +42,7 @@ public class CartService {
                     .toList().get(0);
             cartItemExists.setQuantity(cartItemExists.getQuantity() + 1);
             cartItemExists.setTotalPrice(cartItemExists.getQuantity() * cartItemExists.getProduct().getPrice());
+            cart.calculateTotalPrice();
         }
         else {
             CartItem cartItem = new CartItem();
@@ -73,7 +79,7 @@ public class CartService {
                     .stream()
                     .filter(item -> item.getProduct() == product)
                     .toList().get(0);
-            if(quantity <= 0) {
+            if(quantity <= 0 || quantity.toString().isEmpty()) {
                 cartItem.setQuantity(1);
             }
             else {
@@ -94,6 +100,5 @@ public class CartService {
                 return cart;
             }
             return cartRepo.findByCustomerId(customer.getId());
-
         }
 }
