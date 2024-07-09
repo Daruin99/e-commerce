@@ -31,7 +31,7 @@ public class ProductController {
             Model model,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(required = false, name = "categoryId") Long categoryId,
-            @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
+            @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field) {
         List<CategoryResponseDTO> categoriesResponse = categoryService.getAllCategories();
         Page<ProductResponseDTO> productsDTO;
 
