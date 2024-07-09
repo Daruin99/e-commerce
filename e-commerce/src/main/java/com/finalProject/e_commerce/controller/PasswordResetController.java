@@ -7,6 +7,7 @@ import com.finalProject.e_commerce.dto.PasswordResetRequestDTO;
 import com.finalProject.e_commerce.dto.PasswordResetResponseDTO;
 import com.finalProject.e_commerce.service.CustomerService;
 import com.finalProject.e_commerce.service.EmailVerificationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,8 @@ public class PasswordResetController {
     private final EmailVerificationService emailVerificationService;
 
     @GetMapping("/forgot-password")
-    public String forgotPassword() {
-
+    public String forgotPassword(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUri", request.getRequestURI());
         return "forgot-password";
     }
     @PostMapping("/forgot-password")
@@ -43,8 +44,9 @@ public class PasswordResetController {
     }
 
     @GetMapping("/reset-password")
-    public String resetPassword(@RequestParam("token") String token, Model model) {
+    public String resetPassword(@RequestParam("token") String token, HttpServletRequest request, Model model) {
         model.addAttribute("request", new PasswordResetRequestDTO());
+        model.addAttribute("currentUri", request.getRequestURI());
         String tokenStatus = emailVerificationService.verifyPasswordToken(token);
         if ("verificationCompleted".equals(tokenStatus)) {
             return "reset-password";
