@@ -19,40 +19,32 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class ProductCustomerController {
-//    @Autowired
     private final ProductService productService;
-//    @Autowired
     private final CategoryCustomerService categoryCustomerService;
-//    @Autowired
     private final CartService cartService;
 
     @GetMapping("/shop")
-    public String getAllProducts(
+    public String getAllProductsShop(
             Model model,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(required = false, name = "categoryId") Long categoryId,
-            @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
+            @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field) {
         List<CategoryResponseDTO> categoriesResponse = categoryCustomerService.getAllCategories();
-        List<ProductResponseDTO> productsResponse = productService.getAllProducts(pageNumber,field, categoryId);
+        Page<ProductResponseDTO> productsResponse = productService.getAllProducts(pageNumber,field, categoryId);
+        Page<ProductResponseDTO> mostSoldProductsResponse = productService.getAllProducts(pageNumber,"numberOfSoldItemsDesc", categoryId);
         CartResponseDTO cartResponse = cartService.getCart();
-        model.addAttribute("categories", categoriesResponse);
-        model.addAttribute("productsResponse", productsResponse);
-        model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
-        Page<ProductResponseDTO> productsDTO;
+        int totalPages = productsResponse.getTotalPages();
 
-        if (categoryId == null || categoryId == 0) {
-            productsDTO = productService.getAllProducts(pageNumber, field, null);
-        } else {
-            productsDTO = productService.getAllProducts(pageNumber, field, categoryId);
-        }
-        int totalPages = productsDTO.getTotalPages();
         model.addAttribute("categories", categoriesResponse);
-        model.addAttribute("productsResponse", productsDTO.getContent());
+        model.addAttribute("productsResponse", productsResponse.getContent());
+        model.addAttribute("mostSoldProductsResponse", mostSoldProductsResponse.getContent());
+        model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
+        model.addAttribute("categories", categoriesResponse);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("totalPages", totalPages);
-        return "admin/viewProducts";
+        return "customer/shop";
     }
 
     @GetMapping("/products")
@@ -60,21 +52,27 @@ public class ProductCustomerController {
             Model model,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(required = false, name = "categoryId") Long categoryId,
-            @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
-        List<ProductResponseDTO> productsResponse = productService.getAllProducts(pageNumber,field, categoryId);
+            @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field) {
+        Page<ProductResponseDTO> productsResponse;
+        List<CategoryResponseDTO> categoriesResponse = categoryCustomerService.getAllCategories();
         CartResponseDTO cartResponse = cartService.getCart();
         if(categoryId != null) {
             CategoryResponseDTO categoryResponse = categoryCustomerService.getCategoryById(categoryId);
             model.addAttribute("category", categoryResponse);
+            productsResponse = productService.getAllProducts(pageNumber, field, categoryId);
         }
         else{
             model.addAttribute("category", null);
+            productsResponse = productService.getAllProducts(pageNumber, field, null);
         }
+        int totalPages = productsResponse.getTotalPages();
         model.addAttribute("productsResponse", productsResponse);
         model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
+        model.addAttribute("categories", categoriesResponse);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
-        return "customer/category";
+        model.addAttribute("totalPages", totalPages);
+        return "customer/viewProducts";
     }
 
     @GetMapping("/products/{id}")
@@ -83,7 +81,9 @@ public class ProductCustomerController {
             @PathVariable Long id
     ) {
         ProductResponseDTO productResponse = productService.getProductResponseDTOById(id);
+        CartResponseDTO cartResponse = cartService.getCart();
         model.addAttribute("productResponse", productResponse);
+        model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
         return "customer/product";
     }
 }

@@ -32,8 +32,16 @@ public class ProductService {
 
         List<ProductResponseDTO> responseList = new ArrayList<>();
         Page<Product> productPage;
+        Sort sort;
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
+        if (field.endsWith("Desc")) {
+            sort = Sort.by(field.substring(0, field.length() - 4)).descending();
+        } else {
+            sort = Sort.by(field.substring(0, field.length() - 3)).ascending();
+        }
+
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         if (categoryId != null) {
             Category category = categoryRepository.findById(categoryId).get();
             productPage = productRepository.findByCategory(category, pageable);
