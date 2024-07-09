@@ -1,5 +1,6 @@
 package com.finalProject.e_commerce.service;
 
+import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.VerificationToken;
 import com.finalProject.e_commerce.repository.VerificationTokenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,8 @@ public class VerificationTokenService {
 
     public VerificationToken findByTokenName(String tokenName) {
         return verificationTokenRepo.findByToken(tokenName);
+    }
+    public VerificationToken findByCustomer(Customer customer) {
+        return verificationTokenRepo.findByCustomer(customer);
     }
 }

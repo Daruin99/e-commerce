@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "category")
+@Table(name = "category", uniqueConstraints = {
+        @UniqueConstraint(name = "name_unique_key", columnNames = "name")
+})
 public class Category {
 
     @Id

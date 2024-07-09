@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{adminLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{adminLayout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <section layout:fragment="content">
-        <div class="content container mt-5">
-            <div class="jumbotron text-center">
-                <h1 class="display-4">Admin Dashboard</h1>
-                <p class="lead">Manage your website's content and settings</p>
-            </div>
+<section layout:fragment="content">
+    <div class="content container mt-5">
+        <div class="jumbotron text-center"
+             style=" background-image: url('https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+                  background-size: cover; background-position: center;">
+            <h1 class="display-4">Admin Dashboard</h1>
+            <p class="lead">Manage your website's content and settings</p>
+        </div>
 
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Manage Admins</h5>
-                            <p class="card-text">Add, Update, and Remove Admin Accounts</p>
-                            <a th:href="@{/admin/admins}" class="btn btn-primary">Admins</a>
-                        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Admins</h5>
+                        <p class="card-text">Add, Update, and Remove Admin Accounts</p>
+                        <a class="btn btn-primary" th:href="@{/admin/admins}">Admins</a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Manage Products</h5>
-                            <p class="card-text">Add, Update, and Remove Products</p>
-                            <a th:href="@{/admin/products}" class="btn btn-primary">Products</a>
-                        </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Products</h5>
+                        <p class="card-text">Add, Update, and Remove Products</p>
+                        <a class="btn btn-primary" th:href="@{/admin/products}">Products</a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Manage Categories</h5>
-                            <p class="card-text">Add, Update, and Remove Categories</p>
-                            <a th:href="@{/admin/categories}" class="btn btn-primary">Categories</a>
-                        </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Categories</h5>
+                        <p class="card-text">Add, Update, and Remove Categories</p>
+                        <a class="btn btn-primary" th:href="@{/admin/categories}">Categories</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 </html>

@@ -1,64 +1,80 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{adminLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{adminLayout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Categories</title>
 
 </head>
 <body>
-    <section layout:fragment="content">
-        <div class="content container mt-5">
-            <div class="jumbotron text-center">
-                <h1 class="display-4">Manage Categories</h1>
-                <p class="lead">View and manage all Categories on your site.</p>
-            </div>
+<section layout:fragment="content">
+    <div class="content container mt-5">
+        <div class="jumbotron text-center"
+             style=" background-image: url('https://images.pexels.com/photos/6956803/pexels-photo-6956803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+                  background-size: cover; background-position: center;">
+            <h1 class="display-4">Manage Categories</h1>
+            <p class="lead">View and manage all Categories on your site.</p>
+        </div>
 
-            <h2 class="text-center my-4">Categories List</h2>
-            <div class="row">
-                <div th:each="product : ${products}" class="col-md-4">
-                    <div class="card item-card">
-                        <div class="card-body">
-                            <h4 th:text="${category.name}"></h4>
-                            <p>Category ID: <span th:text="${category.id}"></span></p>
-                            <form th:action="@{'/category/update/' + ${category.id}}" method="post">
-                                <div class="form-group">
-                                    <label for="name">Category Name</label>
-                                    <input type="text" th:value="${category.name}" name="name" class="form-control mb-2">
-                                    <button type="submit" class="btn btn-warning form-btn">Update</button>
-                                </div>
-                            </form>
-                        </div>
+        <h2 class="text-center my-4">Categories List</h2>
+        <div class="row">
+            <div class="col-md-4" th:each="category : ${categoriesDTO}">
+                <div class="card item-card">
+                    <div class="card-body text-center">
+                        <h4 th:text="${category.name}"></h4>
+                        <p>Category ID: <span th:text="${category.id}"></span></p>
+                        <form method="post" th:action="@{|/admin/updateCategory/${category.id}|}"
+                              th:object="${categoryDTO}">
+                            <div class="form-group">
+                                <label for="name">Update Category Name</label>
+                                <input class="form-control" name="name"
+                                       placeholder="Category Name" required
+                                       th:field="*{name}"
+                                       title="Name can't be empty!" type="text">
+                            </div>
+                            <button class="btn btn-warning form-btn" type="submit">Update</button>
+                        </form>
                     </div>
                 </div>
-            </div>
-
-                <!-- Pagination -->
-                <div class="row">
-                    <div class="col-md-12 text-center mt-4">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            <!-- Add New Category Form -->
-            <div class="container form-container">
-                <h3>Add New Category</h3>
-                <form th:action="@{/category/add}" method="post">
-                    <div class="form-group">
-                        <label for="name">Category Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <button type="submit" class="btn btn-success form-btn">Add Category</button>
-                </form>
             </div>
         </div>
-    </section>
+
+        <div class="row">
+            <div class="col-md-12 text-center mt-4">
+                <ul class="pagination">
+                    <li th:class="${pageNumber == 0} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link"
+                           th:href="@{'/admin/categories?pageNumber=' + ${pageNumber - 1}}">Previous</a>
+                    </li>
+                    <li th:class="${pageNum == pageNumber} ? 'page-item active' : 'page-item'"
+                        th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:if="${pageNum <= pageNumber + 1 && pageNum >= pageNumber - 1}">
+                        <a class="page-link" th:href="@{'/admin/categories?pageNumber=' + ${pageNum}}">
+                            <span th:text="${pageNum + 1}"></span>
+                        </a>
+                    </li>
+                    <li th:class="${pageNumber == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" th:href="@{'/admin/categories?pageNumber=' + ${pageNumber + 1}}">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container form-container">
+            <h3>Add New Category</h3>
+            <form method="post" th:action="@{/admin/addCategory}" th:object="${categoryDTO}">
+                <div class="form-group">
+                    <label for="name">Category Name:</label>
+                    <input class="form-control" id="name" name="name"
+                           placeholder="Category Name" required
+                           th:field="*{name}"
+                           title="Name can't be empty!" type="text">
+                </div>
+                <button class="btn btn-success form-btn" type="submit">Add Category</button>
+            </form>
+        </div>
+    </div>
+</section>
 </body>
 </html>
