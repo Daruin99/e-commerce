@@ -1,5 +1,6 @@
 package com.finalProject.e_commerce.controller;
 
+import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
@@ -23,34 +24,40 @@ public class ProductCustomerController {
     private final ProductService productService;
     private final CategoryCustomerService categoryCustomerService;
     private final CartService cartService;
-
-    @GetMapping("/shop")
-    public String getAllProductsShop(
+    @GetMapping("/customer/home")
+    public String customerHome(
             Model model,
             HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(required = false, name = "categoryId") Long categoryId,
             @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field) {
-        List<CategoryResponseDTO> categoriesResponse = categoryCustomerService.getAllCategories();
-        Page<ProductResponseDTO> productsResponse = productService.getAllProducts(pageNumber,field, categoryId);
         Page<ProductResponseDTO> mostSoldProductsResponse = productService.getAllProducts(pageNumber,"numberOfSoldItemsDesc", categoryId);
         CartResponseDTO cartResponse = cartService.getCart();
-        int totalPages = productsResponse.getTotalPages();
-
-        model.addAttribute("currentUri", request.getRequestURI());
-        model.addAttribute("categories", categoriesResponse);
-        model.addAttribute("productsResponse", productsResponse.getContent());
+        int totalPages = mostSoldProductsResponse.getTotalPages();
+        List<CategoryResponseDTO> categoriesResponse = categoryCustomerService.getAllCategories();
+        if(!cartResponse.getCartItems().isEmpty()){
+            int quantity = 0;
+            for(CartItem cartItem : cartResponse.getCartItems()){
+                quantity = quantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", quantity);
+        }
+        else{
+            model.addAttribute("cartQuantity", 0);
+        }
         model.addAttribute("mostSoldProductsResponse", mostSoldProductsResponse.getContent());
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
+        model.addAttribute("categories", categoriesResponse);
         model.addAttribute("categories", categoriesResponse);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("totalPages", totalPages);
-        return "customer/shop";
+        return "customer/index";
     }
 
-    @GetMapping("/products")
+    @GetMapping("/shop")
     public String getProductsByCategory(
             Model model,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
@@ -68,14 +75,69 @@ public class ProductCustomerController {
             model.addAttribute("category", null);
             productsResponse = productService.getAllProducts(pageNumber, field, null);
         }
+        if(!cartResponse.getCartItems().isEmpty()){
+            int quantity = 0;
+            for(CartItem cartItem : cartResponse.getCartItems()){
+                quantity = quantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", quantity);
+        }
+        else{
+            model.addAttribute("cartQuantity", 0);
+        }
         int totalPages = productsResponse.getTotalPages();
         model.addAttribute("productsResponse", productsResponse);
         model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
         model.addAttribute("categories", categoriesResponse);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
+        model.addAttribute("categoryId", categoryId);
         model.addAttribute("totalPages", totalPages);
         return "customer/viewProducts";
+    }
+
+    @GetMapping("/search")
+    public String searchProducts(
+            Model model,
+            @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
+            @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field,
+            @RequestParam(required = false, name = "name") String name,
+            @RequestParam(required = false, name = "categoryId") Long categoryId) {
+
+        Page<ProductResponseDTO> productsResponse;
+        List<CategoryResponseDTO> categoriesResponse = categoryCustomerService.getAllCategories();
+        CartResponseDTO cartResponse = cartService.getCart();
+
+        productsResponse = productService.searchProducts(pageNumber, field, name, categoryId);
+
+
+        int totalPages = productsResponse.getTotalPages();
+        if(categoryId != null) {
+            CategoryResponseDTO categoryResponse = categoryCustomerService.getCategoryById(categoryId);
+            model.addAttribute("category", categoryResponse);
+        }
+        else{
+            model.addAttribute("category", null);
+        }
+        if(!cartResponse.getCartItems().isEmpty()){
+            int quantity = 0;
+            for(CartItem cartItem : cartResponse.getCartItems()){
+                quantity = quantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", quantity);
+        }
+        else{
+            model.addAttribute("cartQuantity", 0);
+        }
+        model.addAttribute("productsResponse", productsResponse);
+        model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
+        model.addAttribute("categories", categoriesResponse);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("field", field);
+        model.addAttribute("name", name);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("totalPages", totalPages);
+        return "customer/searchProducts";
     }
 
     @GetMapping("/products/{id}")
@@ -85,6 +147,16 @@ public class ProductCustomerController {
     ) {
         ProductResponseDTO productResponse = productService.getProductResponseDTOById(id);
         CartResponseDTO cartResponse = cartService.getCart();
+        if(!cartResponse.getCartItems().isEmpty()){
+            int quantity = 0;
+            for(CartItem cartItem : cartResponse.getCartItems()){
+                quantity = quantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", quantity);
+        }
+        else {
+            model.addAttribute("cartQuantity", 0);
+        }
         model.addAttribute("productResponse", productResponse);
         model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
         return "customer/product";

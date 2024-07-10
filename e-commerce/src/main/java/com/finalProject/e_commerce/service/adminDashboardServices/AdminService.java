@@ -15,10 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class AdminService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthorityService authorityService;
 
-    public Page<AdminResponseDTO> getAllAdmins(int pageNumber, String field) {
+    public Page<AdminResponseDTO> getAllAdmins(int pageNumber, String field, String name) {
 
         int pageSize = 3;
 
@@ -37,8 +34,15 @@ public class AdminService {
             pageNumber = 0;
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
+        Page<Admin> adminPage;
 
-        Page<Admin> adminPage = repository.findAll(pageable);
+        if(!name.isEmpty())
+        {
+            adminPage = repository.findByNameContaining(name, pageable);
+        }
+        else{
+            adminPage = repository.findAll(pageable);
+        }
 
         List<Admin> admins;
 

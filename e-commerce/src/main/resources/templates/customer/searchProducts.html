@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{customerLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content container mt-5">
+        <h2 class="text-center my-4" th:if="${category != null}" th:text="${category.name} + ' Products'"></h2>
+        <h2 class="text-center my-4" th:unless="${category != null}" th:text="Products"></h2>
+        <div class="row mb-3">
+            <div class="col-md-8 offset-md-2">
+                <form class="form-inline justify-content-center align-items-center" method="get" th:action="@{/search}">
+                    <div class="form-group mx-2">
+                        <label class="my-1 mr-2" for="categoryFilter">Filter by Category:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="categoryFilter" name="categoryId">
+                            <option value="">All Categories</option>
+                            <option th:each="category : ${categories}"
+                                    th:selected="${category.id == categoryId}"
+                                    th:text="${category.name}"
+                                    th:value="${category.id}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group mx-2">
+                        <label class="my-1 mr-2" for="sortField">Sort by:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="sortField" name="field">
+                            <option th:selected="${field == 'idAsc'}" value="idAsc">Default</option>
+                            <option th:selected="${field == 'priceAsc'}" value="priceAsc">Price: Low to High</option>
+                            <option th:selected="${field == 'priceDesc'}" value="priceDesc">Price: High to Low</option>
+                            <option th:selected="${field == 'numberOfSoldItemsDesc'}" value="numberOfSoldItemsDesc">Most Sold</option>
+                        </select>
+                    </div>
+                    <div class="form-group mx-2" th:if="${name}">
+                        <!-- Hidden input field for name parameter -->
+                        <input type="hidden" name="name" th:value="${name}">
+                    </div>
+                    <div class="form-group mx-2 mt-1">
+                        <button class="btn btn-primary" type="submit">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div th:if="${productsResponse.empty}" class="text-center mt-5">
+            <p class="display-4 text-muted">No products found</p>
+        </div>
+
+        <div class = "row" >
+            <div th:each="product :${productsResponse}" class="col-md-4">
+                <div class="card mb-4 h-100">
+                    <img th:src="${product.imageUrl}" class="card-img-top img-fluid" alt="Product Image" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <a th:href="@{'/products/' + ${product.id}}"><h5 th:text="${product.name} "class="card-title"></h5></a>
+                        <p class="card-text" th:text="'$' + ${product.price}"></p>
+                        <form th:action="@{/addItem(productId=${product.id})}" method="post" class="mt-auto" onsubmit="handleAddToCart(event); storeScrollPosition();">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                    <div th:each="cartItem : ${cartItemsResponse}">
+                                    <span th:if="${cartItem.product.id == product.id}"
+                                          th:text="${cartItem.quantity}"
+                                          class="badge badge-pill badge-primary position-absolute bg-light text-dark"
+                                          style="top: 10px; right: 10px;">
+                                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${totalPages > 0}" class="row">
+            <div class="col-md-12 text-center mt-4">
+                <ul class="pagination">
+                    <li th:class="${pageNumber == 0} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link my-4" th:if="${category != null}" th:href="@{'/search?pageNumber=' + ${pageNumber-1} + '&name=' + ${name} +'&categoryId=' + ${category.id} + '&field=' + ${field}}">Previous</a>
+                        <a class="page-link my-4" th:unless="${category != null}" th:href="@{'/search?pageNumber=' + ${pageNumber-1} + '&name=' + ${name} + '&field=' + ${field}}">Previous</a>
+                    </li>
+                    <li th:class="${pageNum == pageNumber} ? 'page-item active' : 'page-item'"
+                        th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:if="${pageNum <= pageNumber + 1 && pageNum >= pageNumber - 1}">
+                        <a class="page-link my-4" th:if="${category != null}" th:href="@{'/search?pageNumber=' + ${pageNum} + '&name=' + ${name} + '&categoryId=' + ${category.id} + '&field=' + ${field}}">
+                            <span th:if="${category != null}" th:text="${pageNum + 1}"></span>
+                        </a>
+                        <a class="page-link my-4" th:unless="${category != null}" th:href="@{'/search?pageNumber=' + ${pageNum} + '&name=' + ${name} + '&field=' + ${field}}">
+                            <span th:unless="${category != null}" th:text="${pageNum + 1}"></span>
+                        </a>
+                    </li>
+                    <li th:class="${pageNumber == totalPages - 1} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link my-4" th:if="${category != null}" th:href="@{'/search?pageNumber=' + ${pageNumber+1} + '&name=' + ${name} + '&categoryId=' + ${category.id} + '&field=' + ${field}}">Next</a>
+                        <a class="page-link my-4" th:unless="${category != null}" th:href="@{'/search?pageNumber=' + ${pageNumber+1} + '&name=' + ${name} +'&field=' + ${field}}">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section layout:fragment="scripts">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                localStorage.removeItem('scrollPosition');  // Clean up the stored scroll position
+            }
+        });
+
+        function storeScrollPosition() {
+            localStorage.setItem('scrollPosition', window.scrollY);
+        }
+    </script>
+    <script>
+        async function handleAddToCart(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                // Show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Added to Cart',
+                    text: 'Product successfully added to your cart.',
+                    timer: 3000,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Redirect to a new page
+                    window.location.href = window.location.href; // Replace with your actual redirect URL
+                });
+            } else if (response.status === 400) {
+               Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add product to cart. The quantity is not available in stock.',
+            timer: 3000,
+            showConfirmButton: false
+        });}
+        else {
+                // Handle any errors if needed
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add product to cart.',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }
+        }
+    </script>
+</section>
+</body>
+</html>

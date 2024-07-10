@@ -27,13 +27,16 @@ public class AdminController {
             Model model,
             HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
-            @RequestParam(defaultValue = "id", required = false, name = "field") String field) {
-        Page<AdminResponseDTO> adminsDTO = adminService.getAllAdmins(pageNumber, field);
+            @RequestParam(defaultValue = "id", required = false, name = "field") String field,
+            @RequestParam(defaultValue = "", required = false, name = "name") String name
+    ) {
+        Page<AdminResponseDTO> adminsDTO = adminService.getAllAdmins(pageNumber, field, name);
         int totalPages = adminsDTO.getTotalPages();
         model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("adminsDTO", adminsDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("filed", field);
+        model.addAttribute("name", name);
         model.addAttribute("totalPages", totalPages);
         return "admin/viewAdmins";
     }
