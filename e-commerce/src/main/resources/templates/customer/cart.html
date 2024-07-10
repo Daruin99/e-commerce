@@ -45,7 +45,7 @@
             </table>
             <div class="text-right">
                 <h4 th:text="'Total: ' + ${cart.totalPrice}"></h4>
-                <a href="/confirm-address" class="btn btn-primary">Proceed to Address Confirmation</a>
+                <a th:href="@{customer/confirmAddress}" class="btn btn-primary">Proceed to Address Confirmation</a>
             </div>
         </div>
 </section>
