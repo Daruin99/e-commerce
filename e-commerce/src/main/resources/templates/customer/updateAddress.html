@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{customerLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Address</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content">
+        <div class="container form-container">
+            <h2 class="text-center mb-4">Update Address</h2>
+            <form method="post" th:action="@{|/customer/updateAddress/${addressId}|}" th:object="${addressUpdateDTO}">
+                <div class="form-group">
+                    <label for="street">Street:</label>
+                    <input class="form-control" id="street" name="street"
+                           required
+                           th:field="*{street}" title="Street can't be empty!" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="area">Residential Area:</label>
+                    <input class="form-control" id="area" name="area"
+                           title="Residential Area can't be empty!"
+                           required th:field="*{residentialArea}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="area">City:</label>
+                    <input class="form-control" id="city" name="area"
+                           title="City can't be empty!"
+                           required th:field="*{city}" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="country">Country:</label>
+                    <input class="form-control" id="country" name="country"
+                           title="Country can't be empty!"
+                           required th:field="*{country}" type="text">
+                </div>
+                <div class="form-btn-container">
+                    <button class="btn btn-warning form-btn" type="submit">Update Address</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+<section layout:fragment="scripts"></section>
+</body>
+</html>

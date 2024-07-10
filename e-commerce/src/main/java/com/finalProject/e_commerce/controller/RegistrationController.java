@@ -3,6 +3,7 @@ package com.finalProject.e_commerce.controller;
 import com.finalProject.e_commerce.dto.customerDTOs.CustomerRequestDTO;
 import com.finalProject.e_commerce.service.CustomerService;
 import com.finalProject.e_commerce.service.EmailVerificationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -28,7 +29,8 @@ public class RegistrationController {
     }
 
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
+    public String showRegistrationForm(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("customerDTO", new CustomerRequestDTO());
         return "register";
     }

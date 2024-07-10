@@ -153,7 +153,7 @@ public class ProductService {
         productRepository.save(newProduct);
     }
 
-    public void updateAdmin(Long adminId, ProductUpdateDTO productDTO) {
+    public void updateProduct(Long adminId, ProductUpdateDTO productDTO) {
         Product updatedProduct = getProductById(adminId);
         Category category = categoryRepository.findById(productDTO.getCategoryId()).get();
         updatedProduct.setName(productDTO.getName());
