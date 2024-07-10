@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,30 +29,36 @@ public class CartService {
         return mapper.mapEntityToResponseDTO(createNewCartOrGet());
     }
 
-    public void addItemToCart(Long productId) {
+    public ResponseEntity<?> addItemToCart(Long productId) {
         Cart cart = createNewCartOrGet();
         Product product = productService.getProductById(productId);
         if(product == null) {
-            return;
+            return ResponseEntity.status(401).body("Product not found");
         }
+        CartItem cartItem;
 
         if(cart.getCartItems().stream().anyMatch(item -> item.getProduct() == product)) {
-            CartItem cartItemExists = cart.getCartItems()
+            cartItem = cart.getCartItems()
                     .stream()
                     .filter(item -> item.getProduct() == product)
                     .toList().get(0);
-            cartItemExists.setQuantity(cartItemExists.getQuantity() + 1);
-            cartItemExists.setTotalPrice(cartItemExists.getQuantity() * cartItemExists.getProduct().getPrice());
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
+
             cart.calculateTotalPrice();
         }
         else {
-            CartItem cartItem = new CartItem();
+            cartItem = new CartItem();
             cartItem.setProduct(product);
             cartItem.setQuantity(1);
             cartItem.setTotalPrice(cartItem.getProduct().getPrice());
             cart.addCartItem(cartItem);
         }
+        if(cartItem.getQuantity() > product.getStock()){
+            return ResponseEntity.status(400).body("Stock not available");
+        }
         cartRepo.save(cart);
+        return ResponseEntity.status(200).body("Added item to cart");
     }
 
     public void removeItemFromCart(Long productId) {
