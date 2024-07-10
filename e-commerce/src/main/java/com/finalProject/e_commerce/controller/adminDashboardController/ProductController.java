@@ -35,18 +35,17 @@ public class ProductController {
             HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber,
             @RequestParam(required = false, name = "categoryId") Long categoryId,
+            @RequestParam(defaultValue = "", required = false, name = "name") String name,
             @RequestParam(defaultValue = "idAsc", required = false, name = "field") String field) {
         List<CategoryResponseDTO> categoriesResponse = categoryService.getAllCategories();
-        Page<ProductResponseDTO> productsDTO;
-        
+        Page<ProductResponseDTO> productsDTO = productService.getFilteredProducts(pageNumber, field, name, categoryId);
+
         if(categoryId != null) {
             CategoryResponseDTO categoryResponse = categoryCustomerService.getCategoryById(categoryId);
             model.addAttribute("category", categoryResponse);
-            productsDTO = productService.getAllProducts(pageNumber, field, categoryId);
         }
         else{
             model.addAttribute("category", null);
-            productsDTO = productService.getAllProducts(pageNumber, field, null);
         }
         int totalPages = productsDTO.getTotalPages();
 
@@ -55,6 +54,7 @@ public class ProductController {
         model.addAttribute("productsResponse", productsDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
+        model.addAttribute("name", name);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("totalPages", totalPages);
         return "admin/viewProducts";

@@ -1,5 +1,6 @@
 package com.finalProject.e_commerce.controller;
 
+import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
@@ -20,15 +21,25 @@ public class CartController {
         CartResponseDTO cart = cartService.getCart();
         model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("cart", cart);
+        if(!cart.getCartItems().isEmpty()){
+            int quantity = 0;
+            for(CartItem cartItem : cart.getCartItems()){
+                quantity = quantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", quantity);
+        }
+        else {
+            model.addAttribute("cartQuantity", 0);
+        }
         return "customer/cart";
     }
 
-    @PostMapping("/addItem")
-    public String addItemToCart(@RequestParam Long productId, HttpServletRequest request) {
-        cartService.addItemToCart(productId);
-        String referrer = request.getHeader("referer");
-        return "redirect:" + referrer;
-    }
+//    @PostMapping("/addItem")
+//    public String addItemToCart(@RequestParam Long productId, HttpServletRequest request) {
+//        cartService.addItemToCart(productId);
+//        String referrer = request.getHeader("referer");
+//        return "redirect:" + referrer;
+//    }
 
     @PostMapping("/removeItem")
     public String removeItemFromCart(@RequestParam Long productId){

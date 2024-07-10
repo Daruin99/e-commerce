@@ -38,13 +38,18 @@
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart" th:classappend="${currentUri  == '/cart'} ? 'active'">Cart<i class="fas fa-shopping-cart" style="margin-left: 10px;"></i></a>
+                        <a class="nav-link" href="/cart" th:classappend="${currentUri  == '/cart'} ? 'active'">Cart
+                            <i class="fas fa-shopping-cart" style=""></i>
+                                <span th:if="cartQuantity != 0" th:text="${cartQuantity}"
+                                      class="position-absolute top-0 start-100 translate-middle badge rounded bg-light text-dark">
+                                </span>
+                        </a>
                     </li>
                 </ul>
             </div>
             <form class="form-inline ml-3" style="width: 15%;" action="/search" method="GET">
                 <div class="input-group">
-                    <input class="form-control border-radius-left" type="search" placeholder="Search" aria-label="Search" name="query" required>
+                    <input class="form-control border-radius-left" type="search" placeholder="Search" aria-label="Search" name="name" required>
                     <div class="input-group-append">
                         <button class="btn btn-outline-success border-radius-right" type="submit"><i class="fas fa-search"></i></button>
                     </div>

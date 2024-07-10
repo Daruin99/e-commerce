@@ -5,54 +5,111 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <section layout:fragment="content">
         <div class="content container mt-5">
-            <div class="jumbotron text-center">
+            <div class="jumbotron text-center" style="
+            background-image: url('https://images.pexels.com/photos/5632371/pexels-photo-5632371.jpeg?cs=srgb&dl=pexels-karolina-grabowska-5632371.jpg&fm=jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            }">
                 <h1 class="display-4">Your One-Stop Online Shop</h1>
-                <a class="btn btn-primary btn-lg" href="shop.html" role="button" style="margin-top: 20px;">Shop Now</a>
+                <a class="btn btn-primary btn-lg" href="/shop" role="button" style="margin-top: 20px;">Shop Now</a>
             </div>
 
             <h2 class="text-center my-4">Featured Products</h2>
-            <div id="featuredProductsCarousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <img src="..." class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Product Name</h5>
-                                        <p class="card-text">$200</p>
-                                    </div>
-                                </div>
+            <section class="mb-5">
+                <div class="row">
+                    <div th:each="product :${mostSoldProductsResponse}" class="col-md-4">
+                        <div class="card mb-4 h-100">
+                            <img th:src="${product.imageUrl}" class="card-img-top img-fluid" alt="Product Image" style="height: 200px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <a th:href="@{'/products/' + ${product.id}}"><h5 th:text="${product.name} "class="card-title"></h5></a>
+                                <p class="card-text" th:text="'$' + ${product.price}"></p>
+                                <form th:action="@{/addItem(productId=${product.id})}" method="post" class="mt-auto" onsubmit="handleAddToCart(event); storeScrollPosition();">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
                             </div>
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <img src="..." class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Product Name</h5>
-                                        <p class="card-text">$200</p>
-                                    </div>
-                                </div>
+                            <div th:each="cartItem : ${cartItemsResponse}">
+                                <span th:if="${cartItem.product.id == product.id}"
+                                      th:text="${cartItem.quantity}"
+                                      class="badge badge-pill badge-primary position-absolute bg-light text-dark"
+                                      style="top: 10px; right: 10px;">
+                                </span>
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <a class="carousel-control-prev" href="#featuredProductsCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#featuredProductsCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+            </section>
         </div>
     </section>
 
-    <section layout:fragment="scripts"></section>
+    <section layout:fragment="scripts">
+        <script>
+            async function handleAddToCart(event) {
+                event.preventDefault();
+
+                const form = event.target;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added to Cart',
+                        text: 'Product successfully added to your cart.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // Redirect to a new page
+                        window.location.href = window.location.href; // Replace with your actual redirect URL
+                    });
+                } else if (response.status === 400) {
+                   Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add product to cart. The quantity is not available in stock.',
+                timer: 3000,
+                showConfirmButton: false
+            });}
+            else {
+                    // Handle any errors if needed
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to add product to cart.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                }
+            }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const scrollPosition = localStorage.getItem('scrollPosition');
+                if (scrollPosition) {
+                    window.scrollTo(0, parseInt(scrollPosition));
+                    localStorage.removeItem('scrollPosition');  // Clean up the stored scroll position
+                }
+            });
+
+            function storeScrollPosition() {
+                localStorage.setItem('scrollPosition', window.scrollY);
+            }
+        </script>
+    </section>
 </body>
 </html>

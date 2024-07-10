@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class CustomerController {
 
-    @GetMapping("/customer/home")
-    public String customerHome(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "customer/index";
+    @GetMapping("/customer/payment")
+    public String paymentView() {
+        return "customer/payment";
     }
 
     @GetMapping("/customer/payment/{addressId}")
