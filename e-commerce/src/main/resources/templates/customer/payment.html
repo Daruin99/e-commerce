@@ -39,61 +39,186 @@
                         </div>
                     </div>
                 </div>
+                <button class="btn btn-secondary" id="confirmPaymentMethodBtn">Confirm Payment Method</button>
             </div>
             <div class="right-container">
                 <h2>Order Summary</h2>
-                <div class="order-summary">
-                    <div class="product-list">
-                        <div class="summary-line">
-                            <span>Product Name 1</span>
-                            <span>$50.00</span>
-                        </div>
-                        <div class="summary-line">
-                            <span>Product Name 2</span>
-                            <span>$70.00</span>
-                        </div>
-                        <!-- Add more products as needed -->
-                    </div>
-                    <hr>
-                    <div class="summary-line">
-                        <span>Sub Total:</span>
-                        <span>$120.00</span>
-                    </div>
-                    <div class="summary-line">
-                        <span>Taxes:</span>
-                        <span>$10.00</span>
-                    </div>
-                    <div class="summary-line">
-                        <span>Shipping:</span>
-                        <span>$5.00</span>
-                    </div>
-                    <hr>
-                    <div class="summary-line">
-                        <span>Total:</span>
-                        <span>$135.00</span>
-                    </div>
+                <div class="order-summary" id="orderSummary">
+
                 </div>
                 <div class="btns">
                     <div class="confirm-button">
-                        <button class="btn btn-primary">Confirm Order</button>
+                        <button class="btn btn-primary" id="confirmOrderBtn" disabled>Confirm Order</button>
                     </div>
-                    <div class="cancel-button">
-                        <button class="btn btn-danger">Cancel</button>
-                    </div>
+
                 </div>
+                <div id="message" style="display:none;"></div>
             </div>
         </div>
     </section>
 
     <section layout:fragment="scripts">
         <script>
-            // Disable credit card fields when Cash on Delivery is selected
-            $('input[type="radio"]').change(function () {
-                if ($(this).attr('id') === 'cashOnDelivery') {
-                    $('#creditCardDetails input').prop('disabled', true);
-                } else {
-                    $('#creditCardDetails input').prop('disabled', false);
+            document.addEventListener('DOMContentLoaded', function () {
+                const confirmPaymentMethodBtn = document.getElementById('confirmPaymentMethodBtn');
+                const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+                const messageDiv = document.getElementById('message');
+                const orderSummaryDiv = document.getElementById('orderSummary');
+
+                let pathname = window.location.pathname;
+
+
+
+                // Fetch cart items and populate order summary
+                fetch("/items")
+                    .then(response => response.json())
+                    .then(cartItems => {
+                        populateOrderSummary(cartItems);
+                    })
+                    .catch(error => {
+                        showMessage('Error fetching cart items', 'error');
+                    });
+
+
+                confirmPaymentMethodBtn.addEventListener('click', function () {
+                    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').id;
+                    if (paymentMethod === 'creditCard') {
+                          cardNumber = document.getElementById('cardNumber').value;
+                        const expiryDate = document.getElementById('expiryDate').value;
+                        const cvv = document.getElementById('cvv').value;
+                        validateCard({ cardNumber, expiryDate, cvv });
+                    } else {
+                        confirmOrderBtn.disabled = false;
+                        showMessage('Payment method confirmed. You can now place your order.', 'success');
+                    }
+                });
+
+                function validateCard(cardDetails) {
+                console.log(cardDetails)
+                    fetch('http://localhost:8082/api/v1/card-validation/validate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(cardDetails)
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === 'Valid') {
+                            confirmOrderBtn.disabled = false;
+                            showMessage('Payment method confirmed. You can now place your order.', 'success');
+                        } else {
+                            showMessage(data, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        showMessage('Error validating card details', 'error');
+                    });
                 }
+
+                let taxes = 0;
+                let shipping = 0;
+                let total = 0;
+
+
+                function populateOrderSummary(cartItems) {
+                     let subtotal = 0;
+
+
+                    cartItems.forEach(item => {
+                        const productLine = document.createElement('div');
+                        productLine.classList.add('summary-line');
+                        productLine.innerHTML = `
+                            <span>${item.product.name} x ${item.quantity}</span>
+                            <span>$${item.totalPrice.toFixed(2)}</span>
+                        `;
+                        orderSummaryDiv.appendChild(productLine);
+                        subtotal += item.totalPrice;
+                    });
+
+
+                     taxes = subtotal * 0.1; // Assuming a 10% tax rate
+                     shipping = 5.00; // Flat shipping rate
+                     total = subtotal + taxes + shipping;
+
+                    orderSummaryDiv.innerHTML += `
+                        <hr>
+                        <div class="summary-line">
+                            <span>Sub Total:</span>
+                            <span>$${subtotal.toFixed(2)}</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Taxes:</span>
+                            <span>$${taxes.toFixed(2)}</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Shipping:</span>
+                            <span>$${shipping.toFixed(2)}</span>
+                        </div>
+                        <hr>
+                        <div class="summary-line">
+                            <span>Total:</span>
+                            <span>$${total.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+
+                function showMessage(message, type) {
+                    messageDiv.style.display = 'block';
+                    messageDiv.textContent = message;
+                    messageDiv.className = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
+                }
+
+                 confirmOrderBtn.addEventListener('click', function () {
+                    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').id;
+                    const orderDetails = {
+                        paymentMethod: paymentMethod,
+                        cardNumber: document.getElementById('cardNumber').value,
+                        orderItems: [],
+                        totalPrice: total,
+                        taxes: taxes,
+                        deliveryFees: shipping
+                    };
+
+                    fetch("/items")
+                        .then(response => response.json())
+                        .then(cartItems => {
+                            cartItems.forEach(item => {
+                                orderDetails.orderItems.push({
+                                    product: item.product,
+                                    quantity: item.quantity,
+                                    totalPrice: item.totalPrice
+                                });
+                            });
+                            console.log(orderDetails);
+                            fetch('/api/v1/orders/place-order', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(orderDetails)
+                            })
+                            .then(response => response.text())
+                            .then(data => {
+                                showMessage(data, data == 'Order placed successfully' ? 'success' : 'error');
+
+                            })
+                            .catch(error => {
+                                showMessage('Error placing order', 'error');
+                            });
+                        })
+                        .catch(error => {
+                            showMessage('Error fetching cart items', 'error');
+                        });
+                });
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        const creditCardDetails = document.getElementById('creditCardDetails');
+                        creditCardDetails.querySelectorAll('input').forEach(input => {
+                            input.disabled = this.id === 'cashOnDelivery';
+                        });
+                    });
+                });
             });
         </script>
     </section>

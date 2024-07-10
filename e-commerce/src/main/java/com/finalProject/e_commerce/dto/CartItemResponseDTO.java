@@ -1,5 +1,6 @@
 package com.finalProject.e_commerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.domain.Product;
 import jakarta.persistence.*;
@@ -16,5 +17,6 @@ public class CartItemResponseDTO {
 
     private double totalPrice;
 
+    @JsonIgnore
     private Cart cart;
 }

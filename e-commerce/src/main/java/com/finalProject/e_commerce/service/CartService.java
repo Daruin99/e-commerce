@@ -4,6 +4,7 @@ import com.finalProject.e_commerce.domain.Cart;
 import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Product;
+import com.finalProject.e_commerce.dto.CartItemResponseDTO;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
 import com.finalProject.e_commerce.repository.CartRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
@@ -15,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -107,5 +111,16 @@ public class CartService {
                 return cart;
             }
             return cartRepo.findByCustomerId(customer.getId());
+        }
+
+        public List<CartItemResponseDTO> getCartItems(long id) {
+          Cart cart = cartRepo.findByCustomerId(id);
+          List<CartItem> cartItems=  cart.getCartItems();
+
+            List<CartItemResponseDTO> cartItemDTOs = cartItems.stream()
+                    .map(mapper::mapEntityToDTO) // Example using a mapper or manual mapping
+                    .collect(Collectors.toList());
+
+            return cartItemDTOs;
         }
 }

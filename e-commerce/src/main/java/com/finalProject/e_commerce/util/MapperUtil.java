@@ -1,7 +1,10 @@
 package com.finalProject.e_commerce.util;
 
 import com.finalProject.e_commerce.domain.*;
+import com.finalProject.e_commerce.dto.CartItemResponseDTO;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
+import com.finalProject.e_commerce.dto.OrderDTO;
+import com.finalProject.e_commerce.dto.OrderItemDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressRequestDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressUpdateDTO;
@@ -45,4 +48,10 @@ public interface MapperUtil {
     CustomerAddress mapRequestDTOToEntity(AddressRequestDTO addressRequestDTO);
 
     AddressUpdateDTO mapEntityToUpdateDTO(CustomerAddress address);
+
+    CartItemResponseDTO mapEntityToDTO(CartItem cartItem);
+    Order mapOrderDTOToEntity(OrderDTO orderDTO);
+    OrderItem mapOrderItemDTOToEntity(OrderItemDTO orderItemDTO);
+
+
 }
