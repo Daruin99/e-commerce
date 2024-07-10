@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class CustomerController {
@@ -14,13 +15,9 @@ public class CustomerController {
         return "customer/index";
     }
 
-    @GetMapping("/customer/payment")
-    public String paymentView() {
+    @GetMapping("/customer/payment/{addressId}")
+    public String paymentView(@PathVariable(name = "addressId") Long addressId) {
         return "customer/payment";
     }
 
-    @GetMapping("/customer/confirmAddress")
-    public String confirmAddressView() {
-        return "customer/confirm-address";
-    }
 }

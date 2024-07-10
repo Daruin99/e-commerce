@@ -99,7 +99,7 @@ public class ProductController {
         if (result.hasErrors()) {
             return "admin/updateProduct";
         }
-        productService.updateAdmin(productId, productUpdateDTO);
+        productService.updateProduct(productId, productUpdateDTO);
         return "redirect:/admin/products";
     }
 

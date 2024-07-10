@@ -4,13 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Confirm Shipment</title>
+    <title>Addresses</title>
 </head>
 <body>
 <section layout:fragment="content">
     <div class="content container mt-5">
-        <h2 class="text-center my-4" th:if="${!addressesResponseDTO.isEmpty()}">Available Addresses</h2>
-        <h4 th:if="${addressesResponseDTO.isEmpty()}" class="text-center my-4 text-danger mt-2 font-italic">No Addresses Yet, you need to add at least one!</h4>
+        <h2 class="text-center my-4" th:if="${addressesResponseDTO.isEmpty()}">Addresses</h2>
+        <h4 th:if="${addressesResponseDTO.isEmpty()}" class="text-center my-4 text-danger mt-2 font-italic">No Addresses Yet!</h4>
         <div class="row">
             <div class="col-md-4" th:each="address : ${addressesResponseDTO}">
                 <div class="card item-card h-100 mx-auto">
@@ -20,7 +20,8 @@
                         <h5 class="card-text" th:text="'City: ' + ${address.city}">City</h5>
                         <h5 class="card-text" th:text="'Country: ' + ${address.country}">Country</h5>
                         <div class="item-actions mt-auto">
-                            <a class="btn btn-warning" th:href="@{|/customer/payment/${address.id}|}">Choose Address</a>
+                            <a class="btn btn-warning" th:href="@{|/customer/updateAddress/${address.id}|}">Update Address</a>
+                            <a class="btn btn-danger" th:href="@{|/customer/deleteAddress/${address.id}|}">Remove Address</a>
                         </div>
                     </div>
                 </div>
@@ -50,7 +51,7 @@
 
         <div class="container form-container" style="margin-bottom: 0">
             <h3>Add New Address</h3>
-            <form method="post" th:action="@{/customer/addAddressAtConfirm}" th:object="${addressRequestDTO}">
+            <form method="post" th:action="@{/customer/addAddress}" th:object="${addressRequestDTO}">
                 <div class="form-group">
                     <label for="street">Street:</label>
                     <input class="form-control" id="street" name="street"
