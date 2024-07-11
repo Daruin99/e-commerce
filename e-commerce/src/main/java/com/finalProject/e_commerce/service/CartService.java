@@ -79,25 +79,36 @@ public class CartService {
         cartRepo.save(cart);
     }
 
-    public void updateItemQuantity(Long productId, Integer quantity) {
-        Cart cart = createNewCartOrGet();
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            return;
+        public int updateItemQuantity(Long productId, Integer quantity) {
+            Cart cart = createNewCartOrGet();
+            Product product = productService.getProductById(productId);
+            if(product == null) {
+                return -1;
+            }
+            CartItem cartItem = cart.getCartItems()
+                    .stream()
+                    .filter(item -> item.getProduct() == product)
+                    .toList().get(0);
+            if(quantity <= 0 || quantity.toString().isEmpty()) {
+                cartItem.setQuantity(1);
+            }
+            else
+            {
+                cartItem.setQuantity(quantity);
+            }
+            if (quantity > product.getStock()){
+                cartItem.setQuantity(product.getStock());
+                cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
+                cart.calculateTotalPrice();
+                cartRepo.save(cart);
+                return product.getStock();
+            }
+
+            cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
+            cart.calculateTotalPrice();
+            cartRepo.save(cart);
+            return -2;
         }
-        CartItem cartItem = cart.getCartItems()
-                .stream()
-                .filter(item -> item.getProduct() == product)
-                .toList().get(0);
-        if (quantity <= 0 || quantity.toString().isEmpty()) {
-            cartItem.setQuantity(1);
-        } else {
-            cartItem.setQuantity(quantity);
-        }
-        cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
-        cart.calculateTotalPrice();
-        cartRepo.save(cart);
-    }
 
     public Cart createNewCartOrGet() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
