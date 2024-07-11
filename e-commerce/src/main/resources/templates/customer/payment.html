@@ -65,7 +65,14 @@
                 const messageDiv = document.getElementById('message');
                 const orderSummaryDiv = document.getElementById('orderSummary');
 
-                let pathname = window.location.pathname;
+                const url = window.location.pathname;
+                const addressId = url.split('/')[3]; // Adjust the index based on your URL structure
+
+                if (!addressId) {
+                    window.location.href = "/cart";
+                }
+
+
 
 
 
@@ -73,8 +80,12 @@
                 fetch("/items")
                     .then(response => response.json())
                     .then(cartItems => {
+
+                    if (cartItems.length === 0) {
+                        window.location.href = "/shop";
+                    } else {
                         populateOrderSummary(cartItems);
-                    })
+                    }})
                     .catch(error => {
                         showMessage('Error fetching cart items', 'error');
                     });
@@ -173,6 +184,7 @@
                     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').id;
                     const orderDetails = {
                         paymentMethod: paymentMethod,
+                        addressId: addressId,
                         cardNumber: document.getElementById('cardNumber').value,
                         orderItems: [],
                         totalPrice: total,
@@ -190,26 +202,30 @@
                                     totalPrice: item.totalPrice
                                 });
                             });
-                            console.log(orderDetails);
                             fetch('/api/v1/orders/place-order', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(orderDetails)
-                            })
-                            .then(response => response.text())
-                            .then(data => {
-                                showMessage(data, data == 'Order placed successfully' ? 'success' : 'error');
-
-                            })
-                            .catch(error => {
-                                showMessage('Error placing order', 'error');
-                            });
-                        })
-                        .catch(error => {
-                            showMessage('Error fetching cart items', 'error');
-                        });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderDetails)
+                })
+                .then(response => response.json())
+                .then(data => {
+                        if (data.message == "Order placed successfully") {
+                        showMessage(data.message, 'success');
+                        window.location.href = `/order/orders/${data.orderId}`;
+                        }
+                        else {
+                               showMessage(data.message, 'error');
+                        }
+                })
+                .catch(error => {
+                    showMessage('Error placing order: ' + error.message, 'error');
+                });
+            })
+            .catch(error => {
+                showMessage('Error fetching cart items: ' + error.message, 'error');
+            });
                 });
                 document.querySelectorAll('input[type="radio"]').forEach(radio => {
                     radio.addEventListener('change', function () {

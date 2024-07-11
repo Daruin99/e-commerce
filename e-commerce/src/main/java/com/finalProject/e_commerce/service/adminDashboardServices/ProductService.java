@@ -210,4 +210,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public void updateStock(Long productId, int quantity) {
+        productRepository.updateStock(productId, quantity);
+    }
 }
