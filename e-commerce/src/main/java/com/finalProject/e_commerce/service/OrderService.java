@@ -2,9 +2,14 @@ package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.config.PaymentServiceClient;
 import com.finalProject.e_commerce.domain.Customer;
+import com.finalProject.e_commerce.domain.CustomerAddress;
 import com.finalProject.e_commerce.domain.Order;
+import com.finalProject.e_commerce.domain.OrderItem;
 import com.finalProject.e_commerce.dto.OrderDTO;
+import com.finalProject.e_commerce.dto.OrderItemDTO;
+import com.finalProject.e_commerce.dto.OrderResponseDTO;
 import com.finalProject.e_commerce.dto.PaymentRequestDTO;
+import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import com.finalProject.e_commerce.repository.OrderRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import jakarta.transaction.Transactional;
@@ -14,7 +19,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -76,5 +83,36 @@ public class OrderService {
          */
 
         return "Order placed successfully";
+    }
+
+    public List<OrderResponseDTO> getAllOrders(){
+
+        List<Order> allOrders = orderRepository.findAll();
+        List<OrderResponseDTO> orderResponseDTOS = new ArrayList<>();
+
+        for (Order order: allOrders){
+            OrderResponseDTO orderDTO = mapperUtil.mapEntityToResponseDTO(order);
+            List<OrderItemDTO> orderItemDTOS = mapperUtil.mapEntityToResponseDTO(order.getOrderItems());
+            AddressResponseDTO addressDTO = mapperUtil.mapEntityToResponseDTO(order.getAddress());
+            orderDTO.setOrderItems(orderItemDTOS);
+            orderDTO.setAddress(addressDTO);
+            orderResponseDTOS.add(orderDTO);
+        }
+
+        return orderResponseDTOS;
+    }
+
+    public OrderResponseDTO getOrderById(Long orderId){
+
+        Order order = orderRepository.findById(orderId).get();
+
+        OrderResponseDTO orderDTO = mapperUtil.mapEntityToResponseDTO(order);
+
+        List<OrderItemDTO> orderItemDTOS = mapperUtil.mapEntityToResponseDTO(order.getOrderItems());
+        AddressResponseDTO addressDTO = mapperUtil.mapEntityToResponseDTO(order.getAddress());
+        orderDTO.setOrderItems(orderItemDTOS);
+        orderDTO.setAddress(addressDTO);
+
+        return orderDTO;
     }
 }
