@@ -15,6 +15,7 @@ import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -55,5 +56,9 @@ public interface MapperUtil {
     OrderResponseDTO mapEntityToResponseDTO(Order order);
 
     List<OrderItemDTO> mapEntityToResponseDTO(List<OrderItem> orderItems);
+
+    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "customer.id", target = "customerId")
+    ProductRatingResponseDTO mapEntityToResponseDTO(ProductRating productRating);
 
 }

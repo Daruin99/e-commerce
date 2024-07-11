@@ -7,6 +7,15 @@
     <title>Product</title>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .star {
+            font-size: 1.5em;
+            color: gold;
+        }
+        .empty-star {
+            color: lightgray;
+        }
+    </style>
 </head>
 <body>
     <section layout:fragment="content">
@@ -32,6 +41,9 @@
                     <div class="card mb-4">
                         <p th:text="${productResponse.description}" class="mt-4"></p>
                     </div>
+                    <div>
+                        <div id="ratingStars"></div>
+                    </div>
 
                 </div>
 
@@ -45,6 +57,17 @@
                 if (scrollPosition) {
                     window.scrollTo(0, parseInt(scrollPosition));
                     localStorage.removeItem('scrollPosition');  // Clean up the stored scroll position
+                }
+
+                // Display the average rating as stars
+                const averageRating = [[${productResponse.averageRating}]];
+                const ratingStarsContainer = document.getElementById('ratingStars');
+
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement('span');
+                    star.classList.add('star');
+                    star.innerHTML = (i <= averageRating) ? '&#9733;' : '&#9734;';
+                    ratingStarsContainer.appendChild(star);
                 }
             });
 

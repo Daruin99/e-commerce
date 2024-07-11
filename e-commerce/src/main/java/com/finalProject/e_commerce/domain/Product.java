@@ -60,4 +60,7 @@ public class Product {
     )
 
     private int numberOfSoldItems = 0;
+
+    @Column(name = "average_rating")
+    private double averageRating = 0;
 }

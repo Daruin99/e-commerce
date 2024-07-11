@@ -93,6 +93,17 @@ public class CustomerAddressesController {
             @PathVariable("addressId") Long addressId) {
         CustomerAddress address = addressesService.getAddressById(addressId);
         AddressUpdateDTO addressUpdateDTO = mapper.mapEntityToUpdateDTO(address);
+        CartResponseDTO cart = cartService.getCart();
+        if(!cart.getCartItems().isEmpty()){
+            int quantity = 0;
+            for(CartItem cartItem : cart.getCartItems()){
+                quantity = quantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", quantity);
+        }
+        else {
+            model.addAttribute("cartQuantity", 0);
+        }
         model.addAttribute("addressId", addressId);
         model.addAttribute("addressUpdateDTO", addressUpdateDTO);
         return "customer/updateAddress";

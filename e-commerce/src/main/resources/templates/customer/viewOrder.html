@@ -6,6 +6,23 @@
 <head>
     <link th:href="@{/css/orderStyles.css}" rel="stylesheet">
     <title>Order</title>
+    <style>
+      .star-rating {
+        display: inline-flex;
+        font-size: 2rem;
+        cursor: pointer;
+      }
+
+      .star {
+        color: #ddd;
+        transition: color 0.2s;
+      }
+
+      .star.hover,
+      .star.selected {
+        color: #f5b301;
+      }
+    </style>
 </head>
 <body>
 
@@ -35,29 +52,105 @@
                 <div class="summary-line" th:each="item: ${orderDTO.orderItems}">
                     <span th:text="${item.quantity > 1} ? (${item.product.name} + ' x' + ${item.quantity}) : ${item.product.name}"></span>
                     <span th:text="'$' + ${item.totalPrice}"></span>
+              <form
+                th:action="@{'/order/orders/' + ${orderDTO.id} + '/rateProduct'}"
+                method="post"
+                class="rating-form"
+              >
+                <input
+                  type="hidden"
+                  name="productId"
+                  th:value="${item.product.id}"
+                />
+                <input
+                  type="hidden"
+                  name="rating"
+                  class="rating-input"
+                  value="0"
+                />
+
+                <div class="star-rating">
+                  <span class="star" data-value="1">&#9733;</span>
+                  <span class="star" data-value="2">&#9733;</span>
+                  <span class="star" data-value="3">&#9733;</span>
+                  <span class="star" data-value="4">&#9733;</span>
+                  <span class="star" data-value="5">&#9733;</span>
                 </div>
+
+                <button type="submit" class="btn btn-primary mt-2">
+                  Submit Rating
+                </button>
+              </form>
             </div>
-            <hr>
-            <div class="summary-line">
-                <span>Sub Total:</span>
-                <span th:text="'$' + ${orderDTO.totalPrice - (orderDTO.taxes + orderDTO.deliveryFees)}"></span>
-            </div>
-            <div class="summary-line">
-                <span>Taxes:</span>
-                <span th:text="'$' + ${orderDTO.taxes}"></span>
-            </div>
-            <div class="summary-line">
-                <span>Shipping:</span>
-                <span th:text="'$' + ${orderDTO.deliveryFees}"></span>
-            </div>
-            <hr>
-            <div class="summary-line">
-                <span>Total:</span>
-                <span th:text="'$' + ${orderDTO.totalPrice}"></span>
-            </div>
-        </div>
-    </div>
+          </div>
+          <div th:each="rating : ${productRatings}">
+            <p th:text="${rating}"></p>
+          </div>
+          <hr>
+          <div class="summary-line">
+              <span>Sub Total:</span>
+              <span th:text="'$' + ${orderDTO.totalPrice - (orderDTO.taxes + orderDTO.deliveryFees)}"></span>
+          </div>
+          <div class="summary-line">
+              <span>Taxes:</span>
+              <span th:text="'$' + ${orderDTO.taxes}"></span>
+          </div>
+          <div class="summary-line">
+              <span>Shipping:</span>
+              <span th:text="'$' + ${orderDTO.deliveryFees}"></span>
+          </div>
+          <hr>
+          <div class="summary-line">
+              <span>Total:</span>
+              <span th:text="'$' + ${orderDTO.totalPrice}"></span>
+          </div>
+      </div>
+  </div>
 </section>
-<section layout:fragment="scripts"></section>
+    <section layout:fragment="scripts">
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ratingForms = document.querySelectorAll(".rating-form");
+
+            ratingForms.forEach(form => {
+                const stars = form.querySelectorAll(".star-rating .star");
+                const ratingInput = form.querySelector(".rating-input");
+
+                // Fetch the rating value from the hidden input field
+                const currentRating = parseInt(ratingInput.value);
+
+                // Set selected stars based on currentRating
+                stars.forEach((star, index) => {
+                    if (index < currentRating) {
+                        star.classList.add("selected");
+                    }
+                });
+
+                stars.forEach((star, index) => {
+                    star.addEventListener("click", function () {
+                        const value = this.getAttribute("data-value");
+                        ratingInput.value = value;
+
+                        stars.forEach((s, i) => {
+                            s.classList.toggle("selected", i < value);
+                        });
+                    });
+
+                    star.addEventListener("mouseover", function () {
+                        stars.forEach((s, i) => {
+                            s.classList.toggle("hover", i <= index);
+                        });
+                    });
+
+                    star.addEventListener("mouseout", function () {
+                        stars.forEach(s => {
+                            s.classList.remove("hover");
+                        });
+                    });
+                });
+            });
+        });
+      </script>
+    </section>
 </body>
 </html>
