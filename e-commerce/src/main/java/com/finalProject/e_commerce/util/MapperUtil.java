@@ -1,10 +1,7 @@
 package com.finalProject.e_commerce.util;
 
 import com.finalProject.e_commerce.domain.*;
-import com.finalProject.e_commerce.dto.CartItemResponseDTO;
-import com.finalProject.e_commerce.dto.CartResponseDTO;
-import com.finalProject.e_commerce.dto.OrderDTO;
-import com.finalProject.e_commerce.dto.OrderItemDTO;
+import com.finalProject.e_commerce.dto.*;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressRequestDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressUpdateDTO;
@@ -18,6 +15,8 @@ import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
 import org.mapstruct.Mapper;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MapperUtil {
@@ -53,5 +52,8 @@ public interface MapperUtil {
     Order mapOrderDTOToEntity(OrderDTO orderDTO);
     OrderItem mapOrderItemDTOToEntity(OrderItemDTO orderItemDTO);
 
+    OrderResponseDTO mapEntityToResponseDTO(Order order);
+
+    List<OrderItemDTO> mapEntityToResponseDTO(List<OrderItem> orderItems);
 
 }

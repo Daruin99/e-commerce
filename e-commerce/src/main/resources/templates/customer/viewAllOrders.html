@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{customerLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content container mt-5">
+        <h1 class="text-center">Orders History</h1>
+        <table class="table table-hover mt-4 text-center">
+            <thead>
+            <tr>
+                <th scope="col">Order Id</th>
+                <th scope="col">Creation Date</th>
+                <th scope="col">Payment Method</th>
+                <th scope="col">Status</th>
+                <th scope="col">Sub Total</th>
+                <th scope="col">Total</th>
+                <th scope="col">Order Summary</th>
+            </tr>
+            </thead>
+            <tbody th:each="order :${orderDTOs}">
+            <tr>
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.creationDate}"></td>
+                <td th:text="${order.paymentMethod}"></td>
+                <td th:text="${order.orderStatus}"></td>
+                <td th:text="'$' + ${order.totalPrice - (order.taxes + order.deliveryFees)}"></td>
+                <td th:text="'$' + ${order.totalPrice}"></td>
+                <td>
+                    <form th:action="@{|/order/orders/${order.id}|}" method="get">
+                        <button type="submit" class="btn btn-primary">View Order</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<section layout:fragment="scripts"></section>
+</body>
+</html>

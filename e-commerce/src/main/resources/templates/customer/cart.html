@@ -10,7 +10,7 @@
 <section layout:fragment="content">
         <div class="content container mt-5">
             <h1 class="text-center">Your Cart</h1>
-            <table class="table table-hover mt-4">
+            <table class="table table-hover mt-4 text-center">
                 <thead>
                     <tr>
                         <th scope="col">Product</th>
@@ -21,7 +21,6 @@
                     </tr>
                 </thead>
                 <tbody th:each="item :${cart.cartItems}">
-                    <!-- Example of a cart item -->
                     <tr>
                         <td th:text="${item.product.name}"></td>
                         <td th:text="${item.product.price}"></td>
@@ -40,7 +39,6 @@
                             </form>
                         </td>
                     </tr>
-                    <!-- Repeat for other cart items -->
                 </tbody>
             </table>
             <div class="text-right">

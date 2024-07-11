@@ -26,10 +26,7 @@
                         <a class="nav-link" href="/shop" th:classappend="${currentUri  == '/shop'} ? 'active'">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Account</a>
+                        <a class="nav-link" href="/order/orders" th:classappend="${currentUri  == '/order/orders'} ? 'active'">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/customer/addresses" th:classappend="${currentUri  == '/customer/addresses'} ? 'active'">Addresses</a>
