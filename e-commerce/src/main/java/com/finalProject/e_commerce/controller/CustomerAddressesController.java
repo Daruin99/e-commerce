@@ -1,15 +1,19 @@
 package com.finalProject.e_commerce.controller;
 
+import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.domain.CustomerAddress;
+import com.finalProject.e_commerce.dto.CartResponseDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressRequestDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressUpdateDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminUpdateDTO;
+import com.finalProject.e_commerce.service.CartService;
 import com.finalProject.e_commerce.service.CustomerAddressesService;
 import com.finalProject.e_commerce.util.MapperUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CustomerAddressesController {
 
+    private final CartService cartService;
     private final CustomerAddressesService addressesService;
     private final MapperUtil mapper;
 
@@ -30,6 +35,17 @@ public class CustomerAddressesController {
             HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber) {
         getAddressesLogic(model, request, pageNumber);
+        CartResponseDTO cart = cartService.getCart();
+        if(!cart.getCartItems().isEmpty()){
+            int cartQuantity = 0;
+            for(CartItem cartItem : cart.getCartItems()){
+                cartQuantity = cartQuantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", cartQuantity);
+        }
+        else {
+            model.addAttribute("cartQuantity", 0);
+        }
         return "customer/customerAddresses";
     }
 

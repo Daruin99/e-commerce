@@ -29,8 +29,6 @@ public class CartRestController {
     @PostMapping("/addItem")
     public ResponseEntity<?> addItemToCart(@RequestParam Long productId, HttpServletRequest request) {
         return cartService.addItemToCart(productId);
-//        String referrer = request.getHeader("referer");
-//        return ResponseEntity.status(400).body("Bad request");
     }
 
     @GetMapping("/items")

@@ -39,11 +39,14 @@ public class RegistrationController {
     public String registerUser(
             @Valid @ModelAttribute("customerDTO") CustomerRequestDTO customerDTO,
             BindingResult result,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         if (result.hasErrors()) {
+            model.addAttribute("currentUri", request.getRequestURI());
             return "register";
         }
         if (customerService.existsByEmail(customerDTO.getEmail())) {
+            model.addAttribute("currentUri", request.getRequestURI());
             model.addAttribute("error", "This user already exists");
             return "register";
         }
