@@ -83,9 +83,9 @@
               </form>
             </div>
           </div>
-          <div th:each="rating : ${productRatings}">
-            <p th:text="${rating}"></p>
-          </div>
+<!--          <div th:each="rating : ${productRatings}">-->
+<!--            <p th:text="${rating}"></p>-->
+<!--          </div>-->
           <hr>
           <div class="summary-line">
               <span>Sub Total:</span>
@@ -93,7 +93,7 @@
           </div>
           <div class="summary-line">
               <span>Taxes:</span>
-              <span th:text="'$' + ${orderDTO.taxes}"></span>
+              <span th:text="'$' + ${#numbers.formatDecimal(orderDTO.taxes, 1, 2)}"></span>
           </div>
           <div class="summary-line">
               <span>Shipping:</span>
