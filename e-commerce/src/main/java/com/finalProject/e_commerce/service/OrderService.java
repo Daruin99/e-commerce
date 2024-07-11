@@ -10,6 +10,7 @@ import com.finalProject.e_commerce.dto.OrderItemDTO;
 import com.finalProject.e_commerce.dto.OrderResponseDTO;
 import com.finalProject.e_commerce.dto.PaymentRequestDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
+import com.finalProject.e_commerce.exception.NotEnoughStockException;
 import com.finalProject.e_commerce.repository.OrderRepo;
 import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import com.finalProject.e_commerce.util.MapperUtil;
@@ -45,6 +46,14 @@ public class OrderService {
 
     @Transactional
     public Long saveOrder(OrderDTO orderDTO) {
+
+        for (OrderItemDTO orderItemDTO : orderDTO.getOrderItems()) {
+            int currentStock = productService.getProductStock(orderItemDTO.getProduct().getId());
+            if (currentStock < orderItemDTO.getQuantity()) {
+                throw new NotEnoughStockException(orderItemDTO.getProduct().getName() + " is out of stock");
+            }
+        }
+
         CustomerAddress address = addressesService.getAddressById(orderDTO.getAddressId());
 
         Order order = mapperUtil.mapOrderDTOToEntity(orderDTO);
@@ -56,12 +65,7 @@ public class OrderService {
         order.setCreationDate(new Date());
         order.setOrderStatus("Completed");
 
-
         order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
-
-
-
-
 
         if ("creditCard".equals(orderDTO.getPaymentMethod())) {
             PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
@@ -74,15 +78,12 @@ public class OrderService {
             }
         }
 
-        // Save the order
         Order savedOrder = orderRepository.save(order);
 
-        // Update product stock and clear the cart
         for (OrderItem orderItem : order.getOrderItems()) {
             productService.updateStock(orderItem.getProduct().getId(), orderItem.getQuantity());
         }
 
-        // Clear the cart items for the customer
         cartService.deleteAllByCustomerId(order.getCustomer().getId());
 
         return savedOrder.getId();
