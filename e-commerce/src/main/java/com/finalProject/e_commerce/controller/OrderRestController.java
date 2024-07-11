@@ -1,8 +1,12 @@
 package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.dto.OrderDTO;
+import com.finalProject.e_commerce.dto.OrderFailureResponseDTO;
+import com.finalProject.e_commerce.dto.OrderSuccessResponseDTO;
 import com.finalProject.e_commerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +21,14 @@ public class OrderRestController {
     }
 
     @PostMapping("/place-order")
-    public String placeOrder(@RequestBody OrderDTO orderDTO) {
-        System.out.println(orderDTO);
-            String response = orderService.saveOrder(orderDTO);
-            if (response.equals("Order placed successfully")) {
-                return response;
-            }
-            return  response;
-
+    public ResponseEntity<?> placeOrder(@RequestBody OrderDTO orderDTO) {
+        try {
+            Long orderId = orderService.saveOrder(orderDTO);
+            OrderSuccessResponseDTO successResponse = new OrderSuccessResponseDTO(orderId, "Order placed successfully");
+            return new ResponseEntity<>(successResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            OrderFailureResponseDTO failureResponse = new OrderFailureResponseDTO("Failed to place order");
+            return new ResponseEntity<>(failureResponse, HttpStatus.OK);
+        }
     }
 }

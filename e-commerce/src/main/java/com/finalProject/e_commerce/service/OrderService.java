@@ -11,9 +11,9 @@ import com.finalProject.e_commerce.dto.OrderResponseDTO;
 import com.finalProject.e_commerce.dto.PaymentRequestDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import com.finalProject.e_commerce.repository.OrderRepo;
+import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
 import com.finalProject.e_commerce.util.MapperUtil;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,29 +29,38 @@ public class OrderService {
     private final OrderRepo orderRepository;
     private final PaymentServiceClient paymentServiceClient;
     private final MapperUtil mapperUtil;
+    private final CustomerAddressesService addressesService;
+    private final ProductService productService;
+    private final CartService cartService;
 
 
-    @Autowired
-    public OrderService(OrderRepo orderRepository, PaymentServiceClient paymentServiceClient, MapperUtil mapperUtil) {
+    public OrderService(OrderRepo orderRepository, PaymentServiceClient paymentServiceClient, MapperUtil mapperUtil, CustomerAddressesService addressesService, ProductService productService, CartService cartService) {
         this.orderRepository = orderRepository;
         this.paymentServiceClient = paymentServiceClient;
         this.mapperUtil = mapperUtil;
+        this.addressesService = addressesService;
+        this.productService = productService;
+        this.cartService = cartService;
     }
 
     @Transactional
-    public String saveOrder(OrderDTO orderDTO) {
-        // Create Order object from OrderDTO
+    public Long saveOrder(OrderDTO orderDTO) {
+        CustomerAddress address = addressesService.getAddressById(orderDTO.getAddressId());
+
         Order order = mapperUtil.mapOrderDTOToEntity(orderDTO);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = (Customer) authentication.getPrincipal();
+
+        order.setCustomer(customer);
+        order.setAddress(address);
         order.setCreationDate(new Date());
-        System.out.println(order);
+        order.setOrderStatus("Completed");
+
+
         order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
 
 
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Customer customer = (Customer) authentication.getPrincipal();
-        //System.out.println(customer);
 
-        //order.setCustomer(customer);
 
 
         if ("creditCard".equals(orderDTO.getPaymentMethod())) {
@@ -59,35 +68,31 @@ public class OrderService {
             paymentRequestDTO.setCardNumber(orderDTO.getCardNumber());
             paymentRequestDTO.setAmount(orderDTO.getTotalPrice());
 
-            try {
-                ResponseEntity<String> paymentResponse = paymentServiceClient.processPayment(paymentRequestDTO);
-                System.out.println("success");
-            } catch (RuntimeException exception) {
-                System.out.println("Fail");
-                return "no suffecient funds";
+            ResponseEntity<String> paymentResponse = paymentServiceClient.processPayment(paymentRequestDTO);
+            if (!paymentResponse.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException(paymentResponse.getBody());
             }
-
         }
 
         // Save the order
-        System.out.println("saving the order");
-        orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
 
         // Update product stock and clear the cart
-        /*
         for (OrderItem orderItem : order.getOrderItems()) {
-            productRepository.updateStock(orderItem.getProduct().getId(), orderItem.getQuantity());
-            cartRepository.deleteByProductIdAndCustomerId(orderItem.getProduct().getId(), order.getCustomer().getId());
+            productService.updateStock(orderItem.getProduct().getId(), orderItem.getQuantity());
         }
 
-         */
+        // Clear the cart items for the customer
+        cartService.deleteAllByCustomerId(order.getCustomer().getId());
 
-        return "Order placed successfully";
+        return savedOrder.getId();
     }
 
     public List<OrderResponseDTO> getAllOrders(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = (Customer) authentication.getPrincipal();
 
-        List<Order> allOrders = orderRepository.findAll();
+        List<Order> allOrders = orderRepository.findByCustomerIdOrderByCreationDateDesc(customer.getId());
         List<OrderResponseDTO> orderResponseDTOS = new ArrayList<>();
 
         for (Order order: allOrders){
@@ -111,6 +116,7 @@ public class OrderService {
         List<OrderItemDTO> orderItemDTOS = mapperUtil.mapEntityToResponseDTO(order.getOrderItems());
         AddressResponseDTO addressDTO = mapperUtil.mapEntityToResponseDTO(order.getAddress());
         orderDTO.setOrderItems(orderItemDTOS);
+
         orderDTO.setAddress(addressDTO);
 
         return orderDTO;

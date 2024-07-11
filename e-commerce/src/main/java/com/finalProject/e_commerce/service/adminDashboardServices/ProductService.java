@@ -170,4 +170,9 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
+    public void updateStock(Long productId, int quantity) {
+        productRepository.updateStock(productId, quantity);
+    }
+
+
 }

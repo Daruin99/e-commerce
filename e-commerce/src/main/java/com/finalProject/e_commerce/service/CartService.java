@@ -36,12 +36,12 @@ public class CartService {
     public ResponseEntity<?> addItemToCart(Long productId) {
         Cart cart = createNewCartOrGet();
         Product product = productService.getProductById(productId);
-        if(product == null) {
+        if (product == null) {
             return ResponseEntity.status(401).body("Product not found");
         }
         CartItem cartItem;
 
-        if(cart.getCartItems().stream().anyMatch(item -> item.getProduct() == product)) {
+        if (cart.getCartItems().stream().anyMatch(item -> item.getProduct() == product)) {
             cartItem = cart.getCartItems()
                     .stream()
                     .filter(item -> item.getProduct() == product)
@@ -50,15 +50,14 @@ public class CartService {
             cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
 
             cart.calculateTotalPrice();
-        }
-        else {
+        } else {
             cartItem = new CartItem();
             cartItem.setProduct(product);
             cartItem.setQuantity(1);
             cartItem.setTotalPrice(cartItem.getProduct().getPrice());
             cart.addCartItem(cartItem);
         }
-        if(cartItem.getQuantity() > product.getStock()){
+        if (cartItem.getQuantity() > product.getStock()) {
             return ResponseEntity.status(400).body("Stock not available");
         }
         cartRepo.save(cart);
@@ -68,59 +67,66 @@ public class CartService {
     public void removeItemFromCart(Long productId) {
         Cart cart = createNewCartOrGet();
         Product product = productService.getProductById(productId);
-        if(product == null) {
+        if (product == null) {
             return;
         }
         CartItem cartItem = cart.getCartItems()
-                    .stream()
-                    .filter(item -> item.getProduct() == product)
-                    .toList().get(0);
+                .stream()
+                .filter(item -> item.getProduct() == product)
+                .toList().get(0);
 
         cart.removeCartItem(cartItem);
         cartRepo.save(cart);
-        }
+    }
 
-        public void updateItemQuantity(Long productId, Integer quantity) {
-            Cart cart = createNewCartOrGet();
-            Product product = productService.getProductById(productId);
-            if(product == null) {
-                return;
-            }
-            CartItem cartItem = cart.getCartItems()
-                    .stream()
-                    .filter(item -> item.getProduct() == product)
-                    .toList().get(0);
-            if(quantity <= 0 || quantity.toString().isEmpty()) {
-                cartItem.setQuantity(1);
-            }
-            else {
-                cartItem.setQuantity(quantity);
-            }
-            cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
-            cart.calculateTotalPrice();
+    public void updateItemQuantity(Long productId, Integer quantity) {
+        Cart cart = createNewCartOrGet();
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return;
+        }
+        CartItem cartItem = cart.getCartItems()
+                .stream()
+                .filter(item -> item.getProduct() == product)
+                .toList().get(0);
+        if (quantity <= 0 || quantity.toString().isEmpty()) {
+            cartItem.setQuantity(1);
+        } else {
+            cartItem.setQuantity(quantity);
+        }
+        cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
+        cart.calculateTotalPrice();
+        cartRepo.save(cart);
+    }
+
+    public Cart createNewCartOrGet() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = (Customer) authentication.getPrincipal();
+        if (cartRepo.findByCustomerId(customer.getId()) == null) {
+            Cart cart = new Cart();
+            cart.setCustomer(customer);
             cartRepo.save(cart);
+            return cart;
         }
+        return cartRepo.findByCustomerId(customer.getId());
+    }
 
-        public Cart createNewCartOrGet() {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Customer customer = (Customer) authentication.getPrincipal();
-            if(cartRepo.findByCustomerId(customer.getId()) == null) {
-                Cart cart = new Cart();
-                cart.setCustomer(customer);
-                cartRepo.save(cart);
-                return cart;
-            }
-            return cartRepo.findByCustomerId(customer.getId());
-        }
+    public List<CartItemResponseDTO> getCartItems(long id) {
+        Cart cart = cartRepo.findByCustomerId(id);
+        List<CartItem> cartItems = cart.getCartItems();
 
-        public List<CartItemResponseDTO> getCartItems(long id) {
-          Cart cart = cartRepo.findByCustomerId(id);
-          List<CartItem> cartItems=  cart.getCartItems();
+        List<CartItemResponseDTO> cartItemDTOs = cartItems.stream()
+                .map(mapper::mapEntityToDTO) // Example using a mapper or manual mapping
+                .collect(Collectors.toList());
 
-            List<CartItemResponseDTO> cartItemDTOs = cartItems.stream()
-                    .map(mapper::mapEntityToDTO) // Example using a mapper or manual mapping
-                    .collect(Collectors.toList());
+        return cartItemDTOs;
+    }
 
-            return cartItemDTOs;
-        }
+    public void deleteAllByCustomerId(Long customerId) {
+        cartRepo.deleteAllByCustomerId(customerId);
+        Cart cart = cartRepo.findByCustomerId(customerId);
+        cart.setTotalPrice(0);
+        cartRepo.save(cart);
+    }
+
 }

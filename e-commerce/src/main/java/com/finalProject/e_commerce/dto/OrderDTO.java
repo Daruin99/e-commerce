@@ -8,6 +8,7 @@ import java.util.List;
 public class OrderDTO {
     private String paymentMethod;
     private String cardNumber;
+    private Long addressId;
     private List<OrderItemDTO> orderItems;
     // to be added adress
 
