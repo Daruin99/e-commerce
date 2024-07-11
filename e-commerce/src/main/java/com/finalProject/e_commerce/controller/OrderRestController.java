@@ -3,6 +3,7 @@ package com.finalProject.e_commerce.controller;
 import com.finalProject.e_commerce.dto.OrderDTO;
 import com.finalProject.e_commerce.dto.OrderFailureResponseDTO;
 import com.finalProject.e_commerce.dto.OrderSuccessResponseDTO;
+import com.finalProject.e_commerce.exception.NotEnoughStockException;
 import com.finalProject.e_commerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,12 @@ public class OrderRestController {
             Long orderId = orderService.saveOrder(orderDTO);
             OrderSuccessResponseDTO successResponse = new OrderSuccessResponseDTO(orderId, "Order placed successfully");
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (NotEnoughStockException e) {
+            OrderFailureResponseDTO failureResponse = new OrderFailureResponseDTO(e.getMessage());
+            return new ResponseEntity<>(failureResponse, HttpStatus.OK);
+        }
+
+        catch (Exception e) {
             OrderFailureResponseDTO failureResponse = new OrderFailureResponseDTO("Failed to place order");
             return new ResponseEntity<>(failureResponse, HttpStatus.OK);
         }

@@ -213,4 +213,10 @@ public class ProductService {
     public void updateStock(Long productId, int quantity) {
         productRepository.updateStock(productId, quantity);
     }
+
+    public int getProductStock(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return product.getStock();
+    }
 }

@@ -66,9 +66,9 @@
                 const orderSummaryDiv = document.getElementById('orderSummary');
 
                 const url = window.location.pathname;
-                const addressId = url.split('/')[3]; // Adjust the index based on your URL structure
+                const addressId = url.split('/')[3];
 
-                if (!addressId) {
+                if (!addressId || addressId <= 0) {
                     window.location.href = "/cart";
                 }
 
