@@ -76,11 +76,11 @@ public class CartService {
         cartRepo.save(cart);
         }
 
-        public void updateItemQuantity(Long productId, Integer quantity) {
+        public int updateItemQuantity(Long productId, Integer quantity) {
             Cart cart = createNewCartOrGet();
             Product product = productService.getProductById(productId);
             if(product == null) {
-                return;
+                return -1;
             }
             CartItem cartItem = cart.getCartItems()
                     .stream()
@@ -89,12 +89,22 @@ public class CartService {
             if(quantity <= 0 || quantity.toString().isEmpty()) {
                 cartItem.setQuantity(1);
             }
-            else {
+            else
+            {
                 cartItem.setQuantity(quantity);
             }
+            if (quantity > product.getStock()){
+                cartItem.setQuantity(product.getStock());
+                cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
+                cart.calculateTotalPrice();
+                cartRepo.save(cart);
+                return product.getStock();
+            }
+
             cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getProduct().getPrice());
             cart.calculateTotalPrice();
             cartRepo.save(cart);
+            return -2;
         }
 
         public Cart createNewCartOrGet() {

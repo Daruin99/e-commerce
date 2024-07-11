@@ -3,6 +3,7 @@ package com.finalProject.e_commerce.controller;
 import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import com.finalProject.e_commerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class CartController {
-    @Autowired
-    private CartService cartService;
+    private final CartService cartService;
 
     @GetMapping("/cart")
     public String getCart(HttpServletRequest request, Model model) {
@@ -48,9 +49,30 @@ public class CartController {
     }
 
     @PostMapping("/updateItem")
-    public String updateItemQuantity(@RequestParam Long productId, @RequestParam Integer quantity) {
-        cartService.updateItemQuantity(productId, quantity);
-        return "redirect:/cart";
+    public String updateItemQuantity(Model model, @RequestParam Long productId, @RequestParam(defaultValue = "1") Integer quantity, HttpServletRequest request) {
+        int success = cartService.updateItemQuantity(productId, quantity);
+        CartResponseDTO cart = cartService.getCart();
+
+        if(!cart.getCartItems().isEmpty()){
+            int cartQuantity = 0;
+            for(CartItem cartItem : cart.getCartItems()){
+                cartQuantity = cartQuantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", cartQuantity);
+        }
+        else {
+            model.addAttribute("cartQuantity", 0);
+        }
+        if(success != -1 && success != -2) {
+            model.addAttribute("stock", success);
+        }
+        else {
+            model.addAttribute("stock", null);
+        }
+        model.addAttribute("currentUpdate", productId);
+        model.addAttribute("currentUri", request.getRequestURI());
+        model.addAttribute("cart", cart);
+        return "customer/cart";
     }
 
 }

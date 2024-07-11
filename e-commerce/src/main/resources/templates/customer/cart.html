@@ -29,23 +29,25 @@
                             <form th:action="@{/updateItem(productId=${item.product.id})}" method="post">
                                 <input type="number" name="quantity" class="form-control" th:value="${item.quantity}" onchange="this.form.submit()">
                             </form>
-<!--                            <input type="number" class="form-control" th:value="${item.quantity}">-->
+                            <p class="text-danger" th:if="${stock != null && currentUpdate == item.product.id}" th:text="'STOCK AVAILABLE IS ONLY ' + ${stock}"></p>
                         </td>
                         <td th:text="${item.totalPrice}"></td>
                         <td>
                             <form th:action="@{/removeItem(productId=${item.product.id})}" method="post">
-<!--                                <input type="hidden" name="_method" value="delete">-->
-<!--                                <input type="hidden" name="productId" th:value="${item.product.id}">-->
                                 <button type="submit" class="btn btn-danger remove">Remove</button>
                             </form>
                         </td>
+
                     </tr>
                     <!-- Repeat for other cart items -->
                 </tbody>
             </table>
             <div class="text-right">
                 <h4 th:text="'Total: ' + ${cart.totalPrice}"></h4>
-                <a th:href="@{customer/confirmAddress}" class="btn btn-primary">Proceed to Address Confirmation</a>
+                <a th:href="@{customer/confirmAddress}" th:if="${cart.cartItems.empty}" class="btn btn-secondary disabled">Proceed to Address Confirmation</a>
+                <a th:href="@{customer/confirmAddress}" th:unless="${cart.cartItems.empty}" class="btn btn-primary">Proceed to Address Confirmation</a>
+
+
             </div>
         </div>
 </section>
