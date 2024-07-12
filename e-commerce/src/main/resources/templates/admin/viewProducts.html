@@ -5,6 +5,15 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Products</title>
+    <style>
+        .star {
+            font-size: 1.5em;
+            color: gold;
+        }
+        .empty-star {
+            color: lightgray;
+        }
+    </style>
 </head>
 <body>
 <section layout:fragment="content">
@@ -72,6 +81,7 @@
                         <p class="card-text" th:text="'Stock: ' + ${product.stock}">Stock</p>
                         <p class="card-text" th:text="'Sold: ' + ${product.numberOfSoldItems}">Sold</p>
                         <p class="card-text" th:text="${product.description}">Product Description</p>
+                        <div id="ratingStars" th:attr="data-rating=${product.averageRating}" class="rating-stars"></div>
                         <div class="item-actions text-center my-4 mt-auto">
                             <a class="btn btn-warning" th:href="@{|/admin/updateProduct/${product.id}|}">Update</a>
                             <a class="btn btn-danger" th:href="@{|/admin/deleteProduct/${product.id}|}">Remove</a>
@@ -135,6 +145,17 @@
                 });
             }
         });
+    </script>
+    <script>
+        document.querySelectorAll('.rating-stars').forEach(function(starContainer) {
+                    const averageRating = starContainer.getAttribute('data-rating');
+                    for (let i = 1; i <= 5; i++) {
+                        const star = document.createElement('span');
+                        star.classList.add('star');
+                        star.innerHTML = (i <= averageRating) ? '&#9733;' : '&#9734;';
+                        starContainer.appendChild(star);
+                    }
+                });
     </script>
 </section>
 </body>
