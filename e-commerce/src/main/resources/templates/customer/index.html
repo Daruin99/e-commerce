@@ -35,6 +35,9 @@
                 <a class="btn btn-primary btn-lg" href="/shop" role="button" style="margin-top: 20px;">Shop Now</a>
             </div>
             <h2 class="text-center my-4">Shop by Category</h2>
+            <div th:if="${categories.empty}" class="text-center mt-5">
+                <p class="display-4 text-muted">No categories found</p>
+            </div>
 
             <!-- Categories List -->
             <div class="row mb-4">
@@ -55,8 +58,12 @@
             </div>
 
             <h2 class="text-center my-4">Featured Products</h2>
+            <div th:if="${mostSoldProductsResponse.empty}" class="text-center mt-5">
+                <p class="display-4 text-muted">No products found</p>
+            </div>
             <section class="mb-5">
                 <div class="row">
+
                     <div th:each="product :${mostSoldProductsResponse}" class="col-md-4">
                         <div class="card mb-4 h-100">
                             <a th:href="@{'/products/' + ${product.id}}"><img th:src="${product.imageUrl}" class="card-img-top img-fluid" alt="Product Image" style="height: 200px; object-fit: cover;"></a>

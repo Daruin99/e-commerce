@@ -51,7 +51,7 @@ public class Product {
     @Column(
             name = "description",
             nullable = false,
-            columnDefinition = "VARCHAR(255)"
+            columnDefinition = "TEXT"
     )
     private String description;
     @Column(
