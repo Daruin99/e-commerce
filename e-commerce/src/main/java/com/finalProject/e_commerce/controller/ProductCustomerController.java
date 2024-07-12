@@ -49,7 +49,6 @@ public class ProductCustomerController {
         model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("cartItemsResponse", cartResponse.getCartItems());
         model.addAttribute("categories", categoriesResponse);
-        model.addAttribute("categories", categoriesResponse);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("field", field);
         model.addAttribute("categoryId", categoryId);

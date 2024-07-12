@@ -7,6 +7,20 @@
     <title>Products</title>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .star {
+            font-size: 1.5em;
+            color: gold;
+        }
+        .empty-star {
+            color: lightgray;
+        }
+        .rating-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 <body>
     <section layout:fragment="content">
@@ -55,11 +69,14 @@
                             <p class="card-text" th:text="'$' + ${product.price}"></p>
                             <p class="card-text text-danger" th:if="${product.stock <= 5 and product.stock > 0}" th:text="'Only ' + ${product.stock} + ' left in stock!'"></p>
                             <p class="card-text text-danger" th:if="${product.stock == 0}">Out of stock!</p>
+                            <div class="mt-auto rating-container">
+                            <div id="ratingStars" th:attr="data-rating=${product.averageRating}" class="rating-stars"></div>
                             <form th:action="@{/addItem(productId=${product.id})}" method="post" class="mt-auto" onsubmit="handleAddToCart(event); storeScrollPosition();">
                                 <button type="submit" class="btn btn-primary float-right"
                                         th:disabled="${product.stock == 0}"
                                         th:classappend="${product.stock == 0 ? 'btn-disabled' : ''}">Add to Cart</button>
                             </form>
+                            </div>
                         </div>
                         <div th:each="cartItem : ${cartItemsResponse}">
                                     <span th:if="${cartItem.product.id == product.id}"
@@ -107,13 +124,22 @@
                     window.scrollTo(0, parseInt(scrollPosition));
                     localStorage.removeItem('scrollPosition');  // Clean up the stored scroll position
                 }
+
+                document.querySelectorAll('.rating-stars').forEach(function(starContainer) {
+                    const averageRating = starContainer.getAttribute('data-rating');
+                    for (let i = 1; i <= 5; i++) {
+                        const star = document.createElement('span');
+                        star.classList.add('star');
+                        star.innerHTML = (i <= averageRating) ? '&#9733;' : '&#9734;';
+                        starContainer.appendChild(star);
+                    }
+                });
             });
 
             function storeScrollPosition() {
                 localStorage.setItem('scrollPosition', window.scrollY);
             }
-        </script>
-        <script>
+
             async function handleAddToCart(event) {
                 event.preventDefault();
 

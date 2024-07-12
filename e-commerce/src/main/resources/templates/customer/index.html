@@ -7,6 +7,20 @@
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .star {
+            font-size: 1.5em;
+            color: gold;
+        }
+        .empty-star {
+            color: lightgray;
+        }
+        .rating-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 <body>
     <section layout:fragment="content">
@@ -20,6 +34,25 @@
                 <h1 class="display-4">Your One-Stop Online Shop</h1>
                 <a class="btn btn-primary btn-lg" href="/shop" role="button" style="margin-top: 20px;">Shop Now</a>
             </div>
+            <h2 class="text-center my-4">Shop by Category</h2>
+
+            <!-- Categories List -->
+            <div class="row mb-4">
+                <div th:each="category :${categories}" class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h5 class="card-title" th:text="${category.name}"></h5>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:href="@{'/shop?categoryId=' + ${category.id}}" class="btn btn-primary" style="color:white;">View Products</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <h2 class="text-center my-4">Featured Products</h2>
             <section class="mb-5">
@@ -32,11 +65,14 @@
                                 <p class="card-text" th:text="'$' + ${product.price}"></p>
                                 <p class="card-text text-danger" th:if="${product.stock <= 5 and product.stock > 0}" th:text="'Only ' + ${product.stock} + ' left in stock!'"></p>
                                 <p class="card-text text-danger" th:if="${product.stock == 0}">Out of stock!</p>
-                                <form th:action="@{/addItem(productId=${product.id})}" method="post" class="mt-auto" onsubmit="handleAddToCart(event); storeScrollPosition();">
-                                    <button type="submit" class="btn btn-primary float-right"
-                                            th:disabled="${product.stock == 0}"
-                                            th:classappend="${product.stock == 0 ? 'btn-disabled' : ''}">Add to Cart</button>
-                                </form>
+                                <div class="mt-auto rating-container">
+                                    <div id="ratingStars" th:attr="data-rating=${product.averageRating}" class="rating-stars"></div>
+                                    <form th:action="@{/addItem(productId=${product.id})}" method="post" class="mt-auto" onsubmit="handleAddToCart(event); storeScrollPosition();">
+                                        <button type="submit" class="btn btn-primary float-right"
+                                                th:disabled="${product.stock == 0}"
+                                                th:classappend="${product.stock == 0 ? 'btn-disabled' : ''}">Add to Cart</button>
+                                    </form>
+                                </div>
                             </div>
                             <div th:each="cartItem : ${cartItemsResponse}">
                                 <span th:if="${cartItem.product.id == product.id}"
@@ -108,6 +144,15 @@
                     window.scrollTo(0, parseInt(scrollPosition));
                     localStorage.removeItem('scrollPosition');  // Clean up the stored scroll position
                 }
+                document.querySelectorAll('.rating-stars').forEach(function(starContainer) {
+                    const averageRating = starContainer.getAttribute('data-rating');
+                    for (let i = 1; i <= 5; i++) {
+                        const star = document.createElement('span');
+                        star.classList.add('star');
+                        star.innerHTML = (i <= averageRating) ? '&#9733;' : '&#9734;';
+                        starContainer.appendChild(star);
+                    }
+                });
             });
 
             function storeScrollPosition() {

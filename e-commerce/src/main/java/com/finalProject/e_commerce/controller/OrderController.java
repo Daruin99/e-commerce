@@ -2,6 +2,7 @@ package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.domain.CartItem;
 import com.finalProject.e_commerce.dto.CartResponseDTO;
+import com.finalProject.e_commerce.dto.OrderItemDTO;
 import com.finalProject.e_commerce.dto.OrderResponseDTO;
 import com.finalProject.e_commerce.dto.ProductRatingResponseDTO;
 import com.finalProject.e_commerce.repository.OrderRepo;
@@ -65,7 +66,13 @@ public class OrderController {
         else {
             model.addAttribute("cartQuantity", 0);
         }
-        model.addAttribute("productRatings", productRatings);
+        for (OrderItemDTO item : orderDTO.getOrderItems()) {
+            productRatings.stream()
+                    .filter(pr -> pr.getProductId().equals(item.getProduct().getId()))
+                    .findFirst()
+                    .ifPresent(pr -> item.setCurrentRating(pr.getRating()));
+        }
+//        model.addAttribute("productRatings", productRatings);
         model.addAttribute("orderId", orderId);
         model.addAttribute("orderDTO", orderDTO);
         model.addAttribute("currentUri", request.getRequestURI());

@@ -76,14 +76,19 @@
                     <div class="rating-container">
                         <form th:action="@{'/order/orders/' + ${orderDTO.id} + '/rateProduct'}" method="post" class="rating-form">
                             <input type="hidden" name="productId" th:value="${item.product.id}"/>
-                            <input type="hidden" name="rating" class="rating-input" value="0"/>
+                            <input type="hidden" name="rating" class="rating-input" th:value="${item.currentRating ?: 0}"/>
 
                             <div class="star-rating">
-                                <span class="star" data-value="1">&#9733;</span>
-                                <span class="star" data-value="2">&#9733;</span>
-                                <span class="star" data-value="3">&#9733;</span>
-                                <span class="star" data-value="4">&#9733;</span>
-                                <span class="star" data-value="5">&#9733;</span>
+                                <span class="star selected" data-value="1" th:if="${item.currentRating >= 1}">&#9733;</span>
+                                <span class="star" data-value="1" th:unless="${item.currentRating >= 1}">&#9733;</span>
+                                <span class="star selected" data-value="2" th:if="${item.currentRating >= 2}">&#9733;</span>
+                                <span class="star" data-value="2" th:unless="${item.currentRating >= 2}">&#9733;</span>
+                                <span class="star selected" data-value="3" th:if="${item.currentRating >= 3}">&#9733;</span>
+                                <span class="star" data-value="3" th:unless="${item.currentRating >= 3}">&#9733;</span>
+                                <span class="star selected" data-value="4" th:if="${item.currentRating >= 4}">&#9733;</span>
+                                <span class="star" data-value="4" th:unless="${item.currentRating >= 4}">&#9733;</span>
+                                <span class="star selected" data-value="5" th:if="${item.currentRating >= 5}">&#9733;</span>
+                                <span class="star" data-value="5" th:unless="${item.currentRating >= 5}">&#9733;</span>
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-submit">Submit Rating</button>
