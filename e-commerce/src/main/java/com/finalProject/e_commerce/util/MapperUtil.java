@@ -1,7 +1,11 @@
 package com.finalProject.e_commerce.util;
 
 import com.finalProject.e_commerce.domain.*;
-import com.finalProject.e_commerce.dto.*;
+import com.finalProject.e_commerce.dto.cartDTOs.CartItemResponseDTO;
+import com.finalProject.e_commerce.dto.cartDTOs.CartResponseDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderItemDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderResponseDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressRequestDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import com.finalProject.e_commerce.dto.addressDTOs.AddressUpdateDTO;
@@ -11,6 +15,7 @@ import com.finalProject.e_commerce.dto.adminDTOs.AdminUpdateDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryRequestDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.dto.customerDTOs.CustomerRequestDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.ProductRatingResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;

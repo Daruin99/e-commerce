@@ -1,10 +1,10 @@
-package com.finalProject.e_commerce.controller.adminDashboardController;
+package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminRequestDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminResponseDTO;
 import com.finalProject.e_commerce.dto.adminDTOs.AdminUpdateDTO;
-import com.finalProject.e_commerce.service.adminDashboardServices.AdminService;
+import com.finalProject.e_commerce.service.AdminService;
 import com.finalProject.e_commerce.util.MapperUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

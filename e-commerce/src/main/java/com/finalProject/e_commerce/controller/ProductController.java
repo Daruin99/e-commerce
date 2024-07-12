@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.controller.adminDashboardController;
+package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
@@ -6,8 +6,8 @@ import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
 import com.finalProject.e_commerce.service.CategoryCustomerService;
-import com.finalProject.e_commerce.service.adminDashboardServices.CategoryService;
-import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
+import com.finalProject.e_commerce.service.CategoryService;
+import com.finalProject.e_commerce.service.ProductService;
 import com.finalProject.e_commerce.util.MapperUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

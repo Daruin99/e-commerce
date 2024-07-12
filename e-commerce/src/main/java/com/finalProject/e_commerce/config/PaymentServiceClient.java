@@ -1,6 +1,6 @@
 package com.finalProject.e_commerce.config;
 
-import com.finalProject.e_commerce.dto.PaymentRequestDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.PaymentRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

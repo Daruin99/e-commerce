@@ -1,13 +1,11 @@
 package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Customer;
-import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.domain.ProductRating;
-import com.finalProject.e_commerce.dto.ProductRatingResponseDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.ProductRatingResponseDTO;
 import com.finalProject.e_commerce.repository.ProductRatingRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

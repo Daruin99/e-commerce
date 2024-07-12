@@ -1,8 +1,8 @@
-package com.finalProject.e_commerce.controller.adminDashboardController;
+package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryRequestDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
-import com.finalProject.e_commerce.service.adminDashboardServices.CategoryService;
+import com.finalProject.e_commerce.service.CategoryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

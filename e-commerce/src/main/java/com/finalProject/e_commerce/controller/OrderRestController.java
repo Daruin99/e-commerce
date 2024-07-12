@@ -1,8 +1,8 @@
 package com.finalProject.e_commerce.controller;
 
-import com.finalProject.e_commerce.dto.OrderDTO;
-import com.finalProject.e_commerce.dto.OrderFailureResponseDTO;
-import com.finalProject.e_commerce.dto.OrderSuccessResponseDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderFailureResponseDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderSuccessResponseDTO;
 import com.finalProject.e_commerce.exception.NotEnoughStockException;
 import com.finalProject.e_commerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

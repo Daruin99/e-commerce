@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.service.adminDashboardServices;
+package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Admin;
 import com.finalProject.e_commerce.domain.Authority;
@@ -44,27 +44,16 @@ public class AdminService {
             adminPage = repository.findAll(pageable);
         }
 
-        List<Admin> admins;
-
-        if (isSuperAdmin()) {
-            admins = adminPage.getContent();
-
-        } else {
-            // Get All Admins That are not Super Admins
-            admins = adminPage.getContent().stream()
-                    .filter(
-                            admin -> admin
-                                    .getAuthorities()
-                                    .stream()
-                                    .noneMatch(authority -> "SUPER_ADMIN".equals(authority.getAuthority())))
-                    .toList();
-
-        }
+        List<Admin> admins = adminPage.getContent();
 
         List<AdminResponseDTO> responseList = new ArrayList<>();
 
-        for (Admin admin : admins)
-            responseList.add(mapper.mapEntityToResponseDTO(admin));
+        for (Admin admin : admins){
+            AdminResponseDTO adminResponseDTO = mapper.mapEntityToResponseDTO(admin);
+            adminResponseDTO.setSuperAdmin(isSuperAdmin(admin));
+            responseList.add(adminResponseDTO);
+        }
+
 
         return new PageImpl<>(responseList, pageable, adminPage.getTotalElements());
     }
@@ -101,9 +90,7 @@ public class AdminService {
         repository.deleteById(adminId);
     }
 
-    private boolean isSuperAdmin() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Admin admin = (Admin) authentication.getPrincipal();
+    private boolean isSuperAdmin(Admin admin) {
         return admin.getAuthorities()
                 .stream()
                 .anyMatch(authority -> "SUPER_ADMIN".equals(authority.getAuthority()));

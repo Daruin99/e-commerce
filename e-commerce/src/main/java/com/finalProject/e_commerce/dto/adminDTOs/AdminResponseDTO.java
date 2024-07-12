@@ -18,4 +18,6 @@ public class AdminResponseDTO {
     private String email;
 
     private String phoneNumber;
+
+    private boolean isSuperAdmin;
 }

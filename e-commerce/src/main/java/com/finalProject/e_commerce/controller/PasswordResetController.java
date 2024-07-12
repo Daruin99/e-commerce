@@ -2,9 +2,9 @@ package com.finalProject.e_commerce.controller;
 
 
 import com.finalProject.e_commerce.domain.Customer;
-import com.finalProject.e_commerce.dto.EmailResetRequestDTO;
-import com.finalProject.e_commerce.dto.PasswordResetRequestDTO;
-import com.finalProject.e_commerce.dto.PasswordResetResponseDTO;
+import com.finalProject.e_commerce.dto.loginRegestierDTOs.EmailResetRequestDTO;
+import com.finalProject.e_commerce.dto.loginRegestierDTOs.PasswordResetRequestDTO;
+import com.finalProject.e_commerce.dto.loginRegestierDTOs.PasswordResetResponseDTO;
 import com.finalProject.e_commerce.service.CustomerService;
 import com.finalProject.e_commerce.service.EmailVerificationService;
 import jakarta.servlet.http.HttpServletRequest;

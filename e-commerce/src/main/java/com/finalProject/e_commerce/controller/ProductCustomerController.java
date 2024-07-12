@@ -1,7 +1,7 @@
 package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.domain.CartItem;
-import com.finalProject.e_commerce.dto.CartResponseDTO;
+import com.finalProject.e_commerce.dto.cartDTOs.CartResponseDTO;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.service.CartService;
@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
-import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
+import com.finalProject.e_commerce.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

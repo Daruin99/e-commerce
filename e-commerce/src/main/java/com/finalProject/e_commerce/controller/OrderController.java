@@ -1,15 +1,14 @@
 package com.finalProject.e_commerce.controller;
 
 import com.finalProject.e_commerce.domain.CartItem;
-import com.finalProject.e_commerce.dto.CartResponseDTO;
-import com.finalProject.e_commerce.dto.OrderItemDTO;
-import com.finalProject.e_commerce.dto.OrderResponseDTO;
-import com.finalProject.e_commerce.dto.ProductRatingResponseDTO;
-import com.finalProject.e_commerce.repository.OrderRepo;
+import com.finalProject.e_commerce.dto.cartDTOs.CartResponseDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderItemDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.OrderResponseDTO;
+import com.finalProject.e_commerce.dto.orderDTOs.ProductRatingResponseDTO;
 import com.finalProject.e_commerce.service.CartService;
 import com.finalProject.e_commerce.service.OrderService;
 import com.finalProject.e_commerce.service.ProductRatingService;
-import com.finalProject.e_commerce.service.adminDashboardServices.ProductService;
+import com.finalProject.e_commerce.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

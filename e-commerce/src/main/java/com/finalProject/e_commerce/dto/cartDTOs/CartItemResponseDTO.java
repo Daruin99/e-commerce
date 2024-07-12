@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.dto;
+package com.finalProject.e_commerce.dto.cartDTOs;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.finalProject.e_commerce.domain.Cart;

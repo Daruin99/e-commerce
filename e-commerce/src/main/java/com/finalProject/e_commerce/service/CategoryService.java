@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.service.adminDashboardServices;
+package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.dto.categoryDTOs.CategoryRequestDTO;

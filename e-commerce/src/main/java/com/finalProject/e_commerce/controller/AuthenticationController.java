@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.finalProject.e_commerce.domain.Customer;
-import com.finalProject.e_commerce.dto.AuthenticationRequestDTO;
-import com.finalProject.e_commerce.dto.FailedAuthenticationResponseDTO;
-import com.finalProject.e_commerce.dto.SuccessfulAuthenticationResponseDTO;
+import com.finalProject.e_commerce.dto.loginRegestierDTOs.AuthenticationRequestDTO;
+import com.finalProject.e_commerce.dto.loginRegestierDTOs.FailedAuthenticationResponseDTO;
+import com.finalProject.e_commerce.dto.loginRegestierDTOs.SuccessfulAuthenticationResponseDTO;
 import com.finalProject.e_commerce.service.CustomerService;
 import com.finalProject.e_commerce.service.UserDetailsServiceImp;
 import com.finalProject.e_commerce.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

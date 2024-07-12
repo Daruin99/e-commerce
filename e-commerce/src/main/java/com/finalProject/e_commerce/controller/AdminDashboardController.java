@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.controller.adminDashboardController;
+package com.finalProject.e_commerce.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;

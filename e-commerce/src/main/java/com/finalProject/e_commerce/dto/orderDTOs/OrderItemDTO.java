@@ -1,4 +1,4 @@
-package com.finalProject.e_commerce.dto;
+package com.finalProject.e_commerce.dto.orderDTOs;
 
 import com.finalProject.e_commerce.domain.Product;
 import lombok.Data;

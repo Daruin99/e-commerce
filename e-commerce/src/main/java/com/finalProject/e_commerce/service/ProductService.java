@@ -1,10 +1,9 @@
-package com.finalProject.e_commerce.service.adminDashboardServices;
+package com.finalProject.e_commerce.service;
 
 import com.finalProject.e_commerce.domain.Category;
 import com.finalProject.e_commerce.domain.Customer;
 import com.finalProject.e_commerce.domain.Product;
 import com.finalProject.e_commerce.domain.ProductRating;
-import com.finalProject.e_commerce.dto.ProductRatingResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductRequestDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductResponseDTO;
 import com.finalProject.e_commerce.dto.productDTOs.ProductUpdateDTO;
