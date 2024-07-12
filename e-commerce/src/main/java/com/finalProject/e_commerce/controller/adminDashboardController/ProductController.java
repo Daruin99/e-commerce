@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -70,10 +71,18 @@ public class ProductController {
     }
 
     @PostMapping("/admin/addProduct")
-    public String addAdminRequest(@Valid @ModelAttribute("productDTO") ProductRequestDTO productRequestDTO, BindingResult result) {
+    public String addAdminRequest(
+            @Valid @ModelAttribute("productDTO") ProductRequestDTO productRequestDTO,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "admin/addProduct";
         }
+        if (productService.productExists(productRequestDTO.getName(), productRequestDTO.getCategoryId())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "This Product Already Exists!");
+            return "redirect:/admin/addProduct";
+        }
+        redirectAttributes.addFlashAttribute("successMessage", "Product Added Successfully!.");
         productService.addProduct(productRequestDTO);
         return "redirect:/admin/products";
     }
@@ -95,18 +104,24 @@ public class ProductController {
     public String updateProductRequest(
             @PathVariable Long productId,
             @Valid @ModelAttribute("productUpdateDTO") ProductUpdateDTO productUpdateDTO,
-            BindingResult result) {
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "admin/updateProduct";
         }
+        if (productService.productExistsForUpdate(productUpdateDTO.getName(), productUpdateDTO.getCategoryId(), productId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "This Product Details Already Exists!");
+            return "redirect:/admin/updateProduct/{productId}";
+        }
+        redirectAttributes.addFlashAttribute("successMessage", "Product Updated Successfully!.");
         productService.updateProduct(productId, productUpdateDTO);
         return "redirect:/admin/products";
     }
 
     @GetMapping("/admin/deleteProduct/{productId}")
-    public String deleteProduct(@PathVariable("productId") Long productId) {
+    public String deleteProduct(@PathVariable("productId") Long productId, RedirectAttributes redirectAttributes) {
         productService.deleteProduct(productId);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Product Deleted Successfully!.");
         return "redirect:/admin/products";
     }
 }

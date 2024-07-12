@@ -8,6 +8,9 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div th:if="${successMessage != null}">
+        <input type="hidden" id="successMessage" th:value="${successMessage}" />
+    </div>
     <div class="content container mt-5">
         <h2 class="text-center my-4" th:if="${addressesResponseDTO.isEmpty()}">Addresses</h2>
         <h4 th:if="${addressesResponseDTO.isEmpty()}" class="text-center my-4 text-danger mt-2 font-italic">No Addresses Yet!</h4>
@@ -50,7 +53,7 @@
         </div>
 
         <div class="container form-container" style="margin-bottom: 0">
-            <h3>Add New Address</h3>
+            <h3 class="text-center mb-4">Add New Address</h3>
             <form method="post" th:action="@{/customer/addAddress}" th:object="${addressRequestDTO}">
                 <div class="form-group">
                     <label for="street">Street:</label>
@@ -88,6 +91,22 @@
     </div>
 </section>
 
-<section layout:fragment="scripts"></section>
+<section layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('successMessage')?.value;
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    </script>
+</section>
 </body>
 </html>

@@ -9,6 +9,12 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div th:if="${errorMessage != null}">
+        <input type="hidden" id="errorMessage" th:value="${errorMessage}" />
+    </div>
+    <div th:if="${successMessage != null}">
+        <input type="hidden" id="successMessage" th:value="${successMessage}" />
+    </div>
     <div class="content container mt-5">
         <div class="jumbotron text-center"
              style=" background-image: url('https://images.pexels.com/photos/6956803/pexels-photo-6956803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
@@ -21,8 +27,8 @@
         <h4 th:if="${categoriesDTO.isEmpty()}" class="text-center my-4 text-danger mt-2 font-italic">No Categories Yet!</h4>
         <div class="row">
             <div class="col-md-4" th:each="category : ${categoriesDTO}">
-                <div class="card item-card">
-                    <div class="card-body text-center">
+                <div class="card item-card h-100 mx-auto">
+                    <div class="card-body d-flex flex-column text-center">
                         <h4 th:text="${category.name}"></h4>
                         <p>Category ID: <span th:text="${category.id}"></span></p>
                         <form method="post" th:action="@{|/admin/updateCategory/${category.id}|}"
@@ -65,7 +71,7 @@
         </div>
 
         <div class="container form-container" style="margin-bottom: 0">
-            <h3>Add New Category</h3>
+            <h3 class="text-center mb-2">Add New Category</h3>
             <form method="post" th:action="@{/admin/addCategory}" th:object="${categoryDTO}">
                 <div class="form-group">
                     <label for="name">Category Name:</label>
@@ -81,6 +87,31 @@
         </div>
     </div>
 </section>
-<section layout:fragment="scripts"></section>
+<section layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorMessage = document.getElementById('errorMessage')?.value;
+            const successMessage = document.getElementById('successMessage')?.value;
+
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+            } else if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    </script>
+</section>
 </body>
 </html>

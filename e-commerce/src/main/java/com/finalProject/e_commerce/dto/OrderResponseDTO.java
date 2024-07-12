@@ -1,6 +1,5 @@
 package com.finalProject.e_commerce.dto;
 
-import com.finalProject.e_commerce.dto.addressDTOs.AddressResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,7 @@ public class OrderResponseDTO {
 
     private List<OrderItemDTO> orderItems;
 
-    private AddressResponseDTO address;
+    private String address;
 
     private String paymentMethod;
 

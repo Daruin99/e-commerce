@@ -15,8 +15,8 @@
                 <div class="payment-methods">
                     <div class="payment-method">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
-                            <label class="form-check-label" for="creditCard">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="CreditCard" checked>
+                            <label class="form-check-label" for="CreditCard">
                                 Credit Card
                             </label>
                         </div>
@@ -32,8 +32,8 @@
 
                     <div class="payment-method mt-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery">
-                            <label class="form-check-label" for="cashOnDelivery">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="CashOnDelivery">
+                            <label class="form-check-label" for="CashOnDelivery">
                                 Cash on Delivery
                             </label>
                         </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="btns">
                     <div class="confirm-button">
-                        <button class="btn btn-primary" id="confirmOrderBtn" disabled>Confirm Order</button>
+                        <button class="btn btn-primary" id="confirmOrderBtn" disabled>Place Order</button>
                     </div>
 
                 </div>
@@ -211,7 +211,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                        if (data.message == "Order placed successfully") {
+                        if (data.message === "Order placed successfully") {
                         showMessage(data.message, 'success');
                         window.location.href = `/order/orders/${data.orderId}`;
                         }
@@ -231,7 +231,7 @@
                     radio.addEventListener('change', function () {
                         const creditCardDetails = document.getElementById('creditCardDetails');
                         creditCardDetails.querySelectorAll('input').forEach(input => {
-                            input.disabled = this.id === 'cashOnDelivery';
+                            input.disabled = this.id === 'CashOnDelivery';
                         });
                     });
                 });

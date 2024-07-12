@@ -61,13 +61,13 @@ public class OrderService {
         Customer customer = (Customer) authentication.getPrincipal();
 
         order.setCustomer(customer);
-        order.setAddress(address);
+        order.setAddress(address.getStreet() + ", " + address.getResidentialArea() + ", " + address.getCity() + ", " + address.getCountry());
         order.setCreationDate(new Date());
         order.setOrderStatus("Completed");
 
         order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
 
-        if ("creditCard".equals(orderDTO.getPaymentMethod())) {
+        if ("CreditCard".equals(orderDTO.getPaymentMethod())) {
             PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
             paymentRequestDTO.setCardNumber(orderDTO.getCardNumber());
             paymentRequestDTO.setAmount(orderDTO.getTotalPrice());
@@ -99,9 +99,7 @@ public class OrderService {
         for (Order order: allOrders){
             OrderResponseDTO orderDTO = mapperUtil.mapEntityToResponseDTO(order);
             List<OrderItemDTO> orderItemDTOS = mapperUtil.mapEntityToResponseDTO(order.getOrderItems());
-            AddressResponseDTO addressDTO = mapperUtil.mapEntityToResponseDTO(order.getAddress());
             orderDTO.setOrderItems(orderItemDTOS);
-            orderDTO.setAddress(addressDTO);
             orderResponseDTOS.add(orderDTO);
         }
 
@@ -115,10 +113,8 @@ public class OrderService {
         OrderResponseDTO orderDTO = mapperUtil.mapEntityToResponseDTO(order);
 
         List<OrderItemDTO> orderItemDTOS = mapperUtil.mapEntityToResponseDTO(order.getOrderItems());
-        AddressResponseDTO addressDTO = mapperUtil.mapEntityToResponseDTO(order.getAddress());
         orderDTO.setOrderItems(orderItemDTOS);
 
-        orderDTO.setAddress(addressDTO);
 
         return orderDTO;
     }

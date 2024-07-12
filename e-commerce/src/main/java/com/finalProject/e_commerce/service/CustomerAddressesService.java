@@ -7,8 +7,13 @@ import com.finalProject.e_commerce.dto.addressDTOs.AddressUpdateDTO;
 import com.finalProject.e_commerce.repository.CustomerAddressesRepo;
 import com.finalProject.e_commerce.repository.CustomerRepo;
 import com.finalProject.e_commerce.util.MapperUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,9 +77,13 @@ public class CustomerAddressesService {
         addressesRepo.save(updatedAddress);
     }
 
+    @Transactional
     public void deleteAddress(Long addressId) {
-        addressesRepo.deleteById(addressId);
+        CustomerAddress address = addressesRepo.findById(addressId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid address Id: " + addressId));
+        addressesRepo.delete(address);
     }
+
 
 
     private Long getLoggedInCustomerId(){

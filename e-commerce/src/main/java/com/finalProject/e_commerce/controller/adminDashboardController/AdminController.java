@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -51,10 +52,16 @@ public class AdminController {
     @PostMapping("/admin/addAdmin")
     public String addAdminRequest(
             @Valid @ModelAttribute("adminDTO") AdminRequestDTO adminDTO,
-            BindingResult result) {
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "admin/addAdmin";
         }
+        if (adminService.adminExists(adminDTO.getEmail(), adminDTO.getPhoneNumber())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "This Admin Already Exists!");
+            return "redirect:/admin/addAdmin";
+        }
+        redirectAttributes.addFlashAttribute("successMessage", "Admin Added Successfully!.");
         adminService.addAdmin(adminDTO);
         return "redirect:/admin/admins";
     }
@@ -74,18 +81,24 @@ public class AdminController {
     public String updateAdminRequest(
             @PathVariable Long adminId,
             @Valid @ModelAttribute("adminUpdateDTO") AdminUpdateDTO adminUpdateDTO,
-            BindingResult result) {
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "admin/updateAdmin";
         }
+        if (adminService.adminExistsForUpdate(adminUpdateDTO.getEmail(), adminUpdateDTO.getPhoneNumber(), adminId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "This Admin Details Already Exists!");
+            return "redirect:/admin/updateAdmin/{adminId}";
+        }
+        redirectAttributes.addFlashAttribute("successMessage", "Admin Updated successfully!");
         adminService.updateAdmin(adminId, adminUpdateDTO);
         return "redirect:/admin/admins";
     }
 
     @GetMapping("/admin/deleteAdmin/{adminId}")
-    public String deleteAdmin(@PathVariable("adminId") Long adminId) {
+    public String deleteAdmin(@PathVariable("adminId") Long adminId, RedirectAttributes redirectAttributes) {
         adminService.deleteAdmin(adminId);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Admin Deleted Successfully!");
         return "redirect:/admin/admins";
     }
 

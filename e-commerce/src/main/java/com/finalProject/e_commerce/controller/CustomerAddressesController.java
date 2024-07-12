@@ -13,12 +13,15 @@ import com.finalProject.e_commerce.util.MapperUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -28,6 +31,7 @@ public class CustomerAddressesController {
     private final CartService cartService;
     private final CustomerAddressesService addressesService;
     private final MapperUtil mapper;
+    private final Logger logger = LoggerFactory.getLogger(CustomerAddressesController.class);
 
     @GetMapping("/customer/addresses")
     public String getAllAddresses(
@@ -35,17 +39,6 @@ public class CustomerAddressesController {
             HttpServletRequest request,
             @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber) {
         getAddressesLogic(model, request, pageNumber);
-        CartResponseDTO cart = cartService.getCart();
-        if(!cart.getCartItems().isEmpty()){
-            int cartQuantity = 0;
-            for(CartItem cartItem : cart.getCartItems()){
-                cartQuantity = cartQuantity + cartItem.getQuantity();
-            }
-            model.addAttribute("cartQuantity", cartQuantity);
-        }
-        else {
-            model.addAttribute("cartQuantity", 0);
-        }
         return "customer/customerAddresses";
     }
 
@@ -61,7 +54,17 @@ public class CustomerAddressesController {
     private void getAddressesLogic(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0", required = false, name = "pageNumber") int pageNumber) {
         Page<AddressResponseDTO> addressesDTO = addressesService.getAllAddresses(pageNumber);
         int totalPages = addressesDTO.getTotalPages();
-
+        CartResponseDTO cart = cartService.getCart();
+        if(!cart.getCartItems().isEmpty()){
+            int cartQuantity = 0;
+            for(CartItem cartItem : cart.getCartItems()){
+                cartQuantity = cartQuantity + cartItem.getQuantity();
+            }
+            model.addAttribute("cartQuantity", cartQuantity);
+        }
+        else {
+            model.addAttribute("cartQuantity", 0);
+        }
         model.addAttribute("addressesResponseDTO", addressesDTO.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("totalPages", totalPages);
@@ -70,19 +73,28 @@ public class CustomerAddressesController {
     }
 
     @PostMapping("/customer/addAddress")
-    public String addAddressRequest(@Valid @ModelAttribute("addressRequestDTO") AddressRequestDTO addressRequestDTO, BindingResult result) {
+    public String addAddressRequest(
+            @Valid @ModelAttribute("addressRequestDTO") AddressRequestDTO addressRequestDTO,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "customer/confirm-address";
+            return "customer/customerAddresses";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "Address Added Successfully!.");
         addressesService.addAddress(addressRequestDTO);
-        return "redirect:/customer/confirm-address";
+        return "redirect:/customer/addresses";
     }
 
     @PostMapping("/customer/addAddressAtConfirm")
-    public String addAddressRequestToConfirm(@Valid @ModelAttribute("addressRequestDTO") AddressRequestDTO addressRequestDTO, BindingResult result) {
+    public String addAddressRequestToConfirm(
+            @Valid @ModelAttribute("addressRequestDTO") AddressRequestDTO addressRequestDTO,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
+
         if (result.hasErrors()) {
             return "customer/confirm-address";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "Address Added Successfully!.");
         addressesService.addAddress(addressRequestDTO);
         return "redirect:/customer/confirmAddress";
     }
@@ -113,18 +125,22 @@ public class CustomerAddressesController {
     public String updateAddressRequest(
             @PathVariable Long addressId,
             @Valid @ModelAttribute("addressUpdateDTO") AddressUpdateDTO addressUpdateDTO,
-            BindingResult result) {
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
+
         if (result.hasErrors()) {
             return "customer/updateAddress";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "Address Updated Successfully!.");
         addressesService.updateAddress(addressId, addressUpdateDTO);
         return "redirect:/customer/addresses";
     }
 
     @GetMapping("/customer/deleteAddress/{addressId}")
-    public String deleteAddress(@PathVariable("addressId") Long addressId) {
-        addressesService.deleteAddress(addressId);
+    public String deleteAddress(@PathVariable("addressId") Long addressId, RedirectAttributes redirectAttributes) {
 
+        addressesService.deleteAddress(addressId);
+        redirectAttributes.addFlashAttribute("successMessage", "Address Deleted Successfully!.");
         return "redirect:/customer/addresses";
     }
 }
