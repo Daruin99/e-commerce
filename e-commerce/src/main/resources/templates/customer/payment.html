@@ -211,7 +211,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                        if (data.message === "Order placed successfully") {
+                        if (data.message === "Order Placed Successfully") {
                         showMessage(data.message, 'success');
                         window.location.href = `/order/orders/${data.orderId}`;
                         }
