@@ -41,7 +41,7 @@
                 </tbody>
             </table>
             <div class="text-right">
-                <h4 th:text="'Total: ' + ${cart.totalPrice}"></h4>
+                <h4 th:text="'Total: ' + ${#numbers.formatDecimal(cart.totalPrice, 1, 2)}"></h4>
                 <a th:href="@{customer/confirmAddress}" th:if="${cart.cartItems.empty}" class="btn btn-secondary disabled">Proceed to Address Confirmation</a>
                 <a th:href="@{customer/confirmAddress}" th:unless="${cart.cartItems.empty}" class="btn btn-primary">Proceed to Address Confirmation</a>
 
