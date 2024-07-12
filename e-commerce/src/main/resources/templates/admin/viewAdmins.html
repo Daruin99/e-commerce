@@ -47,10 +47,12 @@
                         <p class="card-text" th:text="'Phone: ' +${adminDTO.phoneNumber}"></p>
                         <p class="card-text" th:text="'Email: ' +${adminDTO.email}"></p>
                         <div class="item-actions mt-auto">
-                            <a class="btn btn-warning" th:href="@{|/admin/updateAdmin/${adminDTO.id}|}">Update</a>
-                            <a class="btn btn-danger" th:disabled="${adminDTO.isSuperAdmin() == 1}"
-                               th:classappend="${adminDTO.isSuperAdmin() == 1 ? 'btn-disabled' : ''}" th:href="@{|/admin/deleteAdmin/${adminDTO.id}|}">Remove</a>
-                            <p th:text="${adminDTO.isSuperAdmin()}"></p>
+                            <a class="btn btn-warning"
+                               th:if="${!adminDTO.isSuperAdmin()}"
+                               th:href="@{|/admin/updateAdmin/${adminDTO.id}|}">Update</a>
+                            <a class="btn btn-danger"
+                               th:if="${!adminDTO.isSuperAdmin()}"
+                               th:href="@{|/admin/deleteAdmin/${adminDTO.id}|}">Remove</a>
                         </div>
                     </div>
                 </div>
