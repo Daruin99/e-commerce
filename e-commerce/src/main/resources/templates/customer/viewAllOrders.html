@@ -29,8 +29,8 @@
                 <td th:text="${order.creationDate}"></td>
                 <td th:text="${order.paymentMethod}"></td>
                 <td th:text="${order.orderStatus}"></td>
-                <td th:text="'$' + ${order.totalPrice - (order.taxes + order.deliveryFees)}"></td>
-                <td th:text="'$' + ${order.totalPrice}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(order.totalPrice - (order.taxes + order.deliveryFees), 1, 2)}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 2)}"></td>
                 <td>
                     <form th:action="@{|/order/orders/${order.id}|}" method="get">
                         <button type="submit" class="btn btn-primary">View Order</button>
