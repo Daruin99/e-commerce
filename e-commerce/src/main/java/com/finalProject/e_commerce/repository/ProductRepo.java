@@ -21,7 +21,7 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Product p SET p.stock = p.stock - :quantity WHERE p.id = :productId")
+    @Query("UPDATE Product p SET p.stock = p.stock - :quantity, p.numberOfSoldItems = p.numberOfSoldItems + :quantity WHERE p.id = :productId")
     void updateStock(Long productId, int quantity);
 
     @Query("SELECT COUNT(p) > 0 FROM Product p WHERE (p.name = :name AND p.category = :category) AND p.id <> :productId")
