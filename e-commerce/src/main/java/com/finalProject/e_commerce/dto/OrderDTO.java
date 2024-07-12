@@ -10,7 +10,7 @@ public class OrderDTO {
     private String cardNumber;
     private Long addressId;
     private List<OrderItemDTO> orderItems;
-    // to be added adress
+    private String address;
 
     private double totalPrice;
     private double taxes;
