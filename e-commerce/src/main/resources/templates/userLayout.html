@@ -23,11 +23,11 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/register}" th:if="${currentUri == '/login'}">Register</a>
+                            <a class="nav-link" th:href="@{/register}" th:if="${currentUri == '/login' or currentUri == '/error/unauthorized'}">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/login}"
-                               th:if="${currentUri == '/register' or currentUri == '/forgot-password' or currentUri == '/reset-password'}">Login</a>
+                               th:if="${currentUri == '/register' or currentUri == '/forgot-password' or currentUri == '/reset-password' or currentUri == '/error/unauthorized'}">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About</a>

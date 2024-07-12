@@ -17,7 +17,7 @@ public class LoginController {
         model.addAttribute("currentUri", request.getRequestURI());
         if (message == null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null && authentication.isAuthenticated()) {
+            if (authentication != null) {
                 for (GrantedAuthority authority : authentication.getAuthorities()) {
                     if (authority.getAuthority().equals("CUSTOMER")) {
                         return "redirect:/customer/home";
