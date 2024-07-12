@@ -120,8 +120,13 @@ public class ProductController {
 
     @GetMapping("/admin/deleteProduct/{productId}")
     public String deleteProduct(@PathVariable("productId") Long productId, RedirectAttributes redirectAttributes) {
-        productService.deleteProduct(productId);
-        redirectAttributes.addFlashAttribute("successMessage", "Product Deleted Successfully!.");
-        return "redirect:/admin/products";
+        try {
+            productService.deleteProduct(productId);
+            redirectAttributes.addFlashAttribute("successMessage", "Product Deleted Successfully!.");
+            return "redirect:/admin/products";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Product Can't Be Deleted It Has Another Dependencies!.");
+            return "redirect:/admin/products";
+        }
     }
 }
