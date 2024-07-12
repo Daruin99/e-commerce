@@ -18,12 +18,14 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(
+            name = "customer_id",
+            referencedColumnName = "id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "customer_order_fk"))
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private CustomerAddress address;
+    private String address;
 
     @Column(name = "payment_method")
     private String paymentMethod;

@@ -219,4 +219,13 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         return product.getStock();
     }
+
+    public boolean productExists(String name, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        return productRepository.existsByNameAndCategory(name, category);
+    }
+    public boolean productExistsForUpdate(String name, Long categoryId, Long productId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        return  productRepository.existsByNameAndCategoryAndNotProductId(name, category, productId);
+    }
 }

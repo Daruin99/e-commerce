@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "product")
+@Table(name = "product", uniqueConstraints = {
+        @UniqueConstraint(name = "name_unique_key", columnNames = "name")})
 public class Product {
 
     @ManyToOne()

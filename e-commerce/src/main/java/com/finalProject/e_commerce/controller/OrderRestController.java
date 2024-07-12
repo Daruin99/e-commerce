@@ -25,7 +25,7 @@ public class OrderRestController {
     public ResponseEntity<?> placeOrder(@RequestBody OrderDTO orderDTO) {
         try {
             Long orderId = orderService.saveOrder(orderDTO);
-            OrderSuccessResponseDTO successResponse = new OrderSuccessResponseDTO(orderId, "Order placed successfully");
+            OrderSuccessResponseDTO successResponse = new OrderSuccessResponseDTO(orderId, "Order Placed Successfully");
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
         } catch (NotEnoughStockException e) {
             OrderFailureResponseDTO failureResponse = new OrderFailureResponseDTO(e.getMessage());
@@ -33,7 +33,7 @@ public class OrderRestController {
         }
 
         catch (Exception e) {
-            OrderFailureResponseDTO failureResponse = new OrderFailureResponseDTO("Failed to place order");
+            OrderFailureResponseDTO failureResponse = new OrderFailureResponseDTO("Failed To Place Order, Insufficient Balance");
             return new ResponseEntity<>(failureResponse, HttpStatus.OK);
         }
     }

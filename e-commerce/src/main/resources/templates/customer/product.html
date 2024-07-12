@@ -33,13 +33,17 @@
                 </div>
                 <div class="col-md-6">
                     <h1 th:text="${productResponse.name}"></h1>
-                    <h2 th:text="${productResponse.price}"></h2>
-                    <form th:action="@{/addItem(productId=${productResponse.id})}" method="post" class="mt-auto" onsubmit="handleAddToCart(event); storeScrollPosition();">
-                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    <h3 th:text="'$' + ${productResponse.price}"></h3>
+                    <p class="card-text text-danger" th:if="${productResponse.stock <= 5 and productResponse.stock > 0}" th:text="'Only ' + ${productResponse.stock} + ' left in stock!'"></p>
+                    <p class="card-text text-danger" th:if="${productResponse.stock == 0}">Out of stock!</p>
+                    <form th:action="@{/addItem(productId=${productResponse.id})}" method="post" class="mt-auto float-right" onsubmit="handleAddToCart(event); storeScrollPosition();">
+                        <button type="submit" class="btn btn-primary"
+                                th:disabled="${productResponse.stock == 0}"
+                                th:classappend="${productResponse.stock == 0 ? 'btn-disabled' : ''}">Add to Cart</button>
                     </form>
                     <br>
-                    <div class="card mb-4">
-                        <p th:text="${productResponse.description}" class="mt-4"></p>
+                    <div class="card my-4 mx-auto py-3 px-3">
+                        <p th:text="${productResponse.description}" class="my-auto"></p>
                     </div>
                     <div>
                         <div id="ratingStars"></div>

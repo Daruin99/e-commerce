@@ -79,8 +79,7 @@ public class Customer implements UserDetails {
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
+            orphanRemoval = true
     )
     private List<CustomerAddress> addresses;
 

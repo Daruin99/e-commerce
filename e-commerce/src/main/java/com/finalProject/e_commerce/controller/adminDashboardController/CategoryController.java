@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,13 +42,19 @@ public class CategoryController {
     public String addCategoryRequest(
             @Valid @ModelAttribute("categoryDTO") CategoryRequestDTO categoryRequestDTO,
             BindingResult result,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             Page<CategoryResponseDTO> categoriesDTO = categoryService.getAllCategoriesPageable(0, "id");
             model.addAttribute("categoriesDTO", categoriesDTO.getContent());
             model.addAttribute("categoryDTO", categoryRequestDTO);
             return "admin/viewCategories";
         }
+        if (categoryService.categoryExists(categoryRequestDTO.getName())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "This Category Already Exists!");
+            return "redirect:/admin/categories";
+        }
+        redirectAttributes.addFlashAttribute("successMessage", "Category Added Successfully!.");
         categoryService.addCategory(categoryRequestDTO);
         return "redirect:/admin/categories";
     }
@@ -57,13 +64,19 @@ public class CategoryController {
             @PathVariable Long categoryId,
             @Valid @ModelAttribute("categoryDTO") CategoryRequestDTO categoryRequestDTO,
             BindingResult result,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             Page<CategoryResponseDTO> categoriesDTO = categoryService.getAllCategoriesPageable(0, "id");
             model.addAttribute("categoriesDTO", categoriesDTO.getContent());
             model.addAttribute("categoryDTO", categoryRequestDTO);
             return "admin/viewCategories";
         }
+        if (categoryService.categoryExistsForUpdate(categoryRequestDTO.getName(), categoryId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "This Category Details Already Exists!");
+            return "redirect:/admin/categories";
+        }
+        redirectAttributes.addFlashAttribute("successMessage", "Category Updated Successfully!.");
         categoryService.updateCategory(categoryId, categoryRequestDTO.getName());
         return "redirect:/admin/categories";
     }

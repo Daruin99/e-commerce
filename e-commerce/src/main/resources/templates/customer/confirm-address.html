@@ -8,6 +8,9 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div th:if="${successMessage != null}">
+        <input type="hidden" id="successMessage" th:value="${successMessage}" />
+    </div>
     <div class="content container mt-5">
         <h2 class="text-center my-4" th:if="${!addressesResponseDTO.isEmpty()}">Available Addresses</h2>
         <h4 th:if="${addressesResponseDTO.isEmpty()}" class="text-center my-4 text-danger mt-2 font-italic">No Addresses Yet, you need to add at least one!</h4>
@@ -32,24 +35,24 @@
                 <ul class="pagination">
                     <li th:class="${pageNumber == 0} ? 'page-item disabled' : 'page-item'">
                         <a class="page-link"
-                           th:href="@{'/customer/addresses?pageNumber=' + ${pageNumber - 1}}">Previous</a>
+                           th:href="@{'/customer/confirmAddress?pageNumber=' + ${pageNumber - 1}}">Previous</a>
                     </li>
                     <li th:class="${pageNum == pageNumber} ? 'page-item active' : 'page-item'"
                         th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                         th:if="${pageNum <= pageNumber + 1 && pageNum >= pageNumber - 1}">
-                        <a class="page-link" th:href="@{'/customer/addresses?pageNumber=' + ${pageNum}}">
+                        <a class="page-link" th:href="@{'/customer/confirmAddress?pageNumber=' + ${pageNum}}">
                             <span th:text="${pageNum + 1}"></span>
                         </a>
                     </li>
                     <li th:class="${pageNumber == totalPages - 1} ? 'page-item disabled' : 'page-item'">
-                        <a class="page-link" th:href="@{'/customer/addresses?pageNumber=' + ${pageNumber + 1}}">Next</a>
+                        <a class="page-link" th:href="@{'/customer/confirmAddress?pageNumber=' + ${pageNumber + 1}}">Next</a>
                     </li>
                 </ul>
             </div>
         </div>
 
         <div class="container form-container" style="margin-bottom: 0">
-            <h3>Add New Address</h3>
+            <h3 class="text-center mb-4">Add New Address</h3>
             <form method="post" th:action="@{/customer/addAddressAtConfirm}" th:object="${addressRequestDTO}">
                 <div class="form-group">
                     <label for="street">Street:</label>
@@ -87,6 +90,21 @@
     </div>
 </section>
 
-<section layout:fragment="scripts"></section>
+<section layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('successMessage')?.value;
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    </script>
+</section>
 </body>
 </html>

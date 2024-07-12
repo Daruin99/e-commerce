@@ -97,6 +97,16 @@ footer {
     border: none;
 }
 
+.btn-primary:disabled{
+    background-color: #686963;
+    border: none;
+}
+
+.btn-primary:disabled:hover{
+    background-color: #686963;
+    border: none;
+}
+
 .btn-danger :hover{
     background-color: #DA667B;
     border: none;
@@ -107,6 +117,9 @@ footer {
 .item-actions {
     margin-top: 10px;
     float: right;
+}
+.card a{
+    color: black;
 }
 
 .pagination {
@@ -131,7 +144,6 @@ footer {
     align-items: center;
     display: flex;
     margin-top: 20px;
-    margin-bottom: 20px;
     justify-content: center;
 }
 .form-btn{

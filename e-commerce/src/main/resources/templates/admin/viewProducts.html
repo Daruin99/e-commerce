@@ -8,6 +8,12 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <div th:if="${errorMessage != null}">
+        <input type="hidden" id="errorMessage" th:value="${errorMessage}" />
+    </div>
+    <div th:if="${successMessage != null}">
+        <input type="hidden" id="successMessage" th:value="${successMessage}" />
+    </div>
     <div class="content container mt-5">
         <div class="jumbotron text-center"
              style=" background-image: url('https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
@@ -23,7 +29,7 @@
                 <form class="form-inline justify-content-center align-items-center" method="get" th:action="@{/admin/products}">
                     <div class="form-group mx-2">
                         <label class="my-1 mr-2" for="searchField">Search:</label>
-                        <input type="text" class="form-control my-1 mr-sm-2" id="searchField" name="name" th:value="${name}">
+                        <input type="text" class="form-control my-1 mr-sm-2" placeholder="Search Products" id="searchField" name="name" th:value="${name}">
                     </div>
                     <div class="form-group mx-2">
                         <label class="my-1 mr-2" for="categoryFilter">Filter by Category:</label>
@@ -58,15 +64,15 @@
         <h4 th:if="${productsResponse.isEmpty()}" class="text-center my-4 text-danger mt-2 font-italic">No Products Yet!</h4>
         <div class="row">
             <div class="col-md-4" th:each="product : ${productsResponse}">
-                <div class="card item-card h-100">
+                <div class="card item-card h-100 mx-auto">
                     <img alt="Product Image" class="card-img-top img-fluid" th:src="${product.imageUrl}" style="height: 200px; object-fit: cover;">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                        <h5 class="card-title text-center my-2" th:text="${product.name}">Product Name</h5>
                         <p class="card-text" th:text="'Price: $' + ${product.price}">Price</p>
                         <p class="card-text" th:text="'Stock: ' + ${product.stock}">Stock</p>
                         <p class="card-text" th:text="'Sold: ' + ${product.numberOfSoldItems}">Sold</p>
                         <p class="card-text" th:text="${product.description}">Product Description</p>
-                        <div class="item-actions mt-auto">
+                        <div class="item-actions text-center my-4 mt-auto">
                             <a class="btn btn-warning" th:href="@{|/admin/updateProduct/${product.id}|}">Update</a>
                             <a class="btn btn-danger" th:href="@{|/admin/deleteProduct/${product.id}|}">Remove</a>
                         </div>
@@ -105,6 +111,31 @@
         </div>
     </div>
 </section>
-<section layout:fragment="scripts"></section>
+<section layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorMessage = document.getElementById('errorMessage')?.value;
+            const successMessage = document.getElementById('successMessage')?.value;
+
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+            } else if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    </script>
+</section>
 </body>
 </html>

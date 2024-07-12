@@ -109,4 +109,10 @@ public class AdminService {
                 .anyMatch(authority -> "SUPER_ADMIN".equals(authority.getAuthority()));
     }
 
+    public boolean adminExists(String email, String phoneNumber) {
+        return repository.existsByEmailOrPhoneNumber(email, phoneNumber);
+    }
+    public boolean adminExistsForUpdate(String email, String phoneNumber, Long adminId) {
+        return  repository.existsByEmailOrPhoneNumberAndNotAdminId(email, phoneNumber, adminId);
+    }
 }

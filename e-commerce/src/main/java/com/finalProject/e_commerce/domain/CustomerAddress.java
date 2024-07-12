@@ -44,12 +44,12 @@ public class CustomerAddress {
     )
     private String country;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(
             name = "customer_id",
             referencedColumnName = "id",
             nullable = false,
-            foreignKey = @ForeignKey(name = "customer_id_fk")
+            foreignKey = @ForeignKey(name = "customer_address_fk")
     )
     private Customer customer;
 }

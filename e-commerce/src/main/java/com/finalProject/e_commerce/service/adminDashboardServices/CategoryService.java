@@ -70,4 +70,11 @@ public class CategoryService {
 
         categoryRepository.save(updatedCategory);
     }
+
+    public boolean categoryExists(String name) {
+        return categoryRepository.existsByName(name);
+    }
+    public boolean categoryExistsForUpdate(String name, Long categoryId) {
+        return  categoryRepository.existsByNameAndNotId(name, categoryId);
+    }
 }
