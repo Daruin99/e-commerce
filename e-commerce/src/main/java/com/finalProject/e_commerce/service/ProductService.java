@@ -57,7 +57,9 @@ public class ProductService {
             List<Product> products = productPage.getContent();
 
             for (Product product : products) {
-                responseList.add(mapper.mapEntityToResponseDTO(product));
+                ProductResponseDTO productResponseDTO = mapper.mapEntityToResponseDTO(product);
+                productResponseDTO.setCategoryName(product.getCategory().getName());
+                responseList.add(productResponseDTO);
             }
         } else {
             productPage = productRepository.findAll(pageable);
@@ -65,7 +67,9 @@ public class ProductService {
             List<Product> products = productPage.getContent();
 
             for (Product product : products) {
-                responseList.add(mapper.mapEntityToResponseDTO(product));
+                ProductResponseDTO productResponseDTO = mapper.mapEntityToResponseDTO(product);
+                productResponseDTO.setCategoryName(product.getCategory().getName());
+                responseList.add(productResponseDTO);
             }
         }
 
@@ -106,7 +110,9 @@ public class ProductService {
         List<ProductResponseDTO> responseList = new ArrayList<>();
 
         for (Product product : products) {
-            responseList.add(mapper.mapEntityToResponseDTO(product));
+            ProductResponseDTO productResponseDTO = mapper.mapEntityToResponseDTO(product);
+            productResponseDTO.setCategoryName(product.getCategory().getName());
+            responseList.add(productResponseDTO);
         }
 
         return new PageImpl<>(responseList, pageable, productPage.getTotalElements());
@@ -142,7 +148,9 @@ public class ProductService {
 
         List<Product> products = productPage.getContent();
         for (Product product : products) {
-            responseList.add(mapper.mapEntityToResponseDTO(product));
+            ProductResponseDTO productResponseDTO = mapper.mapEntityToResponseDTO(product);
+            productResponseDTO.setCategoryName(product.getCategory().getName());
+            responseList.add(productResponseDTO);
         }
 
         return new PageImpl<>(responseList, pageable, productPage.getTotalElements());
