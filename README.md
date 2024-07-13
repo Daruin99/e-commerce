@@ -15,8 +15,8 @@ This project is an e-commerce website implementation using Spring Framework, Spr
     - Customers must enter their email to receive a reactivation email with a new password reset link.
 
 3. **Item Search and Filter**
-    - Logged-in customers can search for items by name or category and view a list of matching items.
-    - Items can be filtered by price (high to low or low to high) and by most sold.
+    - Logged-in customers can search for items by name and view a list of matching items.
+    - Items can be filtered by category or price (high to low or low to high) and by most sold.
 
 4. **Shopping Cart Management**
     - Customers can add, update, and delete items in their shopping cart.
