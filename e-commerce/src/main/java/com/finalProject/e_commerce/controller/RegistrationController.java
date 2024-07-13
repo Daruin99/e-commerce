@@ -50,6 +50,11 @@ public class RegistrationController {
             model.addAttribute("error", "This user already exists");
             return "register";
         }
+        if (customerService.existsByphoneNumber(customerDTO.getPhoneNumber())) {
+            model.addAttribute("currentUri", request.getRequestURI());
+            model.addAttribute("error", "This phone Number already exists");
+            return "register";
+        }
         customerService.saveCustomer(customerDTO);
         emailVerificationService.sendVerificationEmail(customerDTO.getEmail());
         return "redirect:/login?message=verificationSent";

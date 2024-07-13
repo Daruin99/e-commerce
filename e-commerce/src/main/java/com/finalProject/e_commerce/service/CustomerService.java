@@ -27,6 +27,7 @@ public class CustomerService {
     public void saveCustomer(CustomerRequestDTO customerDTO) {
         Customer customer = mapper.mapRequestDTOToEntity(customerDTO);
         customer.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
+        System.out.println(customer);
         Set<Authority> authorities = new HashSet<>();
         authorities.add(authorityService.findById(1L));
         customer.setAuthorities(authorities);
@@ -44,6 +45,11 @@ public class CustomerService {
     public boolean existsByEmail(String email) {
         return customerRepository.existsByEmail(email);
     }
+
+    public boolean existsByphoneNumber(String phoneNumber) {
+        return customerRepository.existsByphoneNumber(phoneNumber);
+    }
+
 
     public void updatePassword(String email, String newPassword) {
         Customer customer = findByEmail(email);
