@@ -8,7 +8,10 @@ This project is an e-commerce website implementation using Spring Framework, Spr
 
 1. **User Registration and Email Verification**
     - Customers can register on the website and must verify their accounts to activate their accounts.
+    - Customers can't register if the email or phone number already exists in the system.
     - Before email verification, the customer account is deactivated. After verification, it becomes activated.
+    - Passwords must be strong, with a minimum of 8 characters, including at least one uppercase letter, one lowercase letter, one special character, and one number.
+
     
 2. **Account Suspension and Reactivation**
     - After three incorrect password attempts, a customer's account is locked.
@@ -36,6 +39,7 @@ This project is an e-commerce website implementation using Spring Framework, Spr
 1. **Admin Management**
     - Admins can log in and manage other admins by adding, updating, and deleting admin accounts.
     - Admins can search for other admins by their name.
+    - Super admins cannot be deleted and can only be inserted manually in the database.
 
 2. **Item Management**
     - Admins can add, update, delete, and list all items available on the e-commerce website.
