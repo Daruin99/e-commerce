@@ -1,6 +1,6 @@
 # E-Commerce Website with Spring, Spring MVC, Hibernate, and Thymeleaf
 
-This project is an e-commerce website implementation using Spring Framework, Spring MVC, Hibernate for database management, and Thymeleaf for the frontend. The application supports both customer and admin functionalities, including user registration, item management, shopping cart, order processing, and integration with payment services.
+This project is an e-commerce website implementation using Spring Framework, Spring MVC, Hibernate for database management, and Thymeleaf for the frontend. The application supports both customer and admin functionalities, including user registration, item management, shopping cart, order processing, and integration with payment services. The application uses JWT for authentication, ensuring a stateless session management approach.
 
 ## Features
 
