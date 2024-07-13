@@ -47,7 +47,7 @@ public class OrderService {
 
         for (OrderItemDTO orderItemDTO : orderDTO.getOrderItems()) {
             int currentStock = productService.getProductStock(orderItemDTO.getProduct().getId());
-            if (currentStock < orderItemDTO.getQuantity()) {
+            if (currentStock < orderItemDTO.getQuantity() || currentStock == 0) {
                 throw new NotEnoughStockException(orderItemDTO.getProduct().getName() + " is out of stock");
             }
         }

@@ -110,13 +110,25 @@ public class CartService {
     public Cart createNewCartOrGet() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = (Customer) authentication.getPrincipal();
+        int flag = 0;
         if (cartRepo.findByCustomerId(customer.getId()) == null) {
             Cart cart = new Cart();
             cart.setCustomer(customer);
             cartRepo.save(cart);
             return cart;
         }
-        return cartRepo.findByCustomerId(customer.getId());
+        Cart cart = cartRepo.findByCustomerId(customer.getId());
+        for(CartItem cartItem : cart.getCartItems()) {
+            if(cartItem.getProduct().getStock() <= 0) {
+                cart.removeCartItem(cartItem);
+                cartRepo.save(cart);
+            }
+            else if(cartItem.getProduct().getStock() < cartItem.getQuantity()){
+                cartItem.setQuantity(cartItem.getProduct().getStock());
+                cartRepo.save(cart);
+            }
+        }
+        return cart;
     }
 
     public List<CartItemResponseDTO> getCartItems(long id) {
