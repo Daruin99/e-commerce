@@ -34,14 +34,14 @@ public class EmailVerificationService {
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
         verificationToken.setCustomer(customer);
-        verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(2)); // Token expires in 2 mins
+        verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(1)); // Token expires in 2 mins
         verificationTokenService.saveToken(verificationToken);
 
         String subject = "Email Verification";
         String confirmationUrl = "http://localhost:8080/verify?token=" + token;
         String message = "To verify your email address, please click on the following link:\n"
                 + confirmationUrl
-                + "\nThis verification expires in 2 mins. Click on it even if it's expired, and you will be sent a new one.";
+                + "\nThis verification expires in 1 mins. Click on it even if it's expired, and you will be sent a new one.";
 
         sendEmail(customer.getEmail(), subject, message);
     }
@@ -59,14 +59,14 @@ public class EmailVerificationService {
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
         verificationToken.setCustomer(customer);
-        verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(2)); // Token expires in 2 mins
+        verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(1));
         verificationTokenService.saveToken(verificationToken);
 
         String subject = "Password Reset Request";
         String resetUrl = "http://localhost:8080/reset-password?token=" + token;
         String message = "Click the link below to reset your password:\n"
                 + resetUrl
-                + "\nThis verification expires in 2 mins. Click on it even if it's expired, and you will be redirected to enter your mail again.";
+                + "\nThis verification expires in 1 mins. Click on it even if it's expired, and you will be redirected to enter your mail again.";
         
 
         sendEmail(customer.getEmail(), subject, message);
