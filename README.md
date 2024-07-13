@@ -65,7 +65,7 @@ This project is an e-commerce website implementation using Spring Framework, Spr
 
 2. **Database Setup**
     - Ensure MySQL is installed and running.
-    - Create a database named `ecommerce_db`.
+    - Create a database named `ecommerce`.
     - Configure the database connection in `src/main/resources/application.properties`.
 
 3. **Build and Run the Application**
