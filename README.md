@@ -57,7 +57,9 @@ This project is an e-commerce website implementation using Spring Framework, Spr
 - **Frontend**: Thymeleaf
 - **Backend**: Spring, Spring MVC, Hibernate
 - **Database**: MySQL
+- **Authentication**: JWT (JSON Web Token)
 - **Payment Services**: RESTful APIs, Feign Client for integration
+- **Data Transfer**: All requests are handled using DTOs (Data Transfer Objects) with validations applied on the DTOs.
 
 ## Installation
 
